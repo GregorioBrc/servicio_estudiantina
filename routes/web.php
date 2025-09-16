@@ -1,90 +1,51 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\PartituraController;
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
-//////////////////////////////////////////////////////
-///////////////VISTAS DEL ADMINISTRADOR///////////////
-//////////////////////////////////////////////////////
-//CRUD usuarios//
-Route::get('/admin', function () {
-    return 'Vista administrador';
-});
-
-Route::get('/admin/usuarios', function () {
-    return 'Vista CRUD usuarios';
-});
-
-Route::get('/admin/usuarios/crear', function () {
-    return 'Vista crear usuario';
-});
-
-Route::post('/admin/usuarios/crear', function () {
-    return 'Acción crear usuario';
-});
-
-Route::post('/admin/usuarios/borrar/{id}', function ($id) {
-    return "Acción borrar usuario: $id";
-})->where('id', '[0-9]+');;
-
-Route::get('/admin/usuarios/{id}', function ($id) {
-    return "Vista detalle usuario: $id";
-})->where('id', '[0-9]+');
-
-Route::get('/admin/usuarios/{id}/editar', function ($id) {
-    return "Vista editar usuario: $id";
-})->where('id', '[0-9]+');
-
-Route::post('/admin/usuarios/{id}/editar', function ($id) {
-    return "Acción editar usuario: $id";
-})->where('id', '[0-9]+');
-
-//CRUD partituras//
-Route::get('/admin/partituras', function () {
-    return 'Vista CRUD partituras';
-});
-
-Route::get('/admin/partituras/crear', function () {
-    return 'Vista crear partitura';
-});
-
-Route::post('/admin/partituras/crear', function () {
-    return 'Acción crear partitura';
-});
-
-Route::post('/admin/partituras/borrar/{id}', function ($id) {
-    return "Acción borrar partitura: $id";
-})->where('id', '[0-9]+');
-
-Route::get('/admin/partituras/{id}', function ($id) {
-    return "Vista detalle partitura: $id";
-})->where('id', '[0-9]+');
-
-Route::get('/admin/partituras/{id}/editar', function ($id) {
-    return "Vista editar partitura: $id";
-})->where('id', '[0-9]+');
-
-Route::post('/admin/partituras/{id}/editar', function ($id) {
-    return "Acción editar partitura: $id";
-})->where('id', '[0-9]+');
+// Página principal
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 //////////////////////////////////////////////////////
-//////////////////VISTAS DEL USUARIO//////////////////
+/////////////// VISTAS DEL ADMINISTRADOR /////////////
 //////////////////////////////////////////////////////
-Route::get('/usuario', function () {
-    return 'Vista usuario';
-});
 
-Route::get('/usuario/partituras', function () {
-    return 'Vista mis partituras';
-});
+// Vista principal del administrador
+Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
 
-Route::get('/usuario/perfil/{id}', function ($id) {
-    return "Vista perfil usuario $id";
-})->where('id', '[0-9]+');
+// CRUD usuarios
+Route::get('/admin/usuarios', [UserController::class, 'index'])->name('usuarios.index');
+Route::get('/admin/usuarios/crear', [UserController::class, 'create'])->name('usuarios.create');
+Route::post('/admin/usuarios/crear', [UserController::class, 'store'])->name('usuarios.store');
+Route::post('/admin/usuarios/borrar/{id}', [UserController::class, 'destroy'])->where('id', '[0-9]+')->name('usuarios.destroy');
+Route::get('/admin/usuarios/{id}', [UserController::class, 'show'])->where('id', '[0-9]+')->name('usuarios.show');
+Route::get('/admin/usuarios/{id}/editar', [UserController::class, 'edit'])->where('id', '[0-9]+')->name('usuarios.edit');
+Route::post('/admin/usuarios/{id}/editar', [UserController::class, 'update'])->where('id', '[0-9]+')->name('usuarios.update');
+
+// CRUD partituras
+Route::get('/admin/partituras', [PartituraController::class, 'index'])->name('partituras.index');
+Route::get('/admin/partituras/crear', [PartituraController::class, 'create'])->name('partituras.create');
+Route::post('/admin/partituras/crear', [PartituraController::class, 'store'])->name('partituras.store');
+Route::post('/admin/partituras/borrar/{id}', [PartituraController::class, 'destroy'])->where('id', '[0-9]+')->name('partituras.destroy');
+Route::get('/admin/partituras/{id}', [PartituraController::class, 'show'])->where('id', '[0-9]+')->name('partituras.show');
+Route::get('/admin/partituras/{id}/editar', [PartituraController::class, 'edit'])->where('id', '[0-9]+')->name('partituras.edit');
+Route::post('/admin/partituras/{id}/editar', [PartituraController::class, 'update'])->where('id', '[0-9]+')->name('partituras.update');
+
+//////////////////////////////////////////////////////
+////////////////// VISTAS DEL USUARIO ////////////////
+//////////////////////////////////////////////////////
+
+// Vista principal del usuario
+Route::get('/usuario', [UserController::class, 'dashboard'])->name('usuario.dashboard');
+
+// Vista de partituras del usuario
+Route::get('/usuario/partituras', [PartituraController::class, 'misPartituras'])->name('usuario.partituras');
+
+// Vista de perfil del usuario
+Route::get('/usuario/perfil/{id}', [UserController::class, 'perfil'])->where('id', '[0-9]+')->name('usuario.perfil');
 
 
 
