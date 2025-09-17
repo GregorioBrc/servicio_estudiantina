@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class inventario extends Model
 {
     protected $table = "inventario";
+    public $timestamps = false;
 
     public function Estante(): BelongsTo
     {

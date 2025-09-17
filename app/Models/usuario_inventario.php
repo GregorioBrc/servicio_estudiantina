@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class usuario_inventario extends Model
 {
     protected $table = "usuarios_inventario";
+    public $timestamps = false;
 
     public function Prestamos(): HasMany
     {

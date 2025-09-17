@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 class partitura extends Model
 {
     public $table = "partituras";
+    public $timestamps = false;
 
     public function instrumento(): BelongsTo
     {

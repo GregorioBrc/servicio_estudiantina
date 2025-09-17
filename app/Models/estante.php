@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class estante extends Model
 {
     protected $table = "estantes";
+    public $timestamps = false;
 
     public function Prestamos(): HasMany
     {
@@ -18,6 +19,6 @@ class estante extends Model
     public function Partituras(): BelongsToMany
     {
         return $this->belongsToMany(Partitura::class, "inventario", "estante_id", "partitura_id")
-                ->withPivot('Cantidad');
+            ->withPivot('Cantidad');
     }
 }

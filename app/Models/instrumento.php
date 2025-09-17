@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class instrumento extends Model
 {
     protected $table = "instrumentos";
+    public $timestamps = false;
 
     public function Autores(): BelongsToMany
     {

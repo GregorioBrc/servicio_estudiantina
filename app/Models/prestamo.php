@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 class prestamo extends Model
 {
     protected $table = "prestamos";
+    public $timestamps = false;
 
     public function Usuario_Inventario(): BelongsTo
     {

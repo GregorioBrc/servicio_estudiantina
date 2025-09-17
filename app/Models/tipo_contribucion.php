@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class tipo_contribucion extends Model
 {
     protected $table = "tipo_contribuciones";
+    public $timestamps = false;
 
     public function contribuciones()
     {

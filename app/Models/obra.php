@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class obra extends Model
 {
     protected $table = "obras";
+    public $timestamps = false;
 
     public function contribuciones()
     {

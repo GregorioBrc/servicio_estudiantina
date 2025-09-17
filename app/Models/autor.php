@@ -9,8 +9,8 @@ use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 class autor extends Model
 {
+    public $timestamps = false;
     protected $table = "autores";
-
 
     public function instrumentos(): BelongsToMany
     {

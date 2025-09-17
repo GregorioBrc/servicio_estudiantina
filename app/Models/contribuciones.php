@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class contribuciones extends Model
 {
     protected $table = "contribuciones";
+    public $timestamps = false;
 
     // Relación: Una contribución pertenece a un autor
     public function autor(): BelongsTo
