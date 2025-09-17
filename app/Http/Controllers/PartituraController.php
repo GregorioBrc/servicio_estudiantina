@@ -8,12 +8,12 @@ class PartituraController extends Controller
 {
     public function index()
     {
-        return 'Listado de partituras';
+        return view('admin.partituras.index');
     }
 
     public function create()
     {
-        return 'Formulario de creación de partitura';
+        return view('admin.partituras.create');
     }
 
     public function store(Request $request)
@@ -28,12 +28,16 @@ class PartituraController extends Controller
 
     public function show($id)
     {
-        return "Detalle de la partitura $id";
+        return view('admin.partituras.show', [
+            'id' => $id
+        ]);
     }
 
     public function edit($id)
     {
-        return "Formulario de edición de partitura $id";
+        return view('admin.partituras.edit', [
+            'id' => $id
+        ]);
     }
 
     public function update(Request $request, $id)
@@ -43,6 +47,6 @@ class PartituraController extends Controller
 
     public function misPartituras()
     {
-        return 'Partituras del usuario';
+        return view('user.partituras');
     }
 }

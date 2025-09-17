@@ -8,12 +8,12 @@ class UserController extends Controller
 {
     public function index()
     {
-        return 'Listado de usuarios';
+        return view('admin.usuarios.index');
     }
 
     public function create()
     {
-        return 'Formulario de creación de usuario';
+        return view('admin.usuarios.create');
     }
 
     public function store(Request $request)
@@ -26,14 +26,18 @@ class UserController extends Controller
         return "Usuario $id eliminado";
     }
 
-    public function show($id)
+    public function show($id = 0)
     {
-        return "Detalle del usuario $id";
+        return view('admin.usuarios.show', [
+            'id' => $id
+        ]);
     }
 
-    public function edit($id)
+    public function edit($id = 0)
     {
-        return "Formulario de edición de usuario $id";
+        return view('admin.usuarios.edit', [
+            'id' => $id
+        ]);
     }
 
     public function update(Request $request, $id)
@@ -43,11 +47,13 @@ class UserController extends Controller
 
     public function dashboard()
     {
-        return 'Dashboard del usuario';
+        return view('user.dashboard');
     }
 
     public function perfil($id)
     {
-        return "Perfil del usuario $id";
+        return view('user.perfil', [
+            'id' => $id
+        ]);
     }
 }
