@@ -1,0 +1,28 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+
+class prestamo extends Model
+{
+    protected $table = "prestamos";
+    public $timestamps = false;
+
+    public function Usuario_Inventario(): BelongsTo
+    {
+        return $this->BelongsTo(usuario_inventario::class, "usuario_inventario_id");
+    }
+
+    public function Partitura(): BelongsTo
+    {
+            return $this->belongsTo(partitura::class, "partitura_id");
+    }
+
+    public function Estante(): BelongsTo
+    {
+        return $this->BelongsTo(estante::class, "estante_id");
+    }
+}
