@@ -12,17 +12,17 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create("obras", function (Blueprint $table) {
-        $table->id();
-        $table->string("titulo");
-        $table->integer("anio");
+            $table->id();
+            $table->string("titulo");
+            $table->integer("anio");
         });
 
         Schema::create("partituras", function (Blueprint $table) {
             $table->id();
             $table->string("url_pdf");
             $table->string("link_video")->nullable();
-            $table->foreignId("obra_id")->constrained("obras","id")->cascadeOnDelete();
-            $table->foreignId("instrumento_id")->constrained("instrumentos","id")->cascadeOnDelete();
+            $table->foreignId("obra_id")->constrained("obras", "id")->cascadeOnDelete();
+            $table->foreignId("instrumento_id")->constrained("instrumentos", "id")->cascadeOnDelete();
         });
     }
 
