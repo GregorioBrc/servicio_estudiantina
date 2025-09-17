@@ -25,6 +25,11 @@ class obra extends Model
 
     public function partituras(): HasMany
     {
-        return $this->hasMany(partitura::class,"obra_id");
+        return $this->hasMany(partitura::class, "obra_id");
+    }
+
+    public function tiposDeContribucion(): belongsToMany
+    {
+        return $this->belongsToMany(tipo_contribucion::class, 'contribuciones');
     }
 }

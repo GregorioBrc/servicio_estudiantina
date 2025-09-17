@@ -12,7 +12,7 @@ class instrumento extends Model
 
     public function Autores(): BelongsToMany
     {
-        return $this->belongsToMany(autor::class);
+        return $this->belongsToMany(autor::class, "instrumento_autor", "instrumento_id_fk", "autor_id_fk");
     }
 
     public function partituras(): HasMany

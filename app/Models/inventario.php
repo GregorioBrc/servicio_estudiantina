@@ -3,19 +3,21 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class inventario extends Model
 {
     protected $table = "inventario";
 
-    public function Estante(): HasMany
+    public function Estante(): BelongsTo
     {
-        return $this->hasMany(estante::class, "estante_id");
+        return $this->BelongsTo(estante::class,"estante_id",);
     }
 
-    public function partitura(): HasMany
+    public function partitura(): BelongsTo
     {
-        return $this->hasMany(partitura::class, "partitura_id");
+        return $this->BelongsTo(partitura::class, "partitura_id");
     }
 }
