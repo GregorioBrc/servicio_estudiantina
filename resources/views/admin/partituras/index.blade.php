@@ -1,3 +1,9 @@
 <x-app-layout title="Editar partitura">
-    <h1>CRUD de partituras ADMIN</h1>
+    <ul>
+        @foreach ($obras as $item)
+            <li>
+                <span>{{$item->titulo}}  {{$item->anio}}</span>
+            </li>
+        @endforeach
+    </ul>
 </x-app-layout>
