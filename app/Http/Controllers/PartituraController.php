@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\obra;
+use App\Models\partitura;
 use Illuminate\Http\Request;
 
 class PartituraController extends Controller
 {
     public function index()
     {
-        return view('admin.partituras.index');
+        $obras = obra::all();
+        return view('admin.partituras.index',["obras" => $obras]);
     }
 
     public function create()
@@ -21,28 +24,29 @@ class PartituraController extends Controller
         return 'Partitura creada';
     }
 
-    public function destroy($id)
+    public function destroy($partitura)
     {
-        return "Partitura $id eliminada";
+        return "Partitura $partitura eliminada";
     }
 
-    public function show($id)
+    public function show(partitura $partitura)
     {
-        return view('admin.partituras.show', [
-            'id' => $id
-        ]);
+        return $partitura;
+        // return view('admin.partituras.show', [
+        //     'id' => $partitura
+        // ]);
     }
 
-    public function edit($id)
+    public function edit($partitura)
     {
         return view('admin.partituras.edit', [
-            'id' => $id
+            'id' => $partitura
         ]);
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $partitura)
     {
-        return "Partitura $id actualizada";
+        return "Partitura $partitura actualizada";
     }
 
     public function misPartituras()
