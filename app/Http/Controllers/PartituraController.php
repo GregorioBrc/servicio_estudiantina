@@ -37,10 +37,10 @@ class PartituraController extends Controller
         // ]);
     }
 
-    public function edit($partitura)
+    public function edit(partitura $partitura)
     {
         return view('admin.partituras.edit', [
-            'id' => $partitura
+            'Parti' => $partitura->load(['obra'])
         ]);
     }
 

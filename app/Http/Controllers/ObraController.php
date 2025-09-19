@@ -13,11 +13,13 @@ class ObraController extends Controller
     public function index()
     {
         $obras = obra::with(['autores', 'partituras.instrumento'])->get();
+
         $obras->each(function ($o) {
             $o->autores->each(function ($autor) {
                 $autor->pivot->load('tipoContribucion');
             });
         });
+
         return $obras;
     }
 
@@ -26,16 +28,13 @@ class ObraController extends Controller
      */
     public function create()
     {
-        //
+        return view("admin.obras.Create");
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
-    {
-        //
-    }
+    public function store(Request $request) {}
 
     /**
      * Display the specified resource.
