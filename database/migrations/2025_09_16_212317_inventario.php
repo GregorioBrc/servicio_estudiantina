@@ -33,7 +33,6 @@ return new class extends Migration
         Schema::create("prestamos", function (Blueprint $table) {
             $table->id();
             $table->string("descripcion");
-            $table->integer("Cantidad");
             $table->foreignId("usuario_inventario_id")->constrained("usuarios_inventario", "id");
             $table->foreignId("partitura_id")->constrained("partituras", "id");
             $table->foreignId("estante_id")->constrained("estantes", "id");
