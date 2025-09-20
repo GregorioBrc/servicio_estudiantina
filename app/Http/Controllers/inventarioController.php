@@ -20,7 +20,7 @@ class inventarioController extends Controller
      */
     public function create()
     {
-        //
+        return view('inventario.create');
     }
 
     /**
@@ -28,7 +28,22 @@ class inventarioController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'partitura_id' => 'required|integer',
+            'estante_id' => 'required|integer',
+            'cantidad' => 'required|integer|min:1',
+        ]);
+
+        $Item = inventario::where('partitura_id', $validated['partitura_id'])->where('estante_id', $validated['estante_id']);
+
+        if (isset($Item)) {
+            return redirect()->back()->with('error', 'Item already exists.');
+        }
+
+        inventario::create($validated);
+
+        return redirect()->route('inventario.index')
+            ->with('success', 'Inventario created successfully.');
     }
 
     /**

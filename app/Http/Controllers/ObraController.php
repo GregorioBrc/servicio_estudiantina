@@ -34,7 +34,17 @@ class ObraController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request) {}
+    public function store(Request $request) {
+        $validated = $request->validate([
+            'titulo' => 'required|string|max:255',
+            'anio' => "required|integer|min:1900"
+        ]);
+
+        $obra = obra::create($validated);
+
+        return redirect()->route('obras.index')
+                        ->with('success', 'Obra created successfully.');
+    }
 
     /**
      * Display the specified resource.

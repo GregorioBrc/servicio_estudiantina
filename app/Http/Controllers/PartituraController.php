@@ -21,7 +21,17 @@ class PartituraController extends Controller
 
     public function store(Request $request)
     {
-        return 'Partitura creada';
+        $validated = $request->validate([
+            'obra_id' => 'required|integer|exists:obras,id',
+            'instrumento_id' => 'required|exists:instrumentos,id|integer',
+            'url_pdf' => 'required|string|url',
+            'link_video' => 'string|url',
+        ]);
+
+        partitura::create($validated);
+
+        return redirect()->route('partituras.index')
+            ->with('success', 'Partitura creada exitosamente');
     }
 
     public function destroy($partitura)

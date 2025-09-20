@@ -28,7 +28,15 @@ class instrumentoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'nombre' => 'required|string|max:255|unique:instrumentos,nombre',
+            'tipo' => 'required|string|max:255'
+        ]);
+
+        instrumento::create($validated);
+
+        return redirect()->route('instrumento.index')
+                    ->with('success', 'Instrumento created successfully.');
     }
 
     /**

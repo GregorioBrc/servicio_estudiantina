@@ -7,6 +7,7 @@ use App\Http\Controllers\AutorController;
 use App\Http\Controllers\estanteController;
 use App\Http\Controllers\instrumentoController;
 use App\Http\Controllers\inventarioController;
+use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ObraController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PartituraController;
@@ -133,3 +134,14 @@ Route::get('/usuario/partituras', [PartituraController::class, 'misPartituras'])
 
 // Vista de perfil del usuario
 Route::get('/usuario/perfil/{id}', [UserController::class, 'perfil'])->where('id', '[0-9]+')->name('usuario.perfil');
+
+
+///////////////////////////////
+//////////// Login ////////////
+///////////////////////////////
+
+//Login
+Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [LoginController::class, 'login'])->name('login.store');
+
+

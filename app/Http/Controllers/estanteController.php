@@ -28,7 +28,14 @@ class estanteController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'gaveta' => 'required|integer|unique:estantes,gaveta',
+        ]);
+
+        estante::create($validated);
+
+        return redirect()->route('estantes.index')
+                        ->with('success', 'Estante created successfully.');
     }
 
     /**

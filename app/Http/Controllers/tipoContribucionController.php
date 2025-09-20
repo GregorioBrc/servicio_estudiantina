@@ -28,7 +28,14 @@ class tipoContribucionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'nombre' => 'required|string|max:255|unique:tipo_contribucion,nombre',
+        ]);
+
+        tipo_contribucion::create($validated);
+
+        return redirect()->route('tipo_contribucion.index')
+                        ->with('success', 'Tipo de contribución creado exitosamente.');
     }
 
     /**

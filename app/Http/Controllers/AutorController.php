@@ -28,7 +28,14 @@ class AutorController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'nombre' => 'required|string|max:255|unique:autores,nombre',
+        ]);
+        
+        $autor = autor::create($validated);
+
+        return redirect()->route('autors.index')
+            ->with('success', 'Autor created successfully.');
     }
 
     /**
