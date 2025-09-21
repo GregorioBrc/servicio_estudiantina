@@ -12,7 +12,8 @@ class tipoContribucionController extends Controller
      */
     public function index()
     {
-        //
+        $tipo_contribuciones = tipo_contribucion::all();
+        return view("admin.tipo_contribucion.index", ["Tipos" => $tipo_contribuciones]);
     }
 
     /**
@@ -20,7 +21,7 @@ class tipoContribucionController extends Controller
      */
     public function create()
     {
-        //
+        return view("admin.tipo_contribucion.create");
     }
 
     /**
@@ -35,7 +36,7 @@ class tipoContribucionController extends Controller
         tipo_contribucion::create($validated);
 
         return redirect()->route('tipo_contribucion.index')
-                        ->with('success', 'Tipo de contribución creado exitosamente.');
+            ->with('success', 'Tipo de contribución creado exitosamente.');
     }
 
     /**
@@ -43,7 +44,7 @@ class tipoContribucionController extends Controller
      */
     public function show(tipo_contribucion $tipo_contribucion)
     {
-        //
+        return view("admin.tipo_contribucion.show", ["tipo_contribucion" => $tipo_contribucion]);
     }
 
     /**
@@ -51,7 +52,7 @@ class tipoContribucionController extends Controller
      */
     public function edit(tipo_contribucion $tipo_contribucion)
     {
-        //
+        return view("admin.tipo_contribucion.edit", ["tipo_contribucion" => $tipo_contribucion]);
     }
 
     /**
@@ -59,7 +60,18 @@ class tipoContribucionController extends Controller
      */
     public function update(Request $request, tipo_contribucion $tipo_contribucion)
     {
-        //
+        if ($request->id != $tipo_contribucion->id) {
+            return redirect()->back()->with('error', 'Invalid ID.');
+        }
+
+        $validated = $request->validate([
+            'nombre' => 'required|string|max:255|unique:tipo_contribucion,nombre,' . $tipo_contribucion->id,
+        ]);
+
+        $tipo_contribucion->update($validated);
+
+        return redirect()->route('tipo_contribucion.index')
+            ->with('success', 'Tipo de contribución actualizado exitosamente.');
     }
 
     /**
@@ -67,6 +79,9 @@ class tipoContribucionController extends Controller
      */
     public function destroy(tipo_contribucion $tipo_contribucion)
     {
-        //
+        $tipo_contribucion->delete();
+
+        return redirect()->route('tipo_contribucion.index')
+            ->with('success', 'Tipo de contribución eliminado exitosamente.');
     }
 }

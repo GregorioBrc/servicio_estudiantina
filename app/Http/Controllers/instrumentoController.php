@@ -12,7 +12,8 @@ class instrumentoController extends Controller
      */
     public function index()
     {
-        //
+        $instrumentos = instrumento::all();
+        return view('admin.instrumentos.index', compact('instrumentos'));
     }
 
     /**
@@ -20,7 +21,7 @@ class instrumentoController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.instrumentos.create');
     }
 
     /**
@@ -36,7 +37,7 @@ class instrumentoController extends Controller
         instrumento::create($validated);
 
         return redirect()->route('instrumento.index')
-                    ->with('success', 'Instrumento created successfully.');
+            ->with('success', 'Instrumento created successfully.');
     }
 
     /**
@@ -44,7 +45,7 @@ class instrumentoController extends Controller
      */
     public function show(instrumento $instrumento)
     {
-        //
+        return view('admin.instrumentos.show', compact('instrumento'));
     }
 
     /**
@@ -52,7 +53,7 @@ class instrumentoController extends Controller
      */
     public function edit(instrumento $instrumento)
     {
-        //
+        return view('admin.instrumentos.edit', compact('instrumento'));
     }
 
     /**
@@ -60,7 +61,19 @@ class instrumentoController extends Controller
      */
     public function update(Request $request, instrumento $instrumento)
     {
-        //
+        if ($request->id != $instrumento->id) {
+            return redirect()->back()->with('error', 'Invalid request.');
+        }
+
+        $validated = $request->validate([
+            'nombre' => 'required|string|max:255|unique:instrumentos,nombre,' . $instrumento->id,
+            'tipo' => 'required|string|max:255'
+        ]);
+
+        $instrumento->update($validated);
+
+        return redirect()->route('instrumento.index')
+            ->with('success', 'Instrumento updated successfully.');
     }
 
     /**
@@ -68,6 +81,9 @@ class instrumentoController extends Controller
      */
     public function destroy(instrumento $instrumento)
     {
-        //
+        $instrumento->delete();
+
+        return redirect()->route('instrumento.index')
+            ->with('success', 'Instrumento deleted successfully.');
     }
 }

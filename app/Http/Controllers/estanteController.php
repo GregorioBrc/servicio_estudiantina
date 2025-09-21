@@ -35,7 +35,7 @@ class estanteController extends Controller
         estante::create($validated);
 
         return redirect()->route('estantes.index')
-                        ->with('success', 'Estante created successfully.');
+            ->with('success', 'Estante created successfully.');
     }
 
     /**
@@ -59,7 +59,14 @@ class estanteController extends Controller
      */
     public function update(Request $request, estante $estante)
     {
-        //
+        $validated = $request->validate([
+            'gaveta' => 'required|integer|unique:estantes,gaveta,' . $estante->id,
+        ]);
+
+        $estante->update($validated);
+
+        return redirect()->route('estantes.index')
+            ->with('success', 'Estante updated successfully.');
     }
 
     /**
@@ -67,6 +74,9 @@ class estanteController extends Controller
      */
     public function destroy(estante $estante)
     {
-        //
+        $estante->delete();
+
+        return redirect()->route('estantes.index')
+            ->with('success', 'Estante deleted successfully.');
     }
 }

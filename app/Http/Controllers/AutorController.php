@@ -12,7 +12,8 @@ class AutorController extends Controller
      */
     public function index()
     {
-        //
+        $autores = autor::with(['contribuciones.obra', 'contribuciones.tipocontribucion'])->get();
+        return view('admin.autores.index', compact('autores'));
     }
 
     /**
@@ -20,7 +21,7 @@ class AutorController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.autores.create');
     }
 
     /**
@@ -31,7 +32,7 @@ class AutorController extends Controller
         $validated = $request->validate([
             'nombre' => 'required|string|max:255|unique:autores,nombre',
         ]);
-        
+
         $autor = autor::create($validated);
 
         return redirect()->route('autors.index')
@@ -43,7 +44,8 @@ class AutorController extends Controller
      */
     public function show(autor $autor)
     {
-        //
+        $autor->load(["contribuciones.obra", 'contribuciones.tipocontribucion']);
+        return view('admin.autores.show', compact('autor'));
     }
 
     /**
@@ -51,7 +53,8 @@ class AutorController extends Controller
      */
     public function edit(autor $autor)
     {
-        //
+        $autor->load(["contribuciones.obra", "contribuciones.tipocontribucion"]);
+        return view('admin.autores.edit', compact('autor'));
     }
 
     /**
@@ -59,7 +62,18 @@ class AutorController extends Controller
      */
     public function update(Request $request, autor $autor)
     {
-        //
+        if ($request->id != $autor->id) {
+            return redirect()->back()->with('error', 'Invalid autor ID.');
+        }
+
+        $validated = $request->validate([
+            'nombre' => 'required|string|max:255|unique:autores,nombre,' . $autor->id,
+        ]);
+
+        $autor->update($validated);
+
+        return redirect()->route('autors.index')
+            ->with('success', 'Autor updated successfully.');
     }
 
     /**
@@ -67,6 +81,9 @@ class AutorController extends Controller
      */
     public function destroy(autor $autor)
     {
-        //
+        $autor->delete();
+
+        return redirect()->route('autors.index')
+            ->with('success', 'Autor deleted successfully.');
     }
 }

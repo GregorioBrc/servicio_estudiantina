@@ -10,8 +10,9 @@ class PartituraController extends Controller
 {
     public function index()
     {
-        $obras = obra::all();
-        return view('admin.partituras.index',["obras" => $obras]);
+        $partituras = partitura::with(['instrumento', 'obra'])->get();
+        //return $partituras;
+        return view('admin.partituras.index', compact('partituras'));
     }
 
     public function create()
@@ -34,29 +35,39 @@ class PartituraController extends Controller
             ->with('success', 'Partitura creada exitosamente');
     }
 
-    public function destroy($partitura)
+    public function destroy(partitura $partitura)
     {
-        return "Partitura $partitura eliminada";
+        $partitura->delete();
+
+        return redirect()->route('partituras.index')
+            ->with('success', 'Partitura eliminada exitosamente');
     }
 
     public function show(partitura $partitura)
     {
-        return $partitura;
-        // return view('admin.partituras.show', [
-        //     'id' => $partitura
-        // ]);
+        $partitura->load(["instrumento", "obra"]);
+        return view('admin.partituras.show', compact('partitura'));
     }
 
     public function edit(partitura $partitura)
     {
-        return view('admin.partituras.edit', [
-            'Parti' => $partitura->load(['obra'])
-        ]);
+        $partitura->load(["instrumento", "obra"]);
+        return view('admin.partituras.edit', compact('partitura'));
     }
 
-    public function update(Request $request, $partitura)
+    public function update(Request $request, partitura $partitura)
     {
-        return "Partitura $partitura actualizada";
+        $validated = $request->validate([
+            'obra_id' => 'required|integer|exists:obras,id',
+            'instrumento_id' => 'required|exists:instrumentos,id|integer',
+            'url_pdf' => 'required|string|url',
+            'link_video' => 'string|url',
+        ]);
+
+        $partitura->update($validated);
+
+        return redirect()->route('partituras.index')
+            ->with('success', 'Partitura actualizada exitosamente');
     }
 
     public function misPartituras()
