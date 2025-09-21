@@ -15,6 +15,7 @@ class prestamoFactory extends Factory
     {
         return [
             'descripcion' => fake()->sentence(),
+            'cantidad' => fake()->numberBetween(1, 100),
             'usuario_inventario_id' => usuario_inventario::factory(),
             'partitura_id' => partitura::factory(),
             'estante_id' => estante::factory(),

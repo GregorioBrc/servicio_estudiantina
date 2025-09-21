@@ -13,11 +13,13 @@ class ObraController extends Controller
     public function index()
     {
         $obras = obra::with(['autores', 'partituras.instrumento'])->get();
+
         $obras->each(function ($o) {
             $o->autores->each(function ($autor) {
                 $autor->pivot->load('tipoContribucion');
             });
         });
+
         return $obras;
     }
 
@@ -26,15 +28,22 @@ class ObraController extends Controller
      */
     public function create()
     {
-        //
+        return view("admin.obras.Create");
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
-    {
-        //
+    public function store(Request $request) {
+        $validated = $request->validate([
+            'titulo' => 'required|string|max:255',
+            'anio' => "required|integer|min:1900"
+        ]);
+
+        $obra = obra::create($validated);
+
+        return redirect()->route('obras.index')
+                        ->with('success', 'Obra created successfully.');
     }
 
     /**
@@ -47,7 +56,6 @@ class ObraController extends Controller
         $obra->autores->each(function ($autor) {
             $autor->pivot->load('tipoContribucion');
         });
-        //return print_r($obra->autores);
         return $obra;
     }
 
@@ -56,7 +64,13 @@ class ObraController extends Controller
      */
     public function edit(obra $obra)
     {
-        //
+        $obra->load(['autores', 'partituras.instrumento']);
+
+        $obra->autores->each(function ($autor) {
+            $autor->pivot->load('tipoContribucion');
+        });
+
+        return view("admin.obras.Edit", compact('obra'));
     }
 
     /**
@@ -64,7 +78,15 @@ class ObraController extends Controller
      */
     public function update(Request $request, obra $obra)
     {
-        //
+        $validated = $request->validate([
+            'titulo' => 'required|string|max:255',
+            'anio' => "required|integer|min:1900"
+        ]);
+
+        $obra->update($validated);
+
+        return redirect()->route('obras.index')
+                        ->with('success', 'Obra updated successfully.');
     }
 
     /**
@@ -72,6 +94,9 @@ class ObraController extends Controller
      */
     public function destroy(obra $obra)
     {
-        //
+        $obra->delete();
+
+        return redirect()->route('obras.index')
+                        ->with('success', 'Obra deleted successfully.');
     }
 }
