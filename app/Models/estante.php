@@ -13,6 +13,10 @@ class estante extends Model
     protected $table = "estantes";
     public $timestamps = false;
 
+    public $fillable = [
+        "gaveta"
+    ];
+
     public function Prestamos(): HasMany
     {
         return $this->hasMany(prestamo::class, "estante_id");

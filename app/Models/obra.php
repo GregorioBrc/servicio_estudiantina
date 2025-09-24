@@ -13,6 +13,11 @@ class obra extends Model
     protected $table = "obras";
     public $timestamps = false;
 
+    public $fillable = [
+        "titulo",
+        "anio"
+    ];
+
     public function contribuciones()
     {
         return $this->hasMany(contribuciones::class);

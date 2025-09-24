@@ -13,6 +13,14 @@ class prestamo extends Model
     protected $table = "prestamos";
     public $timestamps = false;
 
+    public $fillable = [
+        "descripcion",
+        "cantidad",
+        "usuario_inventario_id",
+        "partitura_id",
+        "estante_id"
+    ];
+
     public function Usuario_Inventario(): BelongsTo
     {
         return $this->BelongsTo(usuario_inventario::class, "usuario_inventario_id");

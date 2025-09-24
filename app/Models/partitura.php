@@ -15,6 +15,13 @@ class partitura extends Model
     public $table = "partituras";
     public $timestamps = false;
 
+    public $fillable = [
+        "url_pdf",
+        "link_video",
+        "obra_id",
+        "instrumento_id"
+    ];
+
     public function instrumento(): BelongsTo
     {
         return $this->BelongsTo(instrumento::class, "instrumento_id");
@@ -27,11 +34,11 @@ class partitura extends Model
 
     public function Prestamos(): HasMany
     {
-        return $this->hasMany(prestamo::class,"partitura_id");
+        return $this->hasMany(prestamo::class, "partitura_id");
     }
 
     public function inventario_estante(): BelongsToMany
     {
-        return $this->belongsToMany(estante::class,"inventario","partitura_id","estante_id");
+        return $this->belongsToMany(estante::class, "inventario", "partitura_id", "estante_id");
     }
 }

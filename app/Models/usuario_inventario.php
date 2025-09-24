@@ -9,9 +9,15 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class usuario_inventario extends Model
 {
     use HasFactory;
-    
+
     protected $table = "usuarios_inventario";
     public $timestamps = false;
+
+    public $fillable = [
+        "nombre",
+        "correo",
+        "password"
+    ];
 
     public function Prestamos(): HasMany
     {

@@ -11,6 +11,10 @@ class tipo_contribucion extends Model
     protected $table = "tipo_contribuciones";
     public $timestamps = false;
 
+    public $fillable = [
+        "nombre_contribucion"
+    ];
+
     public function contribuciones()
     {
         return $this->hasMany(contribuciones::class, "tipo_contribucion_id");
