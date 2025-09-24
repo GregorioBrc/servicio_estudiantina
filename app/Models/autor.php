@@ -14,6 +14,10 @@ class autor extends Model
     public $timestamps = false;
     protected $table = "autores";
 
+    public $fillable = [
+        "nombre"
+    ];
+
     public function instrumentos(): BelongsToMany
     {
         return $this->belongsToMany(instrumento::class, "instrumento_autor", "autor_id_fk", "instrumento_id_fk");

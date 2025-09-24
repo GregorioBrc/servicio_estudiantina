@@ -14,6 +14,12 @@ class inventario extends Model
     protected $table = "inventario";
     public $timestamps = false;
 
+    public $fillable = [
+        "partitura_id",
+        "estante_id",
+        "Cantidad",
+    ];
+
     public function Estante(): BelongsTo
     {
         return $this->BelongsTo(estante::class,"estante_id",);
