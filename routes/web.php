@@ -78,6 +78,14 @@ Route::get('/admin/tipo_contribuciones/{tipoContribucion}', [tipoContribucionCon
 Route::get('/admin/tipo_contribuciones/{tipoContribucion}/editar', [tipoContribucionController::class, 'edit'])->name('tipo_contribuciones.edit');
 Route::post('/admin/tipo_contribuciones/{tipoContribucion}/editar', [tipoContribucionController::class, 'update'])->name('tipo_contribuciones.update');
 Route::post('/admin/tipo_contribuciones/borrar/{tipoContribucion}', [tipoContribucionController::class, 'destroy'])->name('tipo_contribuciones.destroy');
+// CRUD subtipo instrumento
+Route::get('/admin/subtipos_instrumentos', [\App\Http\Controllers\SubtipoInstrumentoController::class, 'index'])->name('subtipo_instrumento.index');
+Route::get('/admin/subtipos_instrumentos/crear', [\App\Http\Controllers\SubtipoInstrumentoController::class, 'create'])->name('subtipo_instrumento.create');
+Route::post('/admin/subtipos_instrumentos/crear', [\App\Http\Controllers\SubtipoInstrumentoController::class, 'store'])->name('subtipo_instrumento.store');
+Route::get('/admin/subtipos_instrumentos/{subtipoInstrumento}', [\App\Http\Controllers\SubtipoInstrumentoController::class, 'show'])->name('subtipo_instrumento.show');
+Route::get('/admin/subtipos_instrumentos/{subtipoInstrumento}/editar', [\App\Http\Controllers\SubtipoInstrumentoController::class, 'edit'])->name('subtipo_instrumento.edit');
+Route::put('/admin/subtipos_instrumentos/{subtipoInstrumento}/editar', [\App\Http\Controllers\SubtipoInstrumentoController::class, 'update'])->name('subtipo_instrumento.update');
+Route::post('/admin/subtipos_instrumentos/borrar/{subtipoInstrumento}', [\App\Http\Controllers\SubtipoInstrumentoController::class, 'destroy'])->name('subtipo_instrumento.destroy');
 
 
 /////////////////////////////////////////////////
