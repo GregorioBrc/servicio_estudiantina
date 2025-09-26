@@ -51,4 +51,9 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(instrumento::class, "usuario_instrumento", "usuario_id_fk", "instrumento_id_fk");
     }
+
+    public function returnKeyName()
+    {
+        return 'name';
+    }
 }

@@ -19,4 +19,9 @@ class tipo_contribucion extends Model
     {
         return $this->hasMany(contribuciones::class, "tipo_contribucion_id");
     }
+
+    public function getRouteKeyName()
+    {
+        return 'nombre_contribucion';
+    }
 }

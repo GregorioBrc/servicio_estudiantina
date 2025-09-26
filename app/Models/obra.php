@@ -40,4 +40,9 @@ class obra extends Model
     {
         return $this->belongsToMany(tipo_contribucion::class, 'contribuciones');
     }
+
+    public function getRouteKeyName()
+    {
+        return 'titulo';
+    }
 }

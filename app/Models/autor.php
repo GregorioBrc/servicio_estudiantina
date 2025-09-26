@@ -40,4 +40,9 @@ class autor extends Model
             'obra_id'            // 6. Clave local en la tabla 'contribuciones' que nos conecta con 'obras'
         );
     }
+
+    public function getRouteKeyName()
+    {
+        return 'nombre';
+    }
 }

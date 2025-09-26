@@ -32,4 +32,9 @@ class instrumento extends Model
     {
         return $this->belongsToMany(User::class, "usuario_instrumento", "instrumento_id_fk", "usuario_id_fk");
     }
+
+    public function getRouteKeyName()
+    {
+        return 'nombre';
+    }
 }

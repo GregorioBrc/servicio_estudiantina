@@ -41,4 +41,9 @@ class partitura extends Model
     {
         return $this->belongsToMany(estante::class, "inventario", "partitura_id", "estante_id");
     }
+
+    public function getRouteKeyName()
+    {
+        return 'id';
+    }
 }

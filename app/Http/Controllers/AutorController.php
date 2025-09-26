@@ -35,7 +35,7 @@ class AutorController extends Controller
 
         $autor = autor::create($validated);
 
-        return redirect()->route('autors.index')
+        return redirect()->route('admin.autores.index')
             ->with('success', 'Autor created successfully.');
     }
 
@@ -72,7 +72,7 @@ class AutorController extends Controller
 
         $autor->update($validated);
 
-        return redirect()->route('autors.index')
+        return redirect()->route('admin.autores.index')
             ->with('success', 'Autor updated successfully.');
     }
 
@@ -83,7 +83,7 @@ class AutorController extends Controller
     {
         $autor->delete();
 
-        return redirect()->route('autors.index')
+        return redirect()->route('admin.autores.index')
             ->with('success', 'Autor deleted successfully.');
     }
 }
