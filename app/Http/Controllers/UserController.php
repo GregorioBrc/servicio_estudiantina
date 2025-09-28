@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
@@ -68,8 +71,30 @@ class UserController extends Controller
 
     public function perfil($id)
     {
+        $user = Auth::user();
         return view('user.perfil', [
-            'id' => $id
+            'id' => $id,
+            'nombre' => $user->name,
+            'email' => $user->email
         ]);
+    }
+
+    public function CambiarPassword(Request $request) {
+        $request->validate([
+            'current_password' => 'required',
+            'password' => 'required|string|min:8|confirmed',
+        ]);
+
+        $user = Auth::user();
+
+        if (!Hash::check($request->current_password, $user->password)) {
+            return back()->withErrors(['current_password' => 'Contraseña actual incorrecta']);
+        }
+
+        $user->update([
+            'password' => Hash::make($request->password),
+        ]);
+
+        return redirect()->back()->with('success', 'Contraseña actualizada correctamente.');
     }
 }

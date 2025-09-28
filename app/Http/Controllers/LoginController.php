@@ -20,7 +20,29 @@ class LoginController extends Controller
      */
     public function login(Request $request)
     {
-        
+        $credentials = $request->only('email', 'password');
+        $remember = $request->boolean('remember');
+
+        if (Auth::attempt($credentials,$remember)) {
+            if (Auth::user()->es_escritor) {
+                return redirect()->route("admin.index")->with('success', 'You have been successfully logged in.');
+            }
+            else {
+                return redirect()->route("usuario.dashboard")->with('success', 'You have been successfully logged in.');
+            }
+            return Auth::user();
+        }
+
+        return back()->withErrors([
+            'email' => 'The provided credentials do not match our records.',
+        ]);
+    }
+
+    public function logout() {
+        request()->session()->invalidate();
+        request()->session()->regenerateToken();
+        Auth::logout();
+        return redirect('/login')->with('success', 'You have been successfully logged out.');
     }
 
 }

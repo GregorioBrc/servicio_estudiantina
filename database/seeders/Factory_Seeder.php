@@ -34,11 +34,19 @@ class Factory_Seeder extends Seeder
 
         // --- 2. Crear Obras y sus Partituras ---
         $obras = obra::factory(50)->create()->each(function ($obra) use ($instrumentos, $autores, $tiposDeContribucion) {
-            // Para cada obra, crear entre 1 y 5 partituras
-            partitura::factory(rand(1, 5))->create([
-                'obra_id' => $obra->id,
-                'instrumento_id' => $instrumentos->random()->id,
-            ]);
+            // Crear entre 1 y 5 partituras únicas por obra
+            $numeroDePartituras = rand(1, 5);
+            $instrumentosDisponibles = $instrumentos->shuffle(); // Barajar instrumentos para mayor aleatoriedad
+
+            // Tomar solo los primeros N instrumentos para evitar duplicados
+            $instrumentosSeleccionados = $instrumentosDisponibles->take($numeroDePartituras);
+
+            foreach ($instrumentosSeleccionados as $instrumento) {
+                partitura::factory()->create([
+                    'obra_id' => $obra->id,
+                    'instrumento_id' => $instrumento->id,
+                ]);
+            }
 
             // Asignar entre 1 y 2 autores a cada obra (relación a través de contribuciones)
             $autoresDeLaObra = $autores->random(rand(1, 2));
