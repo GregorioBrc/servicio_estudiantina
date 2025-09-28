@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\obra;
 use App\Models\partitura;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PartituraController extends Controller
 {
@@ -72,6 +74,14 @@ class PartituraController extends Controller
 
     public function misPartituras()
     {
-        return view('user.partituras');
+        $User = User::find(Auth::id())->load('instrumentos.partituras.obra');
+        //return $User;
+        return view('user.partituras',compact('User'));
+    }
+
+    public function usuario_ShowPartitura($id) {
+        $partitura = partitura::find($id)->load("obra");
+
+        return view('user.partitura_show', ['partitura'=>$partitura]);
     }
 }

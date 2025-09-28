@@ -1,3 +1,23 @@
+<!-- Vista del login -->
 <div>
-    <!-- Do what you can, with what you have, where you are. - Theodore Roosevelt -->
+    <h2>Iniciar Sesión</h2>
+    <form action="{{route('login.store')}}" method="POST">
+        @csrf
+        <input type="email" name="email" placeholder="Email" required>
+        <br>
+        <input type="password" name="password" placeholder="Contraseña" required>
+        <br>
+        <input type="checkbox" name="remember"> Recordarme
+        <br>
+        <input type="submit" value="Iniciar Sesión"></input>
+        @if ($errors->any())
+        <div>
+            <ul>
+                @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+        @endif
+    </form>
 </div>

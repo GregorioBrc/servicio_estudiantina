@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string("link_video")->nullable();
             $table->foreignId("obra_id")->constrained("obras", "id")->cascadeOnDelete();
             $table->foreignId("instrumento_id")->constrained("instrumentos", "id")->cascadeOnDelete();
+            $table->unique(["obra_id","instrumento_id"]);
         });
     }
 

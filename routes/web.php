@@ -75,9 +75,13 @@ Route::get('/usuario', [UserController::class, 'dashboard'])->name('usuario.dash
 
 // Vista de partituras del usuario
 Route::get('/usuario/partituras', [PartituraController::class, 'misPartituras'])->name('usuario.partituras');
+Route::get('/usuario/partituras/{id}', [PartituraController::class, 'usuario_ShowPartitura'])->where('id', '[0-9]+')->name('usuario.show.partitura');
 
 // Vista de perfil del usuario
 Route::get('/usuario/perfil/{id}', [UserController::class, 'perfil'])->where('id', '[0-9]+')->name('usuario.perfil');
+//Cambiar contraseña usuario
+Route::post('/usuario/cambiar-contraseña', [UserController::class, 'CambiarPassword'])->name('usuario.cambiar-password');
+
 
 ///////////////////////////////
 //////////// Login ////////////
@@ -86,5 +90,5 @@ Route::get('/usuario/perfil/{id}', [UserController::class, 'perfil'])->where('id
 //Login
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [LoginController::class, 'login'])->name('login.store');
-
+Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 

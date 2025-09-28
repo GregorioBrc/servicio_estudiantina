@@ -9,5 +9,9 @@
 </head>
 <body>
     {{ $slot }}
+
+    <footer>
+        <p>© {{ date('Y') }} Estudiantina. All rights reserved.</p>
+    </footer>
 </body>
 </html>
