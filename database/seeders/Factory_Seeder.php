@@ -6,6 +6,7 @@ use App\Models\estante;
 use App\Models\instrumento;
 use App\Models\obra;
 use App\Models\partitura;
+use App\Models\SubtipoInstrumento;
 use App\Models\tipo_contribucion;
 use App\Models\User;
 use App\Models\usuario_inventario;
@@ -78,6 +79,8 @@ class Factory_Seeder extends Seeder
                 ]);
             }
         }
+
+        SubtipoInstrumento::factory(10)->create();
 
     }
 }
