@@ -91,6 +91,7 @@ Route::get('/usuario/perfil/{id}', [UserController::class, 'perfil'])->where('id
 Route::post('/usuario/cambiar-contraseña', [UserController::class, 'CambiarPassword'])->name('usuario.cambiar-password');
 
 
+
 ///////////////////////////////
 //////////// Login ////////////
 ///////////////////////////////
@@ -99,4 +100,8 @@ Route::post('/usuario/cambiar-contraseña', [UserController::class, 'CambiarPass
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [LoginController::class, 'login'])->name('login.store');
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
+Route::get('/forgotten-password', [LoginController::class, 'showForgottenPasswordForm'])->name('password.request');
+Route::post('/forgotten-password', [LoginController::class, 'sendResetLinkEmail'])->name('password.email');
+Route::get('/reset-password/{token}', [LoginController::class, 'showResetForm'])->name('password.reset');
+Route::post('/reset-password', [LoginController::class, 'reset'])->name('password.update');
 

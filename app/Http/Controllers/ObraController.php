@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\obra;
 use Illuminate\Http\Request;
+use App\Mail\PasswordResetMail;
+use Illuminate\Support\Facades\Mail;
 
 class ObraController extends Controller
 {
@@ -28,7 +30,7 @@ class ObraController extends Controller
      */
     public function create()
     {
-        return view("admin.obras.Create");
+        return view("admin.obras.create");
     }
 
     /**
