@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\instrumento;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Contracts\Container\BindingResolutionException;
@@ -13,12 +14,14 @@ class UserController extends Controller
 {
     public function index()
     {
-        return view('admin.usuarios.index');
+        $Users = User::all()->load('instrumentos');
+        return view('admin.usuarios.index', compact('Users'));
     }
 
     public function create()
     {
-        return view('admin.usuarios.create');
+        $instrumentos = instrumento::all();
+        return view('admin.usuarios.create', compact('instrumentos'));
     }
 
     public function store(Request $request)
@@ -29,13 +32,16 @@ class UserController extends Controller
             'password' => 'required|string|min:8|confirmed',
             'es_escritor' => 'boolean',
         ]);
+        $instru = instrumento::find($request->Instru);
 
-        User::create([
+        $Us = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'es_escritor' => $request->boolean('es_escritor'),
         ]);
+
+        $Us->Instrumentos()->attach($instru);
 
         return redirect()->route('admin.usuarios.index')->with('success', 'Usuario creado correctamente.');
     }
@@ -45,10 +51,11 @@ class UserController extends Controller
         return "Usuario $id eliminado";
     }
 
-    public function show($id = 0)
+    public function show($user)
     {
+        return $user;
         return view('admin.usuarios.show', [
-            'id' => $id
+            'id' => $user->id
         ]);
     }
 
@@ -79,7 +86,8 @@ class UserController extends Controller
         ]);
     }
 
-    public function CambiarPassword(Request $request) {
+    public function CambiarPassword(Request $request)
+    {
         $request->validate([
             'current_password' => 'required',
             'password' => 'required|string|min:8|confirmed',
