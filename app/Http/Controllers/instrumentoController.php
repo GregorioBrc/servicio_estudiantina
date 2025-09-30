@@ -36,7 +36,7 @@ class instrumentoController extends Controller
 
         instrumento::create($validated);
 
-        return redirect()->route('instrumento.index')
+        return redirect()->route('admin.instrumentos.index')
             ->with('success', 'Instrumento created successfully.');
     }
 
@@ -72,7 +72,7 @@ class instrumentoController extends Controller
 
         $instrumento->update($validated);
 
-        return redirect()->route('instrumento.index')
+        return redirect()->route('admin.instrumentos.index')
             ->with('success', 'Instrumento updated successfully.');
     }
 
@@ -83,7 +83,7 @@ class instrumentoController extends Controller
     {
         $instrumento->delete();
 
-        return redirect()->route('instrumento.index')
+        return redirect()->route('admin.instrumentos.index')
             ->with('success', 'Instrumento deleted successfully.');
     }
 }
