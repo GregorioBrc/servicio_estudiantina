@@ -8,10 +8,10 @@
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
 <body>
+    <x-header-landing></x-header-landing>
+
     {{ $slot }}
 
-    <footer>
-        <p>© {{ date('Y') }} Estudiantina. All rights reserved.</p>
-    </footer>
+    <x-footer></x-footer>
 </body>
 </html>
