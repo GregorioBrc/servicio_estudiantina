@@ -65,8 +65,9 @@ class AutorController extends Controller
      */
     public function update(Request $request, autor $autor)
     {
-        if ($request->id != $autor->id) {
-            return redirect()->back()->with('error', 'Invalid autor ID.');
+        // Verificar que el nombre actual coincida con el autor que estamos editando
+        if ($request->nombre_actual != $autor->nombre) {
+            return redirect()->back()->with('error', 'Invalid autor name.');
         }
 
         $validated = $request->validate([
