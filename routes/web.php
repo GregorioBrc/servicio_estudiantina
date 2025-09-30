@@ -50,19 +50,27 @@ Route::resource('admin/tipo_contribuciones', TipoContribucionController::class)
     ->parameters(['tipo_contribuciones' => 'tipo_contribucion'])
     ->names('admin.tipo_contribuciones');
 
+///////////////////////////////////////////////
+/////////////// API Inventario ////////////////
+///////////////////////////////////////////////
+
 Route::resource('admin/usuario_inventarios', UsuarioInventarioController::class)
+    ->except("create", "edit")
     ->parameters(['usuario_inventarios' => 'usuario_inventario'])
     ->names('admin.usuario_inventarios');
 
 Route::resource('admin/estantes', EstanteController::class)
+    ->except("create", "edit", "show")
     ->parameters(['estantes' => 'estante'])
     ->names('admin.estantes');
 
 Route::resource('admin/prestamos', PrestamoController::class)
+    ->except("create", "edit")
     ->parameters(['prestamos' => 'prestamo'])
     ->names('admin.prestamos');
 
 Route::resource('admin/inventarios', InventarioController::class)
+    ->except("create", "edit")
     ->parameters(['inventarios' => 'inventario'])
     ->names('admin.inventarios');
 

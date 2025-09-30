@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\instrumento;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Contracts\Container\BindingResolutionException;
@@ -13,12 +14,14 @@ class UserController extends Controller
 {
     public function index()
     {
-        return view('admin.usuarios.index');
+        $Users = User::all()->load('instrumentos');
+        return view('admin.usuarios.index', compact('Users'));
     }
 
     public function create()
     {
-        return view('admin.usuarios.create');
+        $instrumentos = instrumento::all();
+        return view('admin.usuarios.create', compact('instrumentos'));
     }
 
     public function store(Request $request)
@@ -29,13 +32,16 @@ class UserController extends Controller
             'password' => 'required|string|min:8|confirmed',
             'es_escritor' => 'boolean',
         ]);
+        $instru = instrumento::find($request->Instru);
 
-        User::create([
+        $Us = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'es_escritor' => $request->boolean('es_escritor'),
         ]);
+
+        $Us->Instrumentos()->attach($instru);
 
         return redirect()->route('admin.usuarios.index')->with('success', 'Usuario creado correctamente.');
     }
@@ -45,23 +51,58 @@ class UserController extends Controller
         return "Usuario $id eliminado";
     }
 
-    public function show($id = 0)
+    public function show($user)
     {
+        $user = User::find($user)->load('instrumentos');
         return view('admin.usuarios.show', [
-            'id' => $id
+            'id' => $user->id,
+            'nombre' => $user->name,
+            'email' => $user->email,
+            'es_admin' => $user->es_escritor,
+            'fecha_creacion' => $user->created_at,
+            'instrumen' => $user->instrumentos,
         ]);
     }
 
-    public function edit($id = 0)
+    public function edit($id)
     {
-        return view('admin.usuarios.edit', [
-            'id' => $id
-        ]);
+        $user = User::findOrFail($id)->load('instrumentos');
+        $instrumentos = instrumento::all();
+        return view('admin.usuarios.edit', compact('user', 'instrumentos'));
     }
 
     public function update(Request $request, $id)
     {
-        return "Usuario $id actualizado";
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users,email,' . $id,
+            'password' => 'nullable|string|min:8|confirmed',
+            'es_escritor' => 'boolean',
+            'Instru' => 'required|array',
+            'Instru.*' => 'exists:instrumentos,id',
+        ]);
+
+        $user = User::findOrFail($id);
+
+        $data = [
+            'name' => $request->name,
+            'email' => $request->email,
+            'es_escritor' => $request->boolean('es_escritor'),
+        ];
+
+        if ($request->filled('password')) {
+            $data['password'] = Hash::make($request->password);
+        }
+
+        $user->update($data);
+
+        $user->Instrumentos()->detach();
+        foreach ($request->Instru as $instruId) {
+            $instru = instrumento::find($instruId);
+            $user->Instrumentos()->attach($instru);
+        }
+
+        return redirect()->route('admin.usuarios.index')->with('success', 'Usuario actualizado correctamente.');
     }
 
     public function dashboard()
@@ -79,7 +120,8 @@ class UserController extends Controller
         ]);
     }
 
-    public function CambiarPassword(Request $request) {
+    public function CambiarPassword(Request $request)
+    {
         $request->validate([
             'current_password' => 'required',
             'password' => 'required|string|min:8|confirmed',
