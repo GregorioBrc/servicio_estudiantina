@@ -33,15 +33,15 @@
                         @php
                             $ax = "";
                             foreach ($U->instrumentos as $Ins) {
-                                $ax = $ax . $Ins->nombre . ", ";
+                                $ax = $ax . $Ins->nombre . " " . $Ins->tipo . ", ";
                             }
                             echo $ax;
                         @endphp
                     </td>
                     <td>
-                        <a href="{{ route('admin.usuarios.show', $U->id) }}">-Mostrar-</a>
-                        <a href="{{ route('admin.usuarios.edit', $U->id) }}">-Editar-</a>
-                        <a href="{{ route('admin.usuarios.destroy', $U->id) }}">-Eliminar-</a>
+                        <a href="{{ route('admin.usuarios.show', $U) }}">-Mostrar-</a>
+                        <a href="{{ route('admin.usuarios.edit', $U) }}">-Editar-</a>
+                        <a href="{{ route('admin.usuarios.destroy', $U) }}">-Eliminar-</a>
                     </td>
                 </tr>
             @endforeach

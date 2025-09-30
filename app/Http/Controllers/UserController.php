@@ -53,22 +53,56 @@ class UserController extends Controller
 
     public function show($user)
     {
-        return $user;
+        $user = User::find($user)->load('instrumentos');
         return view('admin.usuarios.show', [
-            'id' => $user->id
+            'id' => $user->id,
+            'nombre' => $user->name,
+            'email' => $user->email,
+            'es_admin' => $user->es_escritor,
+            'fecha_creacion' => $user->created_at,
+            'instrumen' => $user->instrumentos,
         ]);
     }
 
-    public function edit($id = 0)
+    public function edit($id)
     {
-        return view('admin.usuarios.edit', [
-            'id' => $id
-        ]);
+        $user = User::findOrFail($id)->load('instrumentos');
+        $instrumentos = instrumento::all();
+        return view('admin.usuarios.edit', compact('user', 'instrumentos'));
     }
 
     public function update(Request $request, $id)
     {
-        return "Usuario $id actualizado";
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users,email,' . $id,
+            'password' => 'nullable|string|min:8|confirmed',
+            'es_escritor' => 'boolean',
+            'Instru' => 'required|array',
+            'Instru.*' => 'exists:instrumentos,id',
+        ]);
+
+        $user = User::findOrFail($id);
+
+        $data = [
+            'name' => $request->name,
+            'email' => $request->email,
+            'es_escritor' => $request->boolean('es_escritor'),
+        ];
+
+        if ($request->filled('password')) {
+            $data['password'] = Hash::make($request->password);
+        }
+
+        $user->update($data);
+
+        $user->Instrumentos()->detach();
+        foreach ($request->Instru as $instruId) {
+            $instru = instrumento::find($instruId);
+            $user->Instrumentos()->attach($instru);
+        }
+
+        return redirect()->route('admin.usuarios.index')->with('success', 'Usuario actualizado correctamente.');
     }
 
     public function dashboard()
