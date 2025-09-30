@@ -45,7 +45,10 @@ class AutorController extends Controller
     public function show(autor $autor)
     {
         $autor->load(["contribuciones.obra", 'contribuciones.tipocontribucion']);
-        return view('admin.autores.show', compact('autor'));
+        return view('admin.autores.show', [
+            'Nombre' => $autor->nombre,
+            'Contribucion' => $autor->contribuciones
+        ]);
     }
 
     /**
