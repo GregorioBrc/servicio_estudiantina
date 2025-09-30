@@ -44,8 +44,6 @@ class ObraController extends Controller
 
         $obra = obra::create($validated);
 
-        // Mail::to('prueba@prueba.com')->send(new PasswordResetMail);
-
         return redirect()->route('obras.index')
                         ->with('success', 'Obra created successfully.');
     }

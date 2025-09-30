@@ -5,6 +5,7 @@ namespace App\Mail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
+use Illuminate\Mail\Mailables\Address;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
@@ -18,7 +19,7 @@ class PasswordResetMail extends Mailable
      */
     public function __construct()
     {
-        //
+        
     }
 
     /**
@@ -27,7 +28,8 @@ class PasswordResetMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Post Create Mail',
+            from: new Address('admin@estudiantina.com', 'Admin Estudiantina'),
+            subject: 'Reset de password',
         );
     }
 
@@ -37,7 +39,7 @@ class PasswordResetMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'mail.recuperar-password',
+            markdown: 'mail.recuperar-password',
         );
     }
 

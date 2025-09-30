@@ -20,4 +20,5 @@
         </div>
         @endif
     </form>
+    <a href="{{ route('password.request') }}">¿Olvidaste tu contraseña?</a>
 </div>

@@ -1,14 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
-<body>
-    <h1>Recuperar password</h1>
+<x-mail::message>    
+# Recuperar password
 
-    <p>Se ha creado un nuevo correo para recuperar la password</p>
-</body>
-</html>
+<x-mail::panel>
+Se ha creado un nuevo correo para recuperar la password
+</x-mail::panel>
+
+
+<x-mail::button :url="route('password.reset')"
+    color="success">
+Click aca para recuperar la  password
+</x-mail::button>    
+
+{{-- <a href="{{ route('usuario.perfil') }}"></a>  --}}
+    {{-- Le hace falta el id del usuario ^ pasarlo al mail --}}
+</x-mail::message>
