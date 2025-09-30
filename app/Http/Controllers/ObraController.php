@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\obra;
+use App\Models\autor;
+use App\Models\tipo_contribucion;
+use App\Models\contribuciones;
 use Illuminate\Http\Request;
 use App\Mail\PasswordResetMail;
 use Illuminate\Support\Facades\Mail;
@@ -22,7 +25,9 @@ class ObraController extends Controller
             });
         });
 
-        return $obras;
+        //return $obras;
+
+        return view('admin.obras.index', compact('obras'));
     }
 
     /**
@@ -30,7 +35,9 @@ class ObraController extends Controller
      */
     public function create()
     {
-        return view("admin.obras.create");
+        $autores = autor::all();
+        $tiposContribucion = tipo_contribucion::all();
+        return view("admin.obras.create", compact('autores', 'tiposContribucion'));
     }
 
     /**
@@ -39,13 +46,30 @@ class ObraController extends Controller
     public function store(Request $request) {
         $validated = $request->validate([
             'titulo' => 'required|string|max:255',
-            'anio' => "required|integer|min:1900"
+            'anio' => "required|integer|min:1900",
+            'autores' => 'nullable|array',
+            'autores.*' => 'exists:autores,id',
+            'tipos_contribucion' => 'nullable|array',
+            'tipos_contribucion.*' => 'exists:tipo_contribuciones,id'
         ]);
 
         $obra = obra::create($validated);
 
-        return redirect()->route('obras.index')
-                        ->with('success', 'Obra created successfully.');
+        // Guardar contribuciones de autores
+        if ($request->has('autores') && $request->has('tipos_contribucion')) {
+            foreach ($request->autores as $index => $autorId) {
+                if (isset($request->tipos_contribucion[$index])) {
+                    contribuciones::create([
+                        'autor_id' => $autorId,
+                        'obra_id' => $obra->id,
+                        'tipo_contribucion_id' => $request->tipos_contribucion[$index]
+                    ]);
+                }
+            }
+        }
+
+        return redirect()->route('admin.obras.index')
+                        ->with('success', 'Obra creada exitosamente.');
     }
 
     /**
@@ -58,7 +82,7 @@ class ObraController extends Controller
         $obra->autores->each(function ($autor) {
             $autor->pivot->load('tipoContribucion');
         });
-        return $obra;
+        return view('admin.obras.show', compact('obra'));
     }
 
     /**
@@ -72,7 +96,10 @@ class ObraController extends Controller
             $autor->pivot->load('tipoContribucion');
         });
 
-        return view("admin.obras.Edit", compact('obra'));
+        $autores = autor::all();
+        $tiposContribucion = tipo_contribucion::all();
+
+        return view("admin.obras.edit", compact('obra', 'autores', 'tiposContribucion'));
     }
 
     /**
@@ -80,15 +107,41 @@ class ObraController extends Controller
      */
     public function update(Request $request, obra $obra)
     {
+        // Verificar que el título actual coincida con la obra que estamos editando
+        if ($request->titulo_actual != $obra->titulo) {
+            return redirect()->back()->with('error', 'Título de obra inválido.');
+        }
+
         $validated = $request->validate([
             'titulo' => 'required|string|max:255',
-            'anio' => "required|integer|min:1900"
+            'anio' => "required|integer|min:1900",
+            'autores' => 'nullable|array',
+            'autores.*' => 'exists:autores,id',
+            'tipos_contribucion' => 'nullable|array',
+            'tipos_contribucion.*' => 'exists:tipo_contribuciones,id'
         ]);
 
         $obra->update($validated);
 
-        return redirect()->route('obras.index')
-                        ->with('success', 'Obra updated successfully.');
+        // Actualizar contribuciones de autores
+        // Primero eliminar las contribuciones existentes
+        contribuciones::where('obra_id', $obra->id)->delete();
+
+        // Guardar nuevas contribuciones
+        if ($request->has('autores') && $request->has('tipos_contribucion')) {
+            foreach ($request->autores as $index => $autorId) {
+                if (isset($request->tipos_contribucion[$index])) {
+                    contribuciones::create([
+                        'autor_id' => $autorId,
+                        'obra_id' => $obra->id,
+                        'tipo_contribucion_id' => $request->tipos_contribucion[$index]
+                    ]);
+                }
+            }
+        }
+
+        return redirect()->route('admin.obras.index')
+                        ->with('success', 'Obra actualizada exitosamente.');
     }
 
     /**
@@ -98,7 +151,7 @@ class ObraController extends Controller
     {
         $obra->delete();
 
-        return redirect()->route('obras.index')
-                        ->with('success', 'Obra deleted successfully.');
+        return redirect()->route('admin.obras.index')
+                        ->with('success', 'Obra eliminada exitosamente.');
     }
 }
