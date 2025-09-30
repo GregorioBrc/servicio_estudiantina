@@ -2,6 +2,8 @@
 <x-app-layout title="Autores">
     <nav>
         <a href="{{ route('admin.autores.create') }}">Crear Autor</a>
+        <br>
+        <a href="{{ route('admin.index') }}">Volver</a>
     </nav>
     <h1>Autores</h1>
     <table>
