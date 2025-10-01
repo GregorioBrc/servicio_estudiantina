@@ -7,11 +7,15 @@
     <title>{{ $title ?? 'Estudiantina' }}</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
-<body>
+<body class="min-h-screen flex flex-col">
     <x-header-landing></x-header-landing>
 
-    {{ $slot }}
+    <main class="flex-grow">
+        {{ $slot }}
+    </main>
 
     <x-footer></x-footer>
+
+    @stack('scripts')
 </body>
 </html>

@@ -75,8 +75,15 @@ class PartituraController extends Controller
     public function misPartituras()
     {
         $User = User::find(Auth::id())->load('instrumentos.partituras.obra');
+        $totalPartituras = 0;
+
+        foreach ($User->instrumentos as $instrumento) {
+        $totalPartituras += $instrumento->partituras->count();
+    
+    }
+
         //return $User;
-        return view('user.partituras',compact('User'));
+        return view('user.partituras',compact('User', 'totalPartituras'));
     }
 
     public function usuario_ShowPartitura($id) {
