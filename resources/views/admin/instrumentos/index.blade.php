@@ -1,83 +1,158 @@
-<x-app-layout title="Gestión de Instrumentos">
-    <div class="min-h-screen bg-white text-gray-900 p-6">
-        <div class="max-w-7xl mx-auto">
-            <div class="flex justify-between items-center mb-6">
-                <h1 class="text-3xl font-bold text-gray-900">Listado de Instrumentos</h1>
-                <a href="{{ route('admin.instrumentos.create') }}" class="bg-blue-700 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded-lg flex items-center space-x-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                        <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
-                    </svg>
-                    <span>Crear Nuevo Instrumento</span>
-                </a>
+<x-app-layout title="Instrumentos">
+    <div class="min-h-screen bg-gradient-to-br from-slate-50 to-gray-100 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Header -->
+            <div class="flex flex-col sm:flex-row items-center justify-between mb-12 gap-4">
+                <div class="text-center sm:text-left">
+                    <h1 class="text-4xl font-bold text-gray-900 mb-2">Gestión de Instrumentos</h1>
+                    <p class="text-lg text-gray-600">Administrar instrumentos musicales</p>
+                    <div class="w-24 h-1 bg-gradient-to-r from-red-500 to-pink-500 sm:mx-0 mx-auto mt-4 rounded-full"></div>
+                </div>
+                <div class="flex flex-col sm:flex-row gap-3">
+                    <a href="{{ route('admin.index') }}" class="bg-gradient-to-r from-gray-500 to-gray-600 text-white px-6 py-3 rounded-lg shadow-lg hover:from-gray-600 hover:to-gray-700 transition duration-300 flex items-center gap-2 font-medium">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                        </svg>
+                        Dashboard
+                    </a>
+                    <a href="{{ route('admin.instrumentos.create') }}" class="bg-gradient-to-r from-red-500 to-pink-600 text-white px-6 py-3 rounded-lg shadow-lg hover:from-red-600 hover:to-pink-700 transition duration-300 flex items-center gap-2 font-medium">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                        </svg>
+                        Crear Instrumento
+                    </a>
+                </div>
             </div>
 
+            <!-- Success/Error Messages -->
             @if (session('success'))
-                <x-alert type="success">{{ session('success') }}</x-alert>
+                <div class="bg-green-50 border-l-4 border-green-400 p-4 mb-6 rounded-r-lg">
+                    <div class="flex">
+                        <div class="flex-shrink-0">
+                            <svg class="h-5 w-5 text-green-400" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                            </svg>
+                        </div>
+                        <div class="ml-3">
+                            <p class="text-sm text-green-700">{{ session('success') }}</p>
+                        </div>
+                    </div>
+                </div>
             @endif
             @if (session('error'))
-                <x-alert type="danger">{{ session('error') }}</x-alert>
+                <div class="bg-red-50 border-l-4 border-red-400 p-4 mb-6 rounded-r-lg">
+                    <div class="flex">
+                        <div class="flex-shrink-0">
+                            <svg class="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+                            </svg>
+                        </div>
+                        <div class="ml-3">
+                            <p class="text-sm text-red-700">{{ session('error') }}</p>
+                        </div>
+                    </div>
+                </div>
             @endif
 
-            <div class="bg-white shadow-lg rounded-lg overflow-hidden border border-gray-200">
-                <table class="min-w-full leading-normal">
-                    <thead>
-                        <tr>
-                            <th class="px-6 py-3 border-b-2 border-gray-200 text-left text-xs font-semibold text-gray-900 uppercase tracking-wider" style="background-color: #ffffff;">
-                                ID
-                            </th>
-                            <th class="px-6 py-3 border-b-2 border-gray-200 text-left text-xs font-semibold text-gray-900 uppercase tracking-wider" style="background-color: #ffffff;">
-                                Nombre
-                            </th>
-                            <th class="px-6 py-3 border-b-2 border-gray-200 text-left text-xs font-semibold text-gray-900 uppercase tracking-wider" style="background-color: #ffffff;">
-                                Tipo
-                            </th>
-                            <th class="px-6 py-3 border-b-2 border-gray-200 text-left text-xs font-semibold text-gray-900 uppercase tracking-wider" style="background-color: #ffffff;">
-                                Acciones
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($instrumentos as $instrumento)
-                            <tr class="hover:bg-gray-100 transition duration-150 ease-in-out">
-                                <td class="px-6 py-4 border-b border-gray-200 text-sm text-gray-900">
-                                    #{{ $instrumento->id }}
-                                </td>
-                                <td class="px-6 py-4 border-b border-gray-200 text-sm text-gray-900">
-                                    {{ $instrumento->nombre }}
-                                </td>
-                                <td class="px-6 py-4 border-b border-gray-200 text-sm text-gray-900">
-                                    <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-700 text-white">
-                                        {{ $instrumento->tipo }}
-                                    </span>
-                                </td>
-                                <td class="px-6 py-4 border-b border-gray-200 text-sm">
-                                    <div class="flex items-center space-x-3">
-                                        <a href="{{ route('admin.instrumentos.show', $instrumento) }}" class="text-blue-600 hover:text-blue-800">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                                <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
-                                                <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd" />
-                                            </svg>
-                                        </a>
-                                        <a href="{{ route('admin.instrumentos.edit', $instrumento) }}" class="text-yellow-600 hover:text-yellow-800">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                                <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.38-2.828-2.829z" />
-                                            </svg>
-                                        </a>
-                                        <form action="{{ route('admin.instrumentos.destroy', $instrumento) }}" method="POST" onsubmit="return confirm('¿Estás seguro de querer eliminar este instrumento?');" class="inline-block">
+            <!-- Instruments List - Desktop Table / Mobile Cards -->
+            <div class="bg-white shadow-lg rounded-xl overflow-hidden border border-gray-200">
+                <div class="px-6 py-4 bg-gray-50 border-b border-gray-200">
+                    <h2 class="text-xl font-semibold text-gray-900">Lista de Instrumentos</h2>
+                </div>
+
+                <!-- Desktop Table View -->
+                <div class="hidden lg:block overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nombre</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tipo</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            @foreach ($instrumentos as $instrumento)
+                                <tr class="hover:bg-gray-50 transition duration-200">
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">#{{ $instrumento->id }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center mr-3">
+                                                <svg class="w-4 h-4 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"></path>
+                                                </svg>
+                                            </div>
+                                            <div class="text-sm font-medium text-gray-900">{{ $instrumento->nombre }}</div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                                            {{ $instrumento->tipo }}
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                        <div class="flex space-x-2">
+                                            <a href="{{ route('admin.instrumentos.show', $instrumento) }}" class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-xs transition duration-200">Ver</a>
+                                            <a href="{{ route('admin.instrumentos.edit', $instrumento) }}" class="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded text-xs transition duration-200">Editar</a>
+                                            <form action="{{ route('admin.instrumentos.destroy', $instrumento) }}" method="POST" class="inline">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-xs transition duration-200" onclick="return confirm('¿Estás seguro de eliminar este instrumento?')">Eliminar</button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Mobile/Tablet Card View -->
+                <div class="lg:hidden">
+                    @if($instrumentos->isNotEmpty())
+                        <div class="divide-y divide-gray-200">
+                            @foreach ($instrumentos as $instrumento)
+                                <div class="p-4 hover:bg-gray-50 transition duration-200">
+                                    <div class="flex items-center justify-between mb-3">
+                                        <div class="flex items-center">
+                                            <div class="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center mr-3">
+                                                <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"></path>
+                                                </svg>
+                                            </div>
+                                            <div>
+                                                <div class="text-sm font-medium text-gray-900">{{ $instrumento->nombre }}</div>
+                                                <div class="text-sm text-gray-500">#{{ $instrumento->id }}</div>
+                                            </div>
+                                        </div>
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                                            {{ $instrumento->tipo }}
+                                        </span>
+                                    </div>
+                                    <div class="flex flex-wrap gap-2">
+                                        <a href="{{ route('admin.instrumentos.show', $instrumento) }}" class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded text-sm transition duration-200 flex-1 text-center">Ver</a>
+                                        <a href="{{ route('admin.instrumentos.edit', $instrumento) }}" class="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-2 rounded text-sm transition duration-200 flex-1 text-center">Editar</a>
+                                        <form action="{{ route('admin.instrumentos.destroy', $instrumento) }}" method="POST" class="flex-1">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="text-red-600 hover:text-red-800">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                                    <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm6 0a1 1 0 11-2 0v6a1 1 0 112 0V8z" clip-rule="evenodd" />
-                                                </svg>
-                                            </button>
+                                            <button type="submit" class="w-full bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded text-sm transition duration-200" onclick="return confirm('¿Estás seguro de eliminar este instrumento?')">Eliminar</button>
                                         </form>
                                     </div>
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                                </div>
+                            @endforeach
+                        </div>
+                    @endif
+                </div>
+
+                @if($instrumentos->isEmpty())
+                    <div class="text-center py-12">
+                        <svg class="w-16 h-16 mx-auto text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"></path>
+                        </svg>
+                        <h3 class="mt-4 text-lg font-medium text-gray-900">No hay instrumentos</h3>
+                        <p class="mt-2 text-gray-500">Aún no se han registrado instrumentos en el sistema.</p>
+                    </div>
+                @endif
             </div>
         </div>
     </div>

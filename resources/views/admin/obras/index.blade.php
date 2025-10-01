@@ -1,43 +1,140 @@
 <x-app-layout title="Obras">
-    <h1>Listado de Obras</h1>
-    <nav>
-        <a href="{{ route('admin.index') }}">Volver</a>
-        <br>
-        <a href="{{ route('admin.obras.create') }}">Crear Nueva Obra</a>
-    </nav>
+    <div class="min-h-screen bg-gradient-to-br from-slate-50 to-gray-100 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Header -->
+            <div class="flex flex-col sm:flex-row items-center justify-between mb-12 gap-4">
+                <div class="text-center sm:text-left">
+                    <h1 class="text-4xl font-bold text-gray-900 mb-2">Gestión de Obras</h1>
+                    <p class="text-lg text-gray-600">Administrar obras musicales</p>
+                    <div class="w-24 h-1 bg-gradient-to-r from-indigo-500 to-purple-500 sm:mx-0 mx-auto mt-4 rounded-full"></div>
+                </div>
+                <div class="flex flex-col sm:flex-row gap-3">
+                    <a href="{{ route('admin.index') }}" class="bg-gradient-to-r from-gray-500 to-gray-600 text-white px-6 py-3 rounded-lg shadow-lg hover:from-gray-600 hover:to-gray-700 transition duration-300 flex items-center gap-2 font-medium">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                        </svg>
+                        Dashboard
+                    </a>
+                    <a href="{{ route('admin.obras.create') }}" class="bg-gradient-to-r from-indigo-500 to-purple-600 text-white px-6 py-3 rounded-lg shadow-lg hover:from-indigo-600 hover:to-purple-700 transition duration-300 flex items-center gap-2 font-medium">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                        </svg>
+                        Crear Nueva Obra
+                    </a>
+                </div>
+            </div>
 
-    <table>
-        <thead>
-            <tr>
-                <th>Título</th>
-                <th>Año</th>
-                <th>Autores</th>
-                <th>Partituras</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach($obras as $obra)
-            <tr>
-                <td>{{ $obra->titulo }}</td>
-                <td>{{ $obra->anio }}</td>
-                <td>
-                    @foreach($obra->autores as $autor)
-                        {{ $autor->nombre }} ({{ $autor->pivot->tipoContribucion->nombre_contribucion ?? 'Sin tipo' }})<br>
-                    @endforeach
-                </td>
-                <td>{{ $obra->partituras->count() }}</td>
-                <td>
-                    <a href="{{ route('admin.obras.show', $obra) }}">Ver</a>
-                    <a href="{{ route('admin.obras.edit', $obra) }}">Editar</a>
-                    <form action="{{ route('admin.obras.destroy', $obra) }}" method="POST" style="display:inline;">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" onclick="return confirm('¿Está seguro de eliminar esta obra?')">Eliminar</button>
-                    </form>
-                </td>
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
+            <!-- Works List - Desktop Table / Mobile Cards -->
+            <div class="bg-white shadow-lg rounded-xl overflow-hidden border border-gray-200">
+                <div class="px-6 py-4 bg-gray-50 border-b border-gray-200">
+                    <h2 class="text-xl font-semibold text-gray-900">Lista de Obras</h2>
+                </div>
+
+                <!-- Desktop Table View -->
+                <div class="hidden lg:block overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Título</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Año</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Autores</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Partituras</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            @foreach ($obras as $obra)
+                                <tr class="hover:bg-gray-50 transition duration-200">
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="w-8 h-8 bg-indigo-100 rounded-full flex items-center justify-center mr-3">
+                                                <svg class="w-4 h-4 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"></path>
+                                                </svg>
+                                            </div>
+                                            <div class="text-sm font-medium text-gray-900">{{ $obra->titulo }}</div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $obra->anio }}</td>
+                                    <td class="px-6 py-4 text-sm text-gray-500">
+                                        @foreach($obra->autores as $autor)
+                                            <div class="mb-1">{{ $autor->nombre }} <span class="text-xs text-gray-400">({{ $autor->pivot->tipoContribucion->nombre_contribucion ?? 'Sin tipo' }})</span></div>
+                                        @endforeach
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $obra->partituras->count() }} partitura(s)</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                        <div class="flex space-x-2">
+                                            <a href="{{ route('admin.obras.show', $obra) }}" class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-xs transition duration-200">Ver</a>
+                                            <a href="{{ route('admin.obras.edit', $obra) }}" class="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded text-xs transition duration-200">Editar</a>
+                                            <form action="{{ route('admin.obras.destroy', $obra) }}" method="POST" class="inline">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-xs transition duration-200" onclick="return confirm('¿Está seguro de eliminar esta obra?')">Eliminar</button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Mobile/Tablet Card View -->
+                <div class="lg:hidden">
+                    @if($obras->isNotEmpty())
+                        <div class="divide-y divide-gray-200">
+                            @foreach ($obras as $obra)
+                                <div class="p-4 hover:bg-gray-50 transition duration-200">
+                                    <div class="flex items-center justify-between mb-3">
+                                        <div class="flex items-center">
+                                            <div class="w-10 h-10 bg-indigo-100 rounded-full flex items-center justify-center mr-3">
+                                                <svg class="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"></path>
+                                                </svg>
+                                            </div>
+                                            <div>
+                                                <div class="text-sm font-medium text-gray-900">{{ $obra->titulo }}</div>
+                                                <div class="text-sm text-gray-500">{{ $obra->anio }}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <div class="text-xs text-gray-500 mb-1">Autores:</div>
+                                        <div class="text-sm text-gray-700">
+                                            @foreach($obra->autores as $autor)
+                                                <div>{{ $autor->nombre }} <span class="text-xs text-gray-400">({{ $autor->pivot->tipoContribucion->nombre_contribucion ?? 'Sin tipo' }})</span></div>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <div class="text-xs text-gray-500 mb-1">Partituras:</div>
+                                        <div class="text-sm text-gray-700">{{ $obra->partituras->count() }} partitura(s)</div>
+                                    </div>
+                                    <div class="flex flex-wrap gap-2">
+                                        <a href="{{ route('admin.obras.show', $obra) }}" class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded text-sm transition duration-200 flex-1 text-center">Ver</a>
+                                        <a href="{{ route('admin.obras.edit', $obra) }}" class="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-2 rounded text-sm transition duration-200 flex-1 text-center">Editar</a>
+                                        <form action="{{ route('admin.obras.destroy', $obra) }}" method="POST" class="flex-1">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="w-full bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded text-sm transition duration-200" onclick="return confirm('¿Está seguro de eliminar esta obra?')">Eliminar</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    @endif
+                </div>
+
+                @if($obras->isEmpty())
+                    <div class="text-center py-12">
+                        <svg class="w-16 h-16 mx-auto text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"></path>
+                        </svg>
+                        <h3 class="mt-4 text-lg font-medium text-gray-900">No hay obras</h3>
+                        <p class="mt-2 text-gray-500">Aún no se han registrado obras en el sistema.</p>
+                    </div>
+                @endif
+            </div>
+        </div>
+    </div>
 </x-app-layout>

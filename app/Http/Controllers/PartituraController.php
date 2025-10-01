@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\instrumento;
 use App\Models\obra;
 use App\Models\partitura;
 use App\Models\User;
@@ -12,28 +13,32 @@ class PartituraController extends Controller
 {
     public function index()
     {
-        $partituras = partitura::with(['instrumento', 'obra'])->get();
+        $partituras = partitura::with(['instrumento', 'obra', 'user'])->get();
         //return $partituras;
         return view('admin.partituras.index', compact('partituras'));
     }
 
     public function create()
     {
-        return view('admin.partituras.create');
+        $obras = obra::all();
+        $instrumentos = instrumento::all();
+        $users = User::all();
+        return view('admin.partituras.create', compact('obras', 'instrumentos', 'users'));
     }
 
     public function store(Request $request)
     {
         $validated = $request->validate([
+            'titulo' => 'required|string|max:255',
             'obra_id' => 'required|integer|exists:obras,id',
             'instrumento_id' => 'required|exists:instrumentos,id|integer',
-            'url_pdf' => 'required|string|url',
-            'link_video' => 'string|url',
+            'user_id' => 'required|exists:users,id|integer',
+            'link_video' => 'nullable|string|url',
         ]);
 
         partitura::create($validated);
 
-        return redirect()->route('partituras.index')
+        return redirect()->route('admin.partituras.index')
             ->with('success', 'Partitura creada exitosamente');
     }
 
@@ -47,28 +52,32 @@ class PartituraController extends Controller
 
     public function show(partitura $partitura)
     {
-        $partitura->load(["instrumento", "obra"]);
+        $partitura->load(["instrumento", "obra", "user"]);
         return view('admin.partituras.show', compact('partitura'));
     }
 
     public function edit(partitura $partitura)
     {
-        $partitura->load(["instrumento", "obra"]);
-        return view('admin.partituras.edit', compact('partitura'));
+        $partitura->load(["instrumento", "obra", "user"]);
+        $obras = obra::all();
+        $instrumentos = instrumento::all();
+        $users = User::all();
+        return view('admin.partituras.edit', compact('partitura', 'obras', 'instrumentos', 'users'));
     }
 
     public function update(Request $request, partitura $partitura)
     {
         $validated = $request->validate([
+            'titulo' => 'required|string|max:255',
             'obra_id' => 'required|integer|exists:obras,id',
             'instrumento_id' => 'required|exists:instrumentos,id|integer',
-            'url_pdf' => 'required|string|url',
-            'link_video' => 'string|url',
+            'user_id' => 'required|exists:users,id|integer',
+            'link_video' => 'nullable|string|url',
         ]);
 
         $partitura->update($validated);
 
-        return redirect()->route('partituras.index')
+        return redirect()->route('admin.partituras.index')
             ->with('success', 'Partitura actualizada exitosamente');
     }
 

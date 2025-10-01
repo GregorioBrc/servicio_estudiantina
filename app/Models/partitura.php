@@ -16,10 +16,12 @@ class partitura extends Model
     public $timestamps = false;
 
     public $fillable = [
+        "titulo",
         "url_pdf",
         "link_video",
         "obra_id",
-        "instrumento_id"
+        "instrumento_id",
+        "user_id"
     ];
 
     public function instrumento(): BelongsTo
@@ -30,6 +32,11 @@ class partitura extends Model
     public function obra(): BelongsTo
     {
         return $this->BelongsTo(obra::class, "obra_id");
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class, "user_id");
     }
 
     public function Prestamos(): HasMany
