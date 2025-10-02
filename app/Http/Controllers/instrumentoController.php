@@ -12,7 +12,7 @@ class instrumentoController extends Controller
      */
     public function index()
     {
-        $instrumentos = instrumento::all();
+        $instrumentos = instrumento::paginate(10);
         return view('admin.instrumentos.index', compact('instrumentos'));
     }
 

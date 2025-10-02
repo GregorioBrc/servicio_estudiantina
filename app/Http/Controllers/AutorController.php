@@ -12,7 +12,7 @@ class AutorController extends Controller
      */
     public function index()
     {
-        $autores = autor::with(['contribuciones.obra', 'contribuciones.tipocontribucion'])->get();
+        $autores = autor::with(['contribuciones.obra', 'contribuciones.tipocontribucion'])->paginate(10);
         return view('admin.autores.index', compact('autores'));
     }
 

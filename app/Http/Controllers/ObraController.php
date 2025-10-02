@@ -17,7 +17,7 @@ class ObraController extends Controller
      */
     public function index()
     {
-        $obras = obra::with(['autores', 'partituras.instrumento'])->get();
+        $obras = obra::with(['autores', 'partituras.instrumento'])->paginate(10);
 
         $obras->each(function ($o) {
             $o->autores->each(function ($autor) {

@@ -12,7 +12,7 @@ class tipoContribucionController extends Controller
      */
     public function index()
     {
-        $tipo_contribuciones = tipo_contribucion::all();
+        $tipo_contribuciones = tipo_contribucion::paginate(10);
         return view("admin.tipo_contribucion.index", ["tiposContribucion" => $tipo_contribuciones]);
     }
 

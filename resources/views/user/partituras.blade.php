@@ -6,16 +6,19 @@
                 <div class="text-center sm:text-left">
                     <h1 class="text-4xl font-bold text-gray-900 mb-2">Mis Partituras</h1>
                     <p class="text-gray-600">Gestiona y organiza tu colección de partituras</p>
-                    <div class="w-24 h-1 bg-gradient-to-r from-blue-500 to-indigo-500 sm:mx-0 mx-auto mt-4 rounded-full"></div>
+                    <div class="w-24 h-1 bg-gradient-to-r from-blue-500 to-indigo-500 sm:mx-0 mx-auto mt-4 rounded-full">
+                    </div>
                 </div>
                 <div class="flex flex-col sm:flex-row items-center gap-3">
-                    <div class="bg-gradient-to-r from-blue-500 to-indigo-500 text-white px-4 py-2 rounded-full text-sm font-medium shadow-lg">
+                    <div
+                        class="bg-gradient-to-r from-blue-500 to-indigo-500 text-white px-4 py-2 rounded-full text-sm font-medium shadow-lg">
                         {{ $User->instrumentos->count() }} instrumentos
                     </div>
                     <a href="{{ route('usuario.dashboard') }}"
-                       class="bg-gradient-to-r from-green-500 to-green-600 text-white px-6 py-3 rounded-lg shadow-lg hover:from-green-600 hover:to-green-700 transition duration-300 flex items-center gap-2 font-medium">
+                        class="bg-gradient-to-r from-green-500 to-green-600 text-white px-6 py-3 rounded-lg shadow-lg hover:from-green-600 hover:to-green-700 transition duration-300 flex items-center gap-2 font-medium">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
                         </svg>
                         Volver al Dashboard
                     </a>
@@ -24,11 +27,14 @@
 
             <!-- Stats summary -->
             <div class="grid grid-cols-1 md:grid-cols-1 gap-4 mb-8">
-                <div class="bg-white shadow-lg rounded-xl p-6 hover:shadow-xl transition-shadow duration-300 border-l-4 border-blue-500">
+                <div
+                    class="bg-white shadow-lg rounded-xl p-6 hover:shadow-xl transition-shadow duration-300 border-l-4 border-blue-500">
                     <div class="flex items-center mb-4">
                         <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mr-4">
                             <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3">
+                                </path>
                             </svg>
                         </div>
                         <div>
@@ -39,15 +45,19 @@
                 </div>
             </div>
 
-        <!-- Main content -->
-        <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-            @forelse ($User->instrumentos as $instrumento)
+            <!-- Main content -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+                @forelse ($User->instrumentos as $instrumento)
                 <div class="border-b border-gray-200 last:border-b-0">
-                    <button class="w-full px-6 py-4 flex items-center justify-between hover:bg-gray-50 transition duration-200 instrumento-toggle">
+                    <button
+                        class="w-full px-6 py-4 flex items-center justify-between hover:bg-gray-50 transition duration-200 instrumento-toggle">
                         <div class="flex items-center gap-3">
                             <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                                <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"></path>
+                                <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3">
+                                    </path>
                                 </svg>
                             </div>
                             <div class="text-left">
@@ -58,73 +68,93 @@
                             </div>
                         </div>
                         <svg class="chevron-icon w-5 h-5 text-gray-400 transform transition-transform duration-200"
-                             fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M19 9l-7 7-7-7"></path>
                         </svg>
                     </button>
-                    
+
                     <div class="instrumento-content hidden px-6 pb-4">
                         <div class="grid gap-2">
                             @forelse ($instrumento->partituras as $partitura)
-                                <div class="flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 transition duration-200 border border-gray-100" data-instrumento="{{ $instrumento->id }}">
-                                    <div class="flex items-center gap-3">
-                                        <div class="w-8 h-8 bg-blue-50 rounded flex items-center justify-center">
-                                            <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                                            </svg>
-                                        </div>
-                                        <div>
-                                            <a href="{{ route('usuario.show.partitura', ['id' => $partitura->id]) }}" 
-                                               class="font-medium text-gray-900 hover:text-blue-600 transition duration-200">
-                                                {{ $partitura->obra->titulo }}
-                                            </a>
-                                            @if($partitura->obra->compositor)
-                                                <p class="text-sm text-gray-500">{{ $partitura->obra->compositor }}</p>
-                                            @endif
-                                        </div>
+                            <div class="flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 transition duration-200 border border-gray-100"
+                                data-instrumento="{{ $instrumento->id }}">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-8 h-8 bg-blue-50 rounded flex items-center justify-center">
+                                        <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                stroke-width="2"
+                                                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                                            </path>
+                                        </svg>
                                     </div>
-                                    <div class="flex items-center gap-2">
-                                        @if($partitura->link_video)
-                                            <span class="inline-flex items-center gap-1 px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">
-                                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path>
-                                                </svg>
-                                                Video
-                                            </span>
+                                    <div>
+                                        <a href="{{ route('usuario.show.partitura', ['id' => $partitura->id]) }}"
+                                            class="font-medium text-gray-900 hover:text-blue-600 transition duration-200">
+                                            {{ $partitura->obra->titulo }}
+                                        </a>
+                                        @if ($partitura->obra->autores)
+                                        @foreach ($partitura->obra->autores as $autor)
+                                        <p class="text-sm text-gray-500">
+                                            {{ $autor->nombre }}
+                                            @if($autor->tipo_contribucion_nombre)
+                                            ({{ $autor->tipo_contribucion_nombre }})
+                                            @else
+                                            (Sin tipo de contribución)
+                                            @endif
+                                        </p>
+                                        @endforeach
                                         @endif
-                                        <span class="text-gray-400">•</span>
-                                        <span class="text-xs text-gray-500">
-                                            @if($partitura->created_at)
-                                                <span class="text-xs text-gray-500">
-                                                    {{ $partitura->created_at->diffForHumans() }}
-                                                </span>
-                                            @endif
-                                        </span>
                                     </div>
                                 </div>
-                            @empty
-                                <div class="text-center py-6 text-gray-500">
-                                    <svg class="w-12 h-12 mx-auto text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                                    </svg>
-                                    <p class="mt-2">No hay partituras para este instrumento.</p>
+                                <div class="flex items-center gap-2">
+                                    @if ($partitura->link_video)
+                                    <span
+                                        class="inline-flex items-center gap-1 px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">
+                                        <svg class="w-3 h-3" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                stroke-width="2"
+                                                d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z">
+                                            </path>
+                                        </svg>
+                                        <a href="{{ $partitura->link_video }}">Video</a>
+                                    </span>
+                                    @endif
+                                    <span class="text-gray-400">•</span>
                                 </div>
+                            </div>
+                            @empty
+                            <div class="text-center py-6 text-gray-500">
+                                <svg class="w-12 h-12 mx-auto text-gray-300" fill="none"
+                                    stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                                    </path>
+                                </svg>
+                                <p class="mt-2">No hay partituras para este instrumento.</p>
+                            </div>
                             @endforelse
                         </div>
                     </div>
                 </div>
-            @empty
+                @empty
                 <div class="text-center py-12">
-                    <svg class="w-16 h-16 mx-auto text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"></path>
+                    <svg class="w-16 h-16 mx-auto text-gray-300" fill="none" stroke="currentColor"
+                        viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3">
+                        </path>
                     </svg>
                     <h3 class="mt-4 text-lg font-medium text-gray-900">No tienes instrumentos asignados</h3>
-                    <p class="mt-2 text-gray-500">Contacta con el administrador para que te asigne instrumentos.</p>
+                    <p class="mt-2 text-gray-500">Contacta con el administrador para que te asigne instrumentos.
+                    </p>
                 </div>
-            @endforelse
+                @endforelse
+            </div>
         </div>
-    </div>
 
-    @vite(['resources/js/partituras.js'])
+        @vite(['resources/js/partituras.js'])
 
 </x-app-layout>
