@@ -131,54 +131,62 @@
 
                 <!-- Pagination -->
                 @if($partituras->hasPages())
-                    <div class="px-6 py-4 bg-gray-50 border-t border-gray-200">
-                        <div class="flex items-center justify-between">
-                            <div class="text-sm text-gray-700">
+                    <div class="px-4 py-4 bg-gray-50 border-t border-gray-200 sm:px-6">
+                        <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+                            <div class="text-sm text-gray-700 text-center sm:text-left">
                                 Mostrando <span class="font-medium">{{ $partituras->firstItem() }}</span> a <span class="font-medium">{{ $partituras->lastItem() }}</span> de <span class="font-medium">{{ $partituras->total() }}</span> resultados
                             </div>
-                            <div class="flex space-x-1">
+                            <div class="flex flex-wrap justify-center gap-1 sm:space-x-1">
                                 {{-- Previous Page Link --}}
                                 @if ($partituras->onFirstPage())
-                                    <span class="px-3 py-2 text-sm text-gray-400 bg-gray-100 border border-gray-300 rounded cursor-not-allowed">Anterior</span>
+                                    <span class="px-4 py-2 text-sm font-medium text-gray-400 bg-gray-100 border border-gray-300 rounded cursor-not-allowed sm:px-3">Anterior</span>
                                 @else
-                                    <a href="{{ $partituras->previousPageUrl() }}" class="px-3 py-2 text-sm text-gray-700 bg-white border border-gray-300 rounded hover:bg-gray-100 transition duration-200">Anterior</a>
+                                    <a href="{{ $partituras->previousPageUrl() }}" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded hover:bg-gray-100 transition duration-200 sm:px-3">Anterior</a>
                                 @endif
 
-                                {{-- First Page --}}
+                                {{-- First Page (Desktop only) --}}
                                 @if($partituras->currentPage() > 3)
-                                    <a href="{{ $partituras->url(1) }}" class="px-3 py-2 text-sm text-gray-700 bg-white border border-gray-300 rounded hover:bg-gray-100 transition duration-200">1</a>
+                                    <a href="{{ $partituras->url(1) }}" class="hidden px-3 py-2 text-sm text-gray-700 bg-white border border-gray-300 rounded hover:bg-gray-100 transition duration-200 sm:inline-block">1</a>
                                     @if($partituras->currentPage() > 4)
-                                        <span class="px-2 py-2 text-sm text-gray-500">...</span>
+                                        <span class="hidden px-2 py-2 text-sm text-gray-500 sm:inline-block">...</span>
                                     @endif
                                 @endif
 
                                 {{-- Page Numbers Around Current Page --}}
                                 @php
-                                    $start = max(1, $partituras->currentPage() - 2);
-                                    $end = min($partituras->lastPage(), $partituras->currentPage() + 2);
+                                    // Mobile: solo 3 páginas alrededor de la actual
+                                    // Desktop: 5 páginas alrededor de la actual
+                                    $start = max(1, $partituras->currentPage() - 1);
+                                    $end = min($partituras->lastPage(), $partituras->currentPage() + 1);
+
+                                    // En desktop, mostrar más páginas
+                                    if (!preg_match('/mobile|android|iphone|ipad/i', request()->header('User-Agent', ''))) {
+                                        $start = max(1, $partituras->currentPage() - 2);
+                                        $end = min($partituras->lastPage(), $partituras->currentPage() + 2);
+                                    }
                                 @endphp
 
                                 @for ($page = $start; $page <= $end; $page++)
                                     @if ($page == $partituras->currentPage())
-                                        <span class="px-3 py-2 text-sm text-white bg-blue-500 border border-blue-500 rounded">{{ $page }}</span>
+                                        <span class="px-4 py-2 text-sm font-medium text-white bg-blue-500 border border-blue-500 rounded sm:px-3">{{ $page }}</span>
                                     @else
-                                        <a href="{{ $partituras->url($page) }}" class="px-3 py-2 text-sm text-gray-700 bg-white border border-gray-300 rounded hover:bg-gray-100 transition duration-200">{{ $page }}</a>
+                                        <a href="{{ $partituras->url($page) }}" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded hover:bg-gray-100 transition duration-200 sm:px-3">{{ $page }}</a>
                                     @endif
                                 @endfor
 
-                                {{-- Last Page --}}
+                                {{-- Last Page (Desktop only) --}}
                                 @if($partituras->currentPage() < $partituras->lastPage() - 2)
                                     @if($partituras->currentPage() < $partituras->lastPage() - 3)
-                                        <span class="px-2 py-2 text-sm text-gray-500">...</span>
+                                        <span class="hidden px-2 py-2 text-sm text-gray-500 sm:inline-block">...</span>
                                     @endif
-                                    <a href="{{ $partituras->url($partituras->lastPage()) }}" class="px-3 py-2 text-sm text-gray-700 bg-white border border-gray-300 rounded hover:bg-gray-100 transition duration-200">{{ $partituras->lastPage() }}</a>
+                                    <a href="{{ $partituras->url($partituras->lastPage()) }}" class="hidden px-3 py-2 text-sm text-gray-700 bg-white border border-gray-300 rounded hover:bg-gray-100 transition duration-200 sm:inline-block">{{ $partituras->lastPage() }}</a>
                                 @endif
 
                                 {{-- Next Page Link --}}
                                 @if ($partituras->hasMorePages())
-                                    <a href="{{ $partituras->nextPageUrl() }}" class="px-3 py-2 text-sm text-gray-700 bg-white border border-gray-300 rounded hover:bg-gray-100 transition duration-200">Siguiente</a>
+                                    <a href="{{ $partituras->nextPageUrl() }}" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded hover:bg-gray-100 transition duration-200 sm:px-3">Siguiente</a>
                                 @else
-                                    <span class="px-3 py-2 text-sm text-gray-400 bg-gray-100 border border-gray-300 rounded cursor-not-allowed">Siguiente</span>
+                                    <span class="px-4 py-2 text-sm font-medium text-gray-400 bg-gray-100 border border-gray-300 rounded cursor-not-allowed sm:px-3">Siguiente</span>
                                 @endif
                             </div>
                         </div>
