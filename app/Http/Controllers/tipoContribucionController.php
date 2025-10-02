@@ -13,7 +13,7 @@ class tipoContribucionController extends Controller
     public function index()
     {
         $tipo_contribuciones = tipo_contribucion::all();
-        return view("admin.tipo_contribucion.index", ["Tipos" => $tipo_contribuciones]);
+        return view("admin.tipo_contribucion.index", ["tiposContribucion" => $tipo_contribuciones]);
     }
 
     /**
@@ -44,7 +44,7 @@ class tipoContribucionController extends Controller
      */
     public function show(tipo_contribucion $tipo_contribucion)
     {
-        return view("admin.tipo_contribucion.show", ["tipo_contribucion" => $tipo_contribucion]);
+        return view("admin.tipo_contribucion.show", ["tipoContribucion" => $tipo_contribucion]);
     }
 
     /**
@@ -52,7 +52,7 @@ class tipoContribucionController extends Controller
      */
     public function edit(tipo_contribucion $tipo_contribucion)
     {
-        return view("admin.tipo_contribucion.edit", ["tipo_contribucion" => $tipo_contribucion]);
+        return view("admin.tipo_contribucion.edit", ["tipoContribucion" => $tipo_contribucion]);
     }
 
     /**
