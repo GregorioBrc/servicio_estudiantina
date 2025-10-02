@@ -120,6 +120,62 @@
                         <p class="mt-2 text-gray-500">Aún no se han registrado autores en el sistema.</p>
                     </div>
                 @endif
+
+                <!-- Pagination -->
+                @if($autores->hasPages())
+                    <div class="px-6 py-4 bg-gray-50 border-t border-gray-200">
+                        <div class="flex items-center justify-between">
+                            <div class="text-sm text-gray-700">
+                                Mostrando <span class="font-medium">{{ $autores->firstItem() }}</span> a <span class="font-medium">{{ $autores->lastItem() }}</span> de <span class="font-medium">{{ $autores->total() }}</span> resultados
+                            </div>
+                            <div class="flex space-x-1">
+                                {{-- Previous Page Link --}}
+                                @if ($autores->onFirstPage())
+                                    <span class="px-3 py-2 text-sm text-gray-400 bg-gray-100 border border-gray-300 rounded cursor-not-allowed">Anterior</span>
+                                @else
+                                    <a href="{{ $autores->previousPageUrl() }}" class="px-3 py-2 text-sm text-gray-700 bg-white border border-gray-300 rounded hover:bg-gray-100 transition duration-200">Anterior</a>
+                                @endif
+
+                                {{-- First Page --}}
+                                @if($autores->currentPage() > 3)
+                                    <a href="{{ $autores->url(1) }}" class="px-3 py-2 text-sm text-gray-700 bg-white border border-gray-300 rounded hover:bg-gray-100 transition duration-200">1</a>
+                                    @if($autores->currentPage() > 4)
+                                        <span class="px-2 py-2 text-sm text-gray-500">...</span>
+                                    @endif
+                                @endif
+
+                                {{-- Page Numbers Around Current Page --}}
+                                @php
+                                    $start = max(1, $autores->currentPage() - 2);
+                                    $end = min($autores->lastPage(), $autores->currentPage() + 2);
+                                @endphp
+
+                                @for ($page = $start; $page <= $end; $page++)
+                                    @if ($page == $autores->currentPage())
+                                        <span class="px-3 py-2 text-sm text-white bg-blue-500 border border-blue-500 rounded">{{ $page }}</span>
+                                    @else
+                                        <a href="{{ $autores->url($page) }}" class="px-3 py-2 text-sm text-gray-700 bg-white border border-gray-300 rounded hover:bg-gray-100 transition duration-200">{{ $page }}</a>
+                                    @endif
+                                @endfor
+
+                                {{-- Last Page --}}
+                                @if($autores->currentPage() < $autores->lastPage() - 2)
+                                    @if($autores->currentPage() < $autores->lastPage() - 3)
+                                        <span class="px-2 py-2 text-sm text-gray-500">...</span>
+                                    @endif
+                                    <a href="{{ $autores->url($autores->lastPage()) }}" class="px-3 py-2 text-sm text-gray-700 bg-white border border-gray-300 rounded hover:bg-gray-100 transition duration-200">{{ $autores->lastPage() }}</a>
+                                @endif
+
+                                {{-- Next Page Link --}}
+                                @if ($autores->hasMorePages())
+                                    <a href="{{ $autores->nextPageUrl() }}" class="px-3 py-2 text-sm text-gray-700 bg-white border border-gray-300 rounded hover:bg-gray-100 transition duration-200">Siguiente</a>
+                                @else
+                                    <span class="px-3 py-2 text-sm text-gray-400 bg-gray-100 border border-gray-300 rounded cursor-not-allowed">Siguiente</span>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                @endif
             </div>
         </div>
     </div>

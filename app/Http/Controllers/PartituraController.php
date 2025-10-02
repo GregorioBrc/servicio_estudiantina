@@ -14,7 +14,7 @@ class PartituraController extends Controller
 {
     public function index()
     {
-        $partituras = partitura::with(['instrumento', 'obra', 'user'])->get();
+        $partituras = partitura::with(['instrumento', 'obra', 'user'])->paginate(10);
         //return $partituras;
         return view('admin.partituras.index', compact('partituras'));
     }
