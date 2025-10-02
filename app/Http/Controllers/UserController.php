@@ -48,12 +48,16 @@ class UserController extends Controller
 
     public function destroy($id)
     {
-        return "Usuario $id eliminado";
+        $user = User::findOrFail($id);
+        $user->delete();
+
+        return redirect()->route('admin.usuarios.index')
+            ->with('success', 'Usuario eliminado exitosamente.');
     }
 
     public function show($user)
     {
-        $user = User::find($user)->load('instrumentos');
+        $user = User::findOrFail($user)->load('instrumentos');
         return view('admin.usuarios.show', [
             'id' => $user->id,
             'nombre' => $user->name,
