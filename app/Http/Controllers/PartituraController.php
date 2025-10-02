@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\instrumento;
 use App\Models\obra;
 use App\Models\partitura;
+use App\Models\tipo_contribucion;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -83,21 +84,38 @@ class PartituraController extends Controller
 
     public function misPartituras()
     {
-        $User = User::find(Auth::id())->load('instrumentos.partituras.obra');
-        $totalPartituras = 0;
+        $User = User::find(Auth::id())->load([
+            'instrumentos.partituras.obra.autores' => function ($query) {
+                $query->withPivot('tipo_contribucion_id');
+            }
+        ]);
+
+        $tiposContribucion = tipo_contribucion::pluck('nombre_contribucion', 'id');
 
         foreach ($User->instrumentos as $instrumento) {
-        $totalPartituras += $instrumento->partituras->count();
-    
+            foreach ($instrumento->partituras as $partitura) {
+                foreach ($partitura->obra->autores as $autor) {
+                    if ($autor->pivot->tipo_contribucion_id) {
+                        $autor->tipo_contribucion_nombre = $tiposContribucion[$autor->pivot->tipo_contribucion_id] ?? null;
+                    } else {
+                        $autor->tipo_contribucion_nombre = null;
+                    }
+                }
+            }
+        }
+
+        $totalPartituras = 0;
+        foreach ($User->instrumentos as $instrumento) {
+            $totalPartituras += $instrumento->partituras->count();
+        }
+
+        return view('user.partituras', compact('User', 'totalPartituras'));
     }
 
-        //return $User;
-        return view('user.partituras',compact('User', 'totalPartituras'));
-    }
-
-    public function usuario_ShowPartitura($id) {
+    public function usuario_ShowPartitura($id)
+    {
         $partitura = partitura::find($id)->load("obra");
 
-        return view('user.partitura_show', ['partitura'=>$partitura]);
+        return view('user.partitura_show', ['partitura' => $partitura]);
     }
 }
