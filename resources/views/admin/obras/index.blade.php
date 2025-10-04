@@ -62,7 +62,12 @@
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $obra->anio }}</td>
                                     <td class="px-6 py-4 text-sm text-gray-500">
                                         @foreach($obra->autores as $autor)
-                                            <div class="mb-1">{{ $autor->nombre }} <span class="text-xs text-gray-400">({{ $autor->pivot->tipoContribucion->nombre_contribucion ?? 'Sin tipo' }})</span></div>
+                                            <div class="mb-1">
+                                                <a href="{{ route('admin.autores.show', $autor) }}" class="text-green-600 hover:text-green-800 hover:underline">
+                                                    {{ $autor->nombre }}
+                                                </a>
+                                                <span class="text-xs text-gray-400">({{ $autor->pivot->tipoContribucion->nombre_contribucion ?? 'Sin tipo' }})</span>
+                                            </div>
                                         @endforeach
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $obra->partituras->count() }} partitura(s)</td>
@@ -110,7 +115,12 @@
                                         <div class="text-xs text-gray-500 mb-1">Autores:</div>
                                         <div class="text-sm text-gray-700">
                                             @foreach($obra->autores as $autor)
-                                                <div>{{ $autor->nombre }} <span class="text-xs text-gray-400">({{ $autor->pivot->tipoContribucion->nombre_contribucion ?? 'Sin tipo' }})</span></div>
+                                                <div>
+                                                    <a href="{{ route('admin.autores.show', $autor) }}" class="text-green-600 hover:text-green-800 hover:underline">
+                                                        {{ $autor->nombre }}
+                                                    </a>
+                                                    <span class="text-xs text-gray-400">({{ $autor->pivot->tipoContribucion->nombre_contribucion ?? 'Sin tipo' }})</span>
+                                                </div>
                                             @endforeach
                                         </div>
                                     </div>

@@ -86,7 +86,9 @@
                                 </svg>
                             </div>
                             <div>
-                                <span class="font-medium text-gray-900">{{ $partitura->obra->titulo ?? 'Sin obra' }}</span>
+                                <a href="{{ route('admin.partituras.show', $partitura) }}" class="font-medium text-gray-900 hover:text-purple-700 hover:underline">
+                                    {{ $partitura->obra->titulo ?? 'Sin obra' }}
+                                </a>
                             </div>
                         </div>
                     </div>

@@ -60,7 +60,9 @@
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
                                             </svg>
                                         </div>
-                                        <span class="font-medium text-gray-900">{{ $autor->nombre }}</span>
+                                        <a href="{{ route('admin.autores.show', $autor) }}" class="font-medium text-gray-900 hover:text-green-700 hover:underline">
+                                            {{ $autor->nombre }}
+                                        </a>
                                     </div>
                                     <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
                                         {{ $autor->pivot->tipoContribucion->nombre_contribucion ?? 'Sin tipo' }}
@@ -98,7 +100,9 @@
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                                             </svg>
                                         </div>
-                                        <span class="font-medium text-gray-900">{{ $partitura->obra->titulo ?? 'Sin obra' }}</span>
+                                        <a href="{{ route('admin.partituras.show', $partitura) }}" class="font-medium text-gray-900 hover:text-purple-700 hover:underline">
+                                            {{ $partitura->obra->titulo ?? 'Sin obra' }}
+                                        </a>
                                     </div>
                                     <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800">
                                         {{ $partitura->instrumento->nombre ?? 'Sin instrumento' }}

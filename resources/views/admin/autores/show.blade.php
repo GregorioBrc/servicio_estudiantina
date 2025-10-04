@@ -65,7 +65,7 @@
                                                     </svg>
                                                 </div>
                                                 <div class="text-sm font-medium text-gray-900">
-                                                    <a href="{{route('admin.obras.show',['obra' => $item->obra])}}">
+                                                    <a href="{{route('admin.obras.show',['obra' => $item->obra])}}" class="hover:text-indigo-700 hover:underline">
                                                         {{ $item->obra->titulo }}
                                                     </a>
                                                 </div>
@@ -73,9 +73,10 @@
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $item->obra->anio }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
+                                            <a href="{{ route('admin.tipo_contribuciones.show', $item->tipocontribucion) }}"
+                                               class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800 hover:bg-purple-200 hover:text-purple-900 hover:underline">
                                                 {{ $item->tipocontribucion->nombre_contribucion }}
-                                            </span>
+                                            </a>
                                         </td>
                                     </tr>
                                 @endforeach

@@ -47,7 +47,11 @@
                         </div>
                         <h3 class="text-lg font-semibold text-gray-900">Obra</h3>
                     </div>
-                    <p class="text-gray-700 text-lg">{{ $partitura->obra->titulo ?? 'Sin obra asignada' }}</p>
+                    <p class="text-gray-700 text-lg">
+                        <a href="{{ route('admin.obras.show', $partitura->obra) }}" class="hover:text-indigo-700 hover:underline">
+                            {{ $partitura->obra->titulo ?? 'Sin obra asignada' }}
+                        </a>
+                    </p>
                 </div>
 
                 <div
@@ -63,10 +67,10 @@
                         </div>
                         <h3 class="text-lg font-semibold text-gray-900">Instrumento</h3>
                     </div>
-                    <span
-                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
+                    <a href="{{ route('admin.instrumentos.show', $partitura->instrumento) }}"
+                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800 hover:bg-purple-200 hover:text-purple-900 hover:underline">
                         {{ $partitura->instrumento->nombre ?? 'Sin instrumento' }}
-                    </span>
+                    </a>
                     @if ($partitura->instrumento)
                         <p class="text-sm text-gray-500 mt-1">Tipo: {{ $partitura->instrumento->tipo }}</p>
                     @endif
@@ -92,6 +96,30 @@
                 </div>
             </div>
 
+            <!-- PDF Link Section -->
+            @if ($partitura->url_pdf)
+                <div class="bg-white shadow-lg rounded-xl p-6 mb-8 border-t-4 border-red-500">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center mr-3">
+                            <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                                </path>
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-900">Documento PDF</h3>
+                    </div>
+                    <a href="{{ $partitura->url_pdf }}" target="_blank"
+                        class="inline-flex items-center px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg transition duration-200">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                        </svg>
+                        Ver PDF
+                    </a>
+                </div>
+            @endif
+
             <!-- Video Link Section -->
             @if ($partitura->link_video)
                 <div class="bg-white shadow-lg rounded-xl p-6 mb-8 border-t-4 border-teal-500">
@@ -115,6 +143,8 @@
                     </a>
                 </div>
             @endif
+
+
 
             <!-- Additional Info -->
             {{-- <div class="bg-white shadow-lg rounded-xl p-6 border-t-4 border-gray-500">
