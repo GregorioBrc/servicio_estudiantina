@@ -86,8 +86,7 @@
                                         </svg>
                                     </div>
                                     <div>
-                                        <span class="font-medium text-gray-900">{{ $partitura->titulo }}</span>
-                                        <div class="text-sm text-gray-500">{{ $partitura->obra->titulo ?? 'Sin obra' }}</div>
+                                        <span class="font-medium text-gray-900">{{ $partitura->obra->titulo ?? 'Sin obra' }}</span>
                                     </div>
                                 </div>
                             </div>

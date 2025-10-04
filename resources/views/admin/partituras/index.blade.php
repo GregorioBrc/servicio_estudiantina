@@ -128,7 +128,7 @@
                                         <div class="text-sm font-medium text-gray-900">
                                             <a href="{{ route('admin.partituras.show', $partitura) }}"
                                                 class="text-blue-600 hover:text-blue-800 hover:underline">
-                                                {{ $partitura->titulo }}
+                                                {{ $partitura->obra->titulo ?? 'Sin obra' }}
                                             </a>
                                         </div>
                                         <div class="text-sm text-gray-500">{{ $partitura->obra->titulo ?? 'Sin obra' }}
@@ -142,10 +142,6 @@
                                     class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-cyan-100 text-cyan-800">
                                     {{ $partitura->instrumento->nombre ?? 'Sin instrumento' }}
                                 </span>
-                            </div>
-                            <div class="mb-3">
-                                <div class="text-xs text-gray-500 mb-1">Usuario:</div>
-                                <div class="text-sm text-gray-700">{{ $partitura->user->name ?? 'Sin usuario' }}</div>
                             </div>
                             <div class="flex flex-wrap gap-2">
                                 <a href="{{ route('admin.partituras.show', $partitura) }}"

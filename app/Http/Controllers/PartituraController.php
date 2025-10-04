@@ -14,7 +14,7 @@ class PartituraController extends Controller
 {
     public function index()
     {
-        $partituras = partitura::with(['instrumento', 'obra', 'user'])->paginate(10);
+        $partituras = partitura::with(['instrumento', 'obra'])->paginate(10);
         //return $partituras;
         return view('admin.partituras.index', compact('partituras'));
     }
@@ -23,18 +23,16 @@ class PartituraController extends Controller
     {
         $obras = obra::all();
         $instrumentos = instrumento::all();
-        $users = User::all();
-        return view('admin.partituras.create', compact('obras', 'instrumentos', 'users'));
+        return view('admin.partituras.create', compact('obras', 'instrumentos'));
     }
 
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'titulo' => 'required|string|max:255',
             'obra_id' => 'required|integer|exists:obras,id',
             'instrumento_id' => 'required|exists:instrumentos,id|integer',
-            'user_id' => 'required|exists:users,id|integer',
             'link_video' => 'nullable|string|url',
+            'url_pdf' => 'nullable|string',
         ]);
 
         partitura::create($validated);
@@ -61,21 +59,19 @@ class PartituraController extends Controller
 
     public function edit(partitura $partitura)
     {
-        $partitura->load(["instrumento", "obra", "user"]);
+        $partitura->load(["instrumento", "obra"]);
         $obras = obra::all();
         $instrumentos = instrumento::all();
-        $users = User::all();
-        return view('admin.partituras.edit', compact('partitura', 'obras', 'instrumentos', 'users'));
+        return view('admin.partituras.edit', compact('partitura', 'obras', 'instrumentos'));
     }
 
     public function update(Request $request, partitura $partitura)
     {
         $validated = $request->validate([
-            'titulo' => 'required|string|max:255',
             'obra_id' => 'required|integer|exists:obras,id',
             'instrumento_id' => 'required|exists:instrumentos,id|integer',
-            'user_id' => 'required|exists:users,id|integer',
             'link_video' => 'nullable|string|url',
+            'url_pdf' => 'nullable|string',
         ]);
 
         $partitura->update($validated);
