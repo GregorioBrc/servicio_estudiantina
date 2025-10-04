@@ -64,7 +64,11 @@
                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"></path>
                                                     </svg>
                                                 </div>
-                                                <div class="text-sm font-medium text-gray-900">{{ $item->obra->titulo }}</div>
+                                                <div class="text-sm font-medium text-gray-900">
+                                                    <a href="{{route('admin.obras.show',['obra' => $item->obra])}}">
+                                                        {{ $item->obra->titulo }}
+                                                    </a>
+                                                </div>
                                             </div>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $item->obra->anio }}</td>

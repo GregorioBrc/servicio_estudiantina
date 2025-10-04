@@ -82,7 +82,11 @@
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"></path>
                                                 </svg>
                                             </div>
-                                            <div class="text-sm font-medium text-gray-900">{{ $instrumento->nombre }}</div>
+                                            <div class="text-sm font-medium text-gray-900">
+                                                <a href="{{ route('admin.instrumentos.show', $instrumento) }}" class="text-blue-600 hover:text-blue-800 hover:underline">
+                                                    {{ $instrumento->nombre }}
+                                                </a>
+                                            </div>
                                         </div>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
@@ -121,7 +125,11 @@
                                                 </svg>
                                             </div>
                                             <div>
-                                                <div class="text-sm font-medium text-gray-900">{{ $instrumento->nombre }}</div>
+                                                <div class="text-sm font-medium text-gray-900">
+                                                    <a href="{{ route('admin.instrumentos.show', $instrumento) }}" class="text-blue-600 hover:text-blue-800 hover:underline">
+                                                        {{ $instrumento->nombre }}
+                                                    </a>
+                                                </div>
                                                 <div class="text-sm text-gray-500">#{{ $instrumento->id }}</div>
                                             </div>
                                         </div>

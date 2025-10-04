@@ -54,7 +54,11 @@
                                             <div class="text-sm font-medium text-gray-900">#{{ $tipo->id }}</div>
                                         </div>
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ $tipo->nombre_contribucion }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                        <a href="{{ route('admin.tipo_contribuciones.show', $tipo) }}" class="text-blue-600 hover:text-blue-800 hover:underline">
+                                            {{ $tipo->nombre_contribucion }}
+                                        </a>
+                                    </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-teal-100 text-teal-800">
                                             {{ $tipo->contribuciones->count() }} contribuciones
@@ -93,7 +97,11 @@
                                         </svg>
                                     </div>
                                     <div>
-                                        <div class="text-sm font-medium text-gray-900">{{ $tipo->nombre_contribucion }}</div>
+                                        <div class="text-sm font-medium text-gray-900">
+                                            <a href="{{ route('admin.tipo_contribuciones.show', $tipo) }}" class="text-blue-600 hover:text-blue-800 hover:underline">
+                                                {{ $tipo->nombre_contribucion }}
+                                            </a>
+                                        </div>
                                         <div class="text-sm text-gray-500">ID: #{{ $tipo->id }}</div>
                                     </div>
                                 </div>
