@@ -45,6 +45,7 @@ class instrumentoController extends Controller
      */
     public function show(instrumento $instrumento)
     {
+        $instrumento->user_cant = $instrumento->usuarios()->count();
         return view('admin.instrumentos.show', compact('instrumento'));
     }
 

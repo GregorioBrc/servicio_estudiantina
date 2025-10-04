@@ -15,7 +15,6 @@ class PartituraController extends Controller
     public function index()
     {
         $partituras = partitura::with(['instrumento', 'obra'])->paginate(10);
-        //return $partituras;
         return view('admin.partituras.index', compact('partituras'));
     }
 
@@ -52,7 +51,6 @@ class PartituraController extends Controller
     public function show(partitura $partitura)
     {
         $partitura->load(["instrumento", "obra"]);
-        //Contar cuantos usuarios tienen ese instrumento, los usuarios e instrumentos tienen una relacion mucho a muchos
         $partitura->user_cant = $usuariosConInstrumento = $partitura->instrumento->usuarios()->count();
         return view('admin.partituras.show', compact('partitura'));
     }
