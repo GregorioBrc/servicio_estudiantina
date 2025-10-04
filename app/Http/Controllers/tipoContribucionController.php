@@ -42,9 +42,28 @@ class tipoContribucionController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(tipo_contribucion $tipo_contribucion)
+    public function show(tipo_contribucion $tipo_contribucion, Request $request)
     {
-        return view("admin.tipo_contribucion.show", ["tipoContribucion" => $tipo_contribucion]);
+        $autor_nombre = null;
+
+        // Si se proporciona un autor_id, filtrar las contribuciones por ese autor
+        if ($request->has('autor_id')) {
+            $autor_id = $request->input('autor_id');
+            $tipo_contribucion->load(['contribuciones' => function ($query) use ($autor_id) {
+                $query->where('autor_id', $autor_id)->with(['autor', 'obra']);
+            }]);
+
+            // Obtener el nombre del autor para mostrarlo en la vista
+            $autor = \App\Models\autor::find($autor_id);
+            $autor_nombre = $autor ? $autor->nombre : null;
+        } else {
+            $tipo_contribucion->load(['contribuciones.autor', 'contribuciones.obra']);
+        }
+
+        return view("admin.tipo_contribucion.show", [
+            "tipoContribucion" => $tipo_contribucion,
+            "autor_nombre" => $autor_nombre
+        ]);
     }
 
     /**

@@ -36,6 +36,9 @@
                         <h3 class="text-lg font-semibold text-gray-900">Contribución</h3>
                     </div>
                     <p class="text-gray-700 text-lg">{{ $tipoContribucion->nombre_contribucion }}</p>
+                    @if($autor_nombre)
+                        <p class="text-gray-600 mt-2">Para el autor: <span class="font-medium text-green-700">{{ $autor_nombre }}</span></p>
+                    @endif
                 </div>
             </div>
 

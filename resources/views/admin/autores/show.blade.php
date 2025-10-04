@@ -73,7 +73,7 @@
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $item->obra->anio }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap">
-                                            <a href="{{ route('admin.tipo_contribuciones.show', $item->tipocontribucion) }}"
+                                            <a href="{{ route('admin.tipo_contribuciones.show', [$item->tipocontribucion, 'autor_id' => $item->autor_id]) }}"
                                                class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800 hover:bg-purple-200 hover:text-purple-900 hover:underline">
                                                 {{ $item->tipocontribucion->nombre_contribucion }}
                                             </a>
