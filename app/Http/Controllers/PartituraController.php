@@ -31,8 +31,8 @@ class PartituraController extends Controller
         $validated = $request->validate([
             'obra_id' => 'required|integer|exists:obras,id',
             'instrumento_id' => 'required|exists:instrumentos,id|integer',
+            'url_pdf' => 'required|string',
             'link_video' => 'nullable|string|url',
-            'url_pdf' => 'nullable|string',
         ]);
 
         partitura::create($validated);
@@ -70,8 +70,8 @@ class PartituraController extends Controller
         $validated = $request->validate([
             'obra_id' => 'required|integer|exists:obras,id',
             'instrumento_id' => 'required|exists:instrumentos,id|integer',
+            'url_pdf' => 'required|string',
             'link_video' => 'nullable|string|url',
-            'url_pdf' => 'nullable|string',
         ]);
 
         $partitura->update($validated);
