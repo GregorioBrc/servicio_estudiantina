@@ -74,7 +74,13 @@ class Factory_Seeder extends Seeder
             $user->Instrumentos()->attach($instrumentos->random(rand(1, 3))->pluck('id'));
         });
 
-        // --- 5. Crear Préstamos ---
+        // --- 5. Relacionar Autores con Instrumentos ---
+        $autores->each(function ($autor) use ($instrumentos) {
+            // Cada autor toca entre 1 y 3 instrumentos
+            $autor->instrumentos()->attach($instrumentos->random(rand(1, 3))->pluck('id'));
+        });
+
+        // --- 6. Crear Préstamos ---
         // (Este es un ejemplo simple, la lógica real sería más compleja)
         for ($i = 0; $i < 20; $i++) {
             $partituraEnInventario = \App\Models\inventario::inRandomOrder()->first();

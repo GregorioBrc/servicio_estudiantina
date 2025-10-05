@@ -30,12 +30,12 @@ class tipoContribucionController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'nombre' => 'required|string|max:255|unique:tipo_contribucion,nombre',
+            'nombre_contribucion' => 'required|string|max:255|unique:tipo_contribuciones,nombre_contribucion',
         ]);
 
         tipo_contribucion::create($validated);
 
-        return redirect()->route('tipo_contribucion.index')
+        return redirect()->route('admin.tipo_contribuciones.index')
             ->with('success', 'Tipo de contribución creado exitosamente.');
     }
 
@@ -82,14 +82,13 @@ class tipoContribucionController extends Controller
         if ($request->id != $tipo_contribucion->id) {
             return redirect()->back()->with('error', 'Invalid ID.');
         }
-
         $validated = $request->validate([
-            'nombre' => 'required|string|max:255|unique:tipo_contribucion,nombre,' . $tipo_contribucion->id,
+            'nombre_contribucion' => 'required|string|max:255|unique:tipo_contribuciones,nombre_contribucion,' . $tipo_contribucion->id
         ]);
 
         $tipo_contribucion->update($validated);
 
-        return redirect()->route('tipo_contribucion.index')
+        return redirect()->route('admin.tipo_contribuciones.index')
             ->with('success', 'Tipo de contribución actualizado exitosamente.');
     }
 
@@ -100,7 +99,7 @@ class tipoContribucionController extends Controller
     {
         $tipo_contribucion->delete();
 
-        return redirect()->route('tipo_contribucion.index')
+        return redirect()->route('admin.tipo_contribuciones.index')
             ->with('success', 'Tipo de contribución eliminado exitosamente.');
     }
 }

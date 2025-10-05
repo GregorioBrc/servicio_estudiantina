@@ -38,6 +38,7 @@
                 <form method="POST" action="{{ route('admin.tipo_contribuciones.update', $tipoContribucion) }}" class="space-y-6">
                     @csrf
                     @method('PUT')
+                    <input type="hidden" name="id" value="{{$tipoContribucion->id}}">
 
                     <div>
                         <label for="nombre_contribucion" class="block text-sm font-medium text-gray-700 mb-2">Nombre del Tipo de Contribución</label>

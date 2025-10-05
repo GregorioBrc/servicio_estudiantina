@@ -30,14 +30,33 @@ class PartituraController extends Controller
         $validated = $request->validate([
             'obra_id' => 'required|integer|exists:obras,id',
             'instrumento_id' => 'required|exists:instrumentos,id|integer',
-            'url_pdf' => 'required|string',
-            'link_video' => 'nullable|string|url',
+            'url_pdf' => 'required|string|max:255',
+            'link_video' => 'nullable|string|url|max:255',
         ]);
 
-        partitura::create($validated);
+        try {
+            // Intentar crear la partitura
+            $partitura = partitura::create($validated);
 
-        return redirect()->route('admin.partituras.index')
-            ->with('success', 'Partitura creada exitosamente');
+            // Obtener la obra con sus autores
+            $obra = obra::with('autores')->findOrFail($validated['obra_id']);
+
+            // Relacionar los autores de la obra con el instrumento de la partitura
+            foreach ($obra->autores as $autor) {
+                // Verificar si la relación ya existe antes de crearla
+                if (!$autor->instrumentos()->where('instrumento_id_fk', $validated['instrumento_id'])->exists()) {
+                    $autor->instrumentos()->attach($validated['instrumento_id']);
+                }
+            }
+
+            return redirect()->route('admin.partituras.index')
+                ->with('success', 'Partitura creada exitosamente');
+
+        } catch (\Illuminate\Database\UniqueConstraintViolationException $e) {
+            return redirect()->back()
+                ->withInput()
+                ->with('error', 'Ya existe una partitura para esta combinación de obra e instrumento. Por favor, selecciona una combinación diferente.');
+        }
     }
 
     public function destroy(partitura $partitura)
