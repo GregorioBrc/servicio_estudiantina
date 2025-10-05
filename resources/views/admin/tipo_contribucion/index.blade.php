@@ -24,6 +24,9 @@
                 </div>
             </div>
 
+            <!-- Success/Error Messages -->
+            @include('components.alert-messages')
+
             <!-- Tipos List - Desktop Table / Mobile Cards -->
             <div class="bg-white shadow-lg rounded-xl overflow-hidden border border-gray-200">
                 <div class="px-6 py-4 bg-gray-50 border-b border-gray-200">
