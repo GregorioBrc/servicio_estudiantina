@@ -26,9 +26,8 @@
                     </div>
                     <h2 class="text-2xl font-bold text-gray-900">Formulario de Creación</h2>
                 </div>
-                <form method="POST" action="{{ route('admin.tipo_contribuciones.store') }}" class="space-y-6">
+                <form method="POST" action="{{ route('admin.tipo_contribuciones.store')}}" class="space-y-6">
                     @csrf
-
                     <div>
                         <label for="nombre_contribucion" class="block text-sm font-medium text-gray-700 mb-2">Nombre del Tipo de Contribución</label>
                         <div class="relative">
@@ -40,7 +39,7 @@
                             </div>
                         </div>
                         @error('nombre_contribucion')
-                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                         @enderror
                     </div>
 

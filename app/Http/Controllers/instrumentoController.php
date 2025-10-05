@@ -29,15 +29,60 @@ class instrumentoController extends Controller
      */
     public function store(Request $request)
     {
+        // Validación para múltiples tipos
         $validated = $request->validate([
-            'nombre' => 'required|string|max:255|unique:instrumentos,nombre',
-            'tipo' => 'required|string|max:255'
+            'nombre' => 'required|string|max:255',
+            'tipos' => 'required|array|min:1',
+            'tipos.*' => 'required|string|max:255'
         ]);
 
-        instrumento::create($validated);
+        $nombre = $validated['nombre'];
+        $tipos = $validated['tipos'];
+        $instrumentosCreados = 0;
+        $errores = [];
 
-        return redirect()->route('admin.instrumentos.index')
-            ->with('success', 'Instrumento created successfully.');
+        // Procesar cada tipo
+        foreach ($tipos as $index => $tipo) {
+            // Validar clave única compuesta nombre + tipo
+            $exists = instrumento::where('nombre', $nombre)
+                ->where('tipo', $tipo)
+                ->exists();
+
+            if ($exists) {
+                $errores[] = "La combinación de nombre '$nombre' con tipo '$tipo' ya existe.";
+            } else {
+                try {
+                    instrumento::create([
+                        'nombre' => $nombre,
+                        'tipo' => $tipo
+                    ]);
+                    $instrumentosCreados++;
+                } catch (\Exception $e) {
+                    $errores[] = "Error al crear el instrumento '$nombre' de tipo '$tipo': " . $e->getMessage();
+                }
+            }
+        }
+
+        // Preparar mensaje de respuesta
+        if ($instrumentosCreados > 0) {
+            $mensaje = "Se crearon $instrumentosCreados instrumento(s) exitosamente.";
+            if (!empty($errores)) {
+                $mensaje .= " Nota: Algunos tipos no pudieron ser creados debido a duplicados.";
+            }
+
+            return redirect()->route('admin.instrumentos.index')
+                ->with('success', $mensaje);
+        } else {
+            // Si no se creó ningún instrumento, volver con error
+            $mensajeError = "No se pudo crear ningún instrumento. ";
+            if (!empty($errores)) {
+                $mensajeError .= implode(' ', $errores);
+            }
+
+            return redirect()->back()
+                ->withInput()
+                ->with('error', $mensajeError);
+        }
     }
 
     /**
@@ -45,6 +90,7 @@ class instrumentoController extends Controller
      */
     public function show(instrumento $instrumento)
     {
+        $instrumento->user_cant = $instrumento->usuarios()->count();
         return view('admin.instrumentos.show', compact('instrumento'));
     }
 
@@ -66,9 +112,20 @@ class instrumentoController extends Controller
         }
 
         $validated = $request->validate([
-            'nombre' => 'required|string|max:255|unique:instrumentos,nombre,' . $instrumento->id,
+            'nombre' => 'required|string|max:255',
             'tipo' => 'required|string|max:255'
         ]);
+
+        $exists = instrumento::where('nombre', $validated['nombre'])
+            ->where('tipo', $validated['tipo'])
+            ->where('id', '!=', $instrumento->id)
+            ->exists();
+
+        if ($exists) {
+            return redirect()->back()
+                ->withInput()
+                ->withErrors(['nombre' => 'La combinación de nombre y tipo ya existe.']);
+        }
 
         $instrumento->update($validated);
 

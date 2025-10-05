@@ -14,8 +14,7 @@ class PartituraController extends Controller
 {
     public function index()
     {
-        $partituras = partitura::with(['instrumento', 'obra', 'user'])->paginate(10);
-        //return $partituras;
+        $partituras = partitura::with(['instrumento', 'obra'])->paginate(10);
         return view('admin.partituras.index', compact('partituras'));
     }
 
@@ -23,24 +22,41 @@ class PartituraController extends Controller
     {
         $obras = obra::all();
         $instrumentos = instrumento::all();
-        $users = User::all();
-        return view('admin.partituras.create', compact('obras', 'instrumentos', 'users'));
+        return view('admin.partituras.create', compact('obras', 'instrumentos'));
     }
 
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'titulo' => 'required|string|max:255',
             'obra_id' => 'required|integer|exists:obras,id',
             'instrumento_id' => 'required|exists:instrumentos,id|integer',
-            'user_id' => 'required|exists:users,id|integer',
-            'link_video' => 'nullable|string|url',
+            'url_pdf' => 'required|string|max:255',
+            'link_video' => 'nullable|string|url|max:255',
         ]);
 
-        partitura::create($validated);
+        try {
+            // Intentar crear la partitura
+            $partitura = partitura::create($validated);
 
-        return redirect()->route('admin.partituras.index')
-            ->with('success', 'Partitura creada exitosamente');
+            // Obtener la obra con sus autores
+            $obra = obra::with('autores')->findOrFail($validated['obra_id']);
+
+            // Relacionar los autores de la obra con el instrumento de la partitura
+            foreach ($obra->autores as $autor) {
+                // Verificar si la relación ya existe antes de crearla
+                if (!$autor->instrumentos()->where('instrumento_id_fk', $validated['instrumento_id'])->exists()) {
+                    $autor->instrumentos()->attach($validated['instrumento_id']);
+                }
+            }
+
+            return redirect()->route('admin.partituras.index')
+                ->with('success', 'Partitura creada exitosamente');
+
+        } catch (\Illuminate\Database\UniqueConstraintViolationException $e) {
+            return redirect()->back()
+                ->withInput()
+                ->with('error', 'Ya existe una partitura para esta combinación de obra e instrumento. Por favor, selecciona una combinación diferente.');
+        }
     }
 
     public function destroy(partitura $partitura)
@@ -53,26 +69,25 @@ class PartituraController extends Controller
 
     public function show(partitura $partitura)
     {
-        $partitura->load(["instrumento", "obra", "user"]);
+        $partitura->load(["instrumento", "obra"]);
+        $partitura->user_cant = $usuariosConInstrumento = $partitura->instrumento->usuarios()->count();
         return view('admin.partituras.show', compact('partitura'));
     }
 
     public function edit(partitura $partitura)
     {
-        $partitura->load(["instrumento", "obra", "user"]);
+        $partitura->load(["instrumento", "obra"]);
         $obras = obra::all();
         $instrumentos = instrumento::all();
-        $users = User::all();
-        return view('admin.partituras.edit', compact('partitura', 'obras', 'instrumentos', 'users'));
+        return view('admin.partituras.edit', compact('partitura', 'obras', 'instrumentos'));
     }
 
     public function update(Request $request, partitura $partitura)
     {
         $validated = $request->validate([
-            'titulo' => 'required|string|max:255',
             'obra_id' => 'required|integer|exists:obras,id',
             'instrumento_id' => 'required|exists:instrumentos,id|integer',
-            'user_id' => 'required|exists:users,id|integer',
+            'url_pdf' => 'required|string',
             'link_video' => 'nullable|string|url',
         ]);
 

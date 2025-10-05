@@ -39,83 +39,59 @@
                     @csrf
                     @method('PUT')
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <label for="titulo" class="block text-sm font-medium text-gray-700 mb-2">Título de la Partitura</label>
-                            <div class="relative">
-                                <input type="text" id="titulo" name="titulo" value="{{ old('titulo', $partitura->titulo) }}" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition duration-200" required>
-                                <div class="absolute inset-y-0 right-0 pr-3 flex items-center">
-                                    <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 4V2a1 1 0 011-1h8a1 1 0 011 1v2m-9 0h10m-9 0V1m10 3V1m0 3l1 1v16a2 2 0 01-2 2H6a2 2 0 01-2-2V5l1-1z"></path>
-                                    </svg>
-                                </div>
+                    <div>
+                        <label for="obra_id" class="block text-sm font-medium text-gray-700 mb-2">Obra</label>
+                        <div class="relative">
+                            <select id="obra_id" name="obra_id" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition duration-200" required>
+                                <option value="">Seleccionar Obra</option>
+                                @foreach($obras as $obra)
+                                    <option value="{{ $obra->id }}" {{ old('obra_id', $partitura->obra_id) == $obra->id ? 'selected' : '' }}>{{ $obra->titulo }}</option>
+                                @endforeach
+                            </select>
+                            <div class="absolute inset-y-0 right-0 pr-3 flex items-center">
+                                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"></path>
+                                </svg>
                             </div>
-                            @error('titulo')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
                         </div>
-
-                        <div>
-                            <label for="obra_id" class="block text-sm font-medium text-gray-700 mb-2">Obra</label>
-                            <div class="relative">
-                                <select id="obra_id" name="obra_id" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition duration-200" required>
-                                    <option value="">Seleccionar Obra</option>
-                                    @foreach($obras as $obra)
-                                        <option value="{{ $obra->id }}" {{ old('obra_id', $partitura->obra_id) == $obra->id ? 'selected' : '' }}>{{ $obra->titulo }}</option>
-                                    @endforeach
-                                </select>
-                                <div class="absolute inset-y-0 right-0 pr-3 flex items-center">
-                                    <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"></path>
-                                    </svg>
-                                </div>
-                            </div>
-                            @error('obra_id')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
-                        </div>
+                        @error('obra_id')
+                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        @enderror
                     </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <label for="instrumento_id" class="block text-sm font-medium text-gray-700 mb-2">Instrumento</label>
-                            <div class="relative">
-                                <select id="instrumento_id" name="instrumento_id" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition duration-200" required>
-                                    <option value="">Seleccionar Instrumento</option>
-                                    @foreach($instrumentos as $instrumento)
-                                        <option value="{{ $instrumento->id }}" {{ old('instrumento_id', $partitura->instrumento_id) == $instrumento->id ? 'selected' : '' }}>{{ $instrumento->nombre }} ({{ $instrumento->tipo }})</option>
-                                    @endforeach
-                                </select>
-                                <div class="absolute inset-y-0 right-0 pr-3 flex items-center">
-                                    <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"></path>
-                                    </svg>
-                                </div>
+                    <div>
+                        <label for="instrumento_id" class="block text-sm font-medium text-gray-700 mb-2">Instrumento</label>
+                        <div class="relative">
+                            <select id="instrumento_id" name="instrumento_id" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition duration-200" required>
+                                <option value="">Seleccionar Instrumento</option>
+                                @foreach($instrumentos as $instrumento)
+                                    <option value="{{ $instrumento->id }}" {{ old('instrumento_id', $partitura->instrumento_id) == $instrumento->id ? 'selected' : '' }}>{{ $instrumento->nombre }} ({{ $instrumento->tipo }})</option>
+                                @endforeach
+                            </select>
+                            <div class="absolute inset-y-0 right-0 pr-3 flex items-center">
+                                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"></path>
+                                </svg>
                             </div>
-                            @error('instrumento_id')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
                         </div>
+                        @error('instrumento_id')
+                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        @enderror
+                    </div>
 
-                        <div>
-                            <label for="user_id" class="block text-sm font-medium text-gray-700 mb-2">Usuario Asignado</label>
-                            <div class="relative">
-                                <select id="user_id" name="user_id" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition duration-200" required>
-                                    <option value="">Seleccionar Usuario</option>
-                                    @foreach($users as $user)
-                                        <option value="{{ $user->id }}" {{ old('user_id', $partitura->user_id) == $user->id ? 'selected' : '' }}>{{ $user->name }} ({{ $user->email }})</option>
-                                    @endforeach
-                                </select>
-                                <div class="absolute inset-y-0 right-0 pr-3 flex items-center">
-                                    <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-                                    </svg>
-                                </div>
+                    <div>
+                        <label for="url_pdf" class="block text-sm font-medium text-gray-700 mb-2">Enlace del PDF (opcional)</label>
+                        <div class="relative">
+                            <input type="url" id="url_pdf" name="url_pdf" value="{{ old('url_pdf', $partitura->url_pdf) }}" placeholder="https://..." class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition duration-200">
+                            <div class="absolute inset-y-0 right-0 pr-3 flex items-center">
+                                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                </svg>
                             </div>
-                            @error('user_id')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
                         </div>
+                        @error('url_pdf')
+                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        @enderror
                     </div>
 
                     <div>

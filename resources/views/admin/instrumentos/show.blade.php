@@ -33,9 +33,9 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
                             </svg>
                         </div>
-                        <h3 class="text-lg font-semibold text-gray-900">ID</h3>
+                        <h3 class="text-lg font-semibold text-gray-900">Cantidad de instrumentistas</h3>
                     </div>
-                    <p class="text-gray-700 text-lg">#{{ $instrumento->id }}</p>
+                    <p class="text-gray-700 text-lg">{{ $instrumento->user_cant }}</p>
                 </div>
 
                 <div class="bg-white shadow-lg rounded-xl p-6 hover:shadow-xl transition-shadow duration-300 border-l-4 border-green-500">
@@ -59,9 +59,9 @@
                         </div>
                         <h3 class="text-lg font-semibold text-gray-900">Tipo</h3>
                     </div>
-                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                    <p class="text-gray-700 text-lg">
                         {{ $instrumento->tipo }}
-                    </span>
+                    </p>
                 </div>
             </div>
 
@@ -76,31 +76,32 @@
                     <h2 class="text-2xl font-bold text-gray-900">Partituras Asociadas</h2>
                 </div>
                 @if($instrumento->partituras->isNotEmpty())
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                        @foreach ($instrumento->partituras as $partitura)
-                            <div class="bg-gradient-to-r from-blue-50 to-indigo-50 p-4 rounded-lg border border-blue-200">
-                                <div class="flex items-center">
-                                    <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mr-3">
-                                        <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                                        </svg>
-                                    </div>
-                                    <div>
-                                        <span class="font-medium text-gray-900">{{ $partitura->titulo }}</span>
-                                        <div class="text-sm text-gray-500">{{ $partitura->obra->titulo ?? 'Sin obra' }}</div>
-                                    </div>
-                                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    @foreach ($instrumento->partituras as $partitura)
+                    <div class="bg-gradient-to-r from-blue-50 to-indigo-50 p-4 rounded-lg border border-blue-200">
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mr-3">
+                                <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                </svg>
                             </div>
-                        @endforeach
+                            <div>
+                                <a href="{{ route('admin.partituras.show', $partitura) }}" class="font-medium text-gray-900 hover:text-purple-700 hover:underline">
+                                    {{ $partitura->obra->titulo ?? 'Sin obra' }}
+                                </a>
+                            </div>
+                        </div>
                     </div>
+                    @endforeach
+                </div>
                 @else
-                    <div class="text-center py-8">
-                        <svg class="w-16 h-16 mx-auto text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                        </svg>
-                        <h3 class="mt-4 text-lg font-medium text-gray-900">No hay partituras</h3>
-                        <p class="mt-2 text-gray-500">Este instrumento no tiene partituras asociadas aún.</p>
-                    </div>
+                <div class="text-center py-8">
+                    <svg class="w-16 h-16 mx-auto text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                    </svg>
+                    <h3 class="mt-4 text-lg font-medium text-gray-900">No hay partituras</h3>
+                    <p class="mt-2 text-gray-500">Este instrumento no tiene partituras asociadas aún.</p>
+                </div>
                 @endif
             </div>
         </div>

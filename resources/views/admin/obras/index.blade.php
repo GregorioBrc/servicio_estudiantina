@@ -24,6 +24,9 @@
                 </div>
             </div>
 
+            <!-- Success/Error Messages -->
+            @include('components.alert-messages')
+
             <!-- Works List - Desktop Table / Mobile Cards -->
             <div class="bg-white shadow-lg rounded-xl overflow-hidden border border-gray-200">
                 <div class="px-6 py-4 bg-gray-50 border-b border-gray-200">
@@ -52,13 +55,22 @@
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"></path>
                                                 </svg>
                                             </div>
-                                            <div class="text-sm font-medium text-gray-900">{{ $obra->titulo }}</div>
+                                            <div class="text-sm font-medium text-gray-900">
+                                                <a href="{{ route('admin.obras.show', $obra) }}" class="text-blue-600 hover:text-blue-800 hover:underline">
+                                                    {{ $obra->titulo }}
+                                                </a>
+                                            </div>
                                         </div>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $obra->anio }}</td>
                                     <td class="px-6 py-4 text-sm text-gray-500">
                                         @foreach($obra->autores as $autor)
-                                            <div class="mb-1">{{ $autor->nombre }} <span class="text-xs text-gray-400">({{ $autor->pivot->tipoContribucion->nombre_contribucion ?? 'Sin tipo' }})</span></div>
+                                            <div class="mb-1">
+                                                <a href="{{ route('admin.autores.show', $autor) }}" class="text-green-600 hover:text-green-800 hover:underline">
+                                                    {{ $autor->nombre }}
+                                                </a>
+                                                <span class="text-xs text-gray-400">({{ $autor->pivot->tipoContribucion->nombre_contribucion ?? 'Sin tipo' }})</span>
+                                            </div>
                                         @endforeach
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $obra->partituras->count() }} partitura(s)</td>
@@ -93,7 +105,11 @@
                                                 </svg>
                                             </div>
                                             <div>
-                                                <div class="text-sm font-medium text-gray-900">{{ $obra->titulo }}</div>
+                                                <div class="text-sm font-medium text-gray-900">
+                                                    <a href="{{ route('admin.obras.show', $obra) }}" class="text-blue-600 hover:text-blue-800 hover:underline">
+                                                        {{ $obra->titulo }}
+                                                    </a>
+                                                </div>
                                                 <div class="text-sm text-gray-500">{{ $obra->anio }}</div>
                                             </div>
                                         </div>
@@ -102,7 +118,12 @@
                                         <div class="text-xs text-gray-500 mb-1">Autores:</div>
                                         <div class="text-sm text-gray-700">
                                             @foreach($obra->autores as $autor)
-                                                <div>{{ $autor->nombre }} <span class="text-xs text-gray-400">({{ $autor->pivot->tipoContribucion->nombre_contribucion ?? 'Sin tipo' }})</span></div>
+                                                <div>
+                                                    <a href="{{ route('admin.autores.show', $autor) }}" class="text-green-600 hover:text-green-800 hover:underline">
+                                                        {{ $autor->nombre }}
+                                                    </a>
+                                                    <span class="text-xs text-gray-400">({{ $autor->pivot->tipoContribucion->nombre_contribucion ?? 'Sin tipo' }})</span>
+                                                </div>
                                             @endforeach
                                         </div>
                                     </div>

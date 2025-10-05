@@ -35,6 +35,6 @@ class instrumento extends Model
 
     public function getRouteKeyName()
     {
-        return 'nombre';
+        return 'id';
     }
 }
