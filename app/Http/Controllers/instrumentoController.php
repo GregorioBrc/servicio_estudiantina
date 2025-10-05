@@ -29,10 +29,22 @@ class instrumentoController extends Controller
      */
     public function store(Request $request)
     {
+        //Validacion de Nombre y tipo, son una clave unica compuesta
         $validated = $request->validate([
-            'nombre' => 'required|string|max:255|unique:instrumentos,nombre',
+            'nombre' => 'required|string|max:255',
             'tipo' => 'required|string|max:255'
         ]);
+
+        // Validar clave única compuesta nombre + tipo
+        $exists = instrumento::where('nombre', $validated['nombre'])
+            ->where('tipo', $validated['tipo'])
+            ->exists();
+
+        if ($exists) {
+            return redirect()->back()
+                ->withInput()
+                ->withErrors(['nombre' => 'La combinación de nombre y tipo ya existe.']);
+        }
 
         instrumento::create($validated);
 
@@ -67,9 +79,20 @@ class instrumentoController extends Controller
         }
 
         $validated = $request->validate([
-            'nombre' => 'required|string|max:255|unique:instrumentos,nombre,' . $instrumento->id,
+            'nombre' => 'required|string|max:255',
             'tipo' => 'required|string|max:255'
         ]);
+
+        $exists = instrumento::where('nombre', $validated['nombre'])
+            ->where('tipo', $validated['tipo'])
+            ->where('id', '!=', $instrumento->id)
+            ->exists();
+
+        if ($exists) {
+            return redirect()->back()
+                ->withInput()
+                ->withErrors(['nombre' => 'La combinación de nombre y tipo ya existe.']);
+        }
 
         $instrumento->update($validated);
 
