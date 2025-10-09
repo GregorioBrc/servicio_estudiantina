@@ -12,9 +12,18 @@ use Illuminate\Support\Facades\Auth;
 
 class PartituraController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $partituras = partitura::with(['instrumento', 'obra'])->paginate(10);
+        $query = partitura::with(['instrumento', 'obra']);
+
+        if ($request->has('search') && $request->search != '') {
+            $search = $request->search;
+            $query->whereHas('obra', function($q) use ($search) {
+                $q->where('titulo', 'LIKE', "%{$search}%");
+            });
+        }
+
+        $partituras = $query->paginate(10)->appends(['search' => $request->search]);
         return view('admin.partituras.index', compact('partituras'));
     }
 

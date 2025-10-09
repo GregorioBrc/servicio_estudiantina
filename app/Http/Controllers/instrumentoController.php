@@ -10,9 +10,16 @@ class instrumentoController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $instrumentos = instrumento::paginate(10);
+        $query = instrumento::query();
+
+        if ($request->has('search') && $request->search != '') {
+            $search = $request->search;
+            $query->where('nombre', 'LIKE', "%{$search}%");
+        }
+
+        $instrumentos = $query->paginate(10)->appends(['search' => $request->search]);
         return view('admin.instrumentos.index', compact('instrumentos'));
     }
 

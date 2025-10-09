@@ -10,9 +10,16 @@ class AutorController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $autores = autor::with(['contribuciones.obra', 'contribuciones.tipocontribucion'])->paginate(10);
+        $query = autor::with(['contribuciones.obra', 'contribuciones.tipocontribucion']);
+
+        if ($request->has('search') && $request->search != '') {
+            $search = $request->search;
+            $query->where('nombre', 'LIKE', "%{$search}%");
+        }
+
+        $autores = $query->paginate(10)->appends(['search' => $request->search]);
         return view('admin.autores.index', compact('autores'));
     }
 
