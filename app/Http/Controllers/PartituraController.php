@@ -127,10 +127,81 @@ class PartituraController extends Controller
         return view('user.partituras', compact('User', 'totalPartituras'));
     }
 
-    public function usuario_ShowPartitura($id)
+    public function misPartiturasPorAutor()
+    {
+        $User = User::find(Auth::id())->load(['instrumentos.partituras.obra']);
+
+        // Obtener todos los autores que tienen obras con partituras para los instrumentos del usuario
+        $autoresConPartituras = [];
+        $tiposContribucion = tipo_contribucion::pluck('nombre_contribucion', 'id');
+
+        foreach ($User->instrumentos as $instrumento) {
+            foreach ($instrumento->partituras as $partitura) {
+                $obra = $partitura->obra;
+                $obra->load(['autores' => function ($query) {
+                    $query->withPivot('tipo_contribucion_id');
+                }]);
+
+                foreach ($obra->autores as $autor) {
+                    // Si el autor no está en el array, inicializarlo
+                    if (!isset($autoresConPartituras[$autor->id])) {
+                        $autoresConPartituras[$autor->id] = [
+                            'autor' => $autor,
+                            'obras' => []
+                        ];
+                    }
+
+                    // Agregar la partitura con su instrumento y tipo de contribución
+                    $tipoContribucion = null;
+                    if ($autor->pivot->tipo_contribucion_id) {
+                        $tipoContribucion = $tiposContribucion[$autor->pivot->tipo_contribucion_id] ?? null;
+                    }
+
+                    // Si la obra no está en el array del autor, agregarla
+                    if (!isset($autoresConPartituras[$autor->id]['obras'][$obra->id])) {
+                        $autoresConPartituras[$autor->id]['obras'][$obra->id] = [
+                            'obra' => $obra,
+                            'tipo_contribucion' => $tipoContribucion,
+                            'partituras' => []
+                        ];
+                    }
+
+
+                    $autoresConPartituras[$autor->id]['obras'][$obra->id]['partituras'][] = [
+                        'partitura' => $partitura,
+                        'instrumento' => $instrumento,
+                        'tipo_contribucion' => $tipoContribucion
+                    ];
+                }
+            }
+        }
+
+        // Ordenar autores por nombre
+        usort($autoresConPartituras, function($a, $b) {
+            return strcmp($a['autor']->nombre, $b['autor']->nombre);
+        });
+
+        $totalPartituras = 0;
+        foreach ($User->instrumentos as $instrumento) {
+            $totalPartituras += $instrumento->partituras->count();
+        }
+
+        return view('user.partituras_por_autor', compact('autoresConPartituras', 'totalPartituras'));
+    }
+
+    public function usuario_ShowPartitura($id, Request $request)
     {
         $partitura = partitura::find($id)->load("obra");
 
-        return view('user.partitura_show', ['partitura' => $partitura]);
+        // Determinar la URL de retorno según la página anterior
+        $backUrl = route('usuario.partituras');
+        if ($request->has('from') && $request->from === 'autor') {
+            $backUrl = route('usuario.partituras.autor');
+        }
+
+        return view('user.partitura_show', [
+            'partitura' => $partitura,
+            'backUrl' => $backUrl
+        ]);
     }
 }

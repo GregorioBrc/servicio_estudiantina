@@ -83,6 +83,7 @@ Route::get('/usuario', [UserController::class, 'dashboard'])->name('usuario.dash
 
 // Vista de partituras del usuario
 Route::get('/usuario/partituras', [PartituraController::class, 'misPartituras'])->name('usuario.partituras');
+Route::get('/usuario/partituras-por-autor', [PartituraController::class, 'misPartiturasPorAutor'])->name('usuario.partituras.autor');
 Route::get('/usuario/partituras/{id}', [PartituraController::class, 'usuario_ShowPartitura'])->where('id', '[0-9]+')->name('usuario.show.partitura');
 
 // Vista de perfil del usuario

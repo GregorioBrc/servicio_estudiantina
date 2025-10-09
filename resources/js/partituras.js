@@ -18,6 +18,25 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
+    // Toggle autor sections
+    document.querySelectorAll('.autor-toggle').forEach(button => {
+        button.addEventListener('click', function() {
+            const content = this.nextElementSibling;
+            const icon = this.querySelector('.chevron-icon');
+
+            content.classList.toggle('hidden');
+            icon.classList.toggle('rotate-180');
+
+            // Cerrar otras secciones abiertas
+            document.querySelectorAll('.autor-content').forEach(otherContent => {
+                if (otherContent !== content && !otherContent.classList.contains('hidden')) {
+                    otherContent.classList.add('hidden');
+                    otherContent.previousElementSibling.querySelector('.chevron-icon').classList.remove('rotate-180');
+                }
+            });
+        });
+    });
+
     // Search + filter functionality
     const searchInput = document.querySelector('input[type="text"]');
     const instrumentSelect = document.querySelector('select');
