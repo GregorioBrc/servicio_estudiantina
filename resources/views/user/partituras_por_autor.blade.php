@@ -44,6 +44,26 @@
                 </div>
             </div>
 
+            <!-- Search section -->
+            <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200 mb-6">
+                <div class="flex flex-col md:flex-row gap-4">
+                    <div class="flex-1">
+                        <label for="search-input" class="block text-sm font-medium text-gray-700 mb-2">
+                            Buscar por título de obra
+                        </label>
+                        <div class="relative">
+                            <input type="text" id="search-input" placeholder="Buscar partituras..."
+                                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                            <button type="button" id="clear-search" class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 hidden">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Main content -->
             <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
                 @forelse ($autoresConPartituras as $data)
@@ -61,9 +81,9 @@
                                 </div>
                                 <div class="text-left">
                                     <h3 class="font-semibold text-gray-900">{{ $data['autor']->nombre }}</h3>
-                                    <p class="text-sm text-gray-500">
-                                        {{ count($data['obras']) }} obra(s) disponible(s)
-                                    </p>
+                                    <p class="text-sm text-gray-500" data-original-count="{{ count($data['obras']) }}">
+                                                                            {{ count($data['obras']) }} obra(s) disponible(s)
+                                                                        </p>
                                 </div>
                             </div>
                             <svg class="chevron-icon w-5 h-5 text-gray-400 transform transition-transform duration-200"
@@ -76,7 +96,8 @@
                         <div class="autor-content hidden px-6 pb-4">
                             <div class="grid gap-4 p-3">
                                 @forelse ($data['obras'] as $obraData)
-                                    <div class="bg-gray-50 rounded-lg p-4 border border-gray-200">
+                                    <div class="bg-gray-50 rounded-lg p-4 border border-gray-200"
+                                         data-obra-titulo="{{ $obraData['obra']->titulo }}">
                                         <h4 class="font-semibold text-gray-800">
                                             {{ $obraData['obra']->titulo }}
                                         </h4>
