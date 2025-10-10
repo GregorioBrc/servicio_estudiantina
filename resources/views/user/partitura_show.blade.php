@@ -2,7 +2,7 @@
     <div class="max-w-4xl mx-auto mt-8 px-4 sm:px-6 lg:px-8">
         <!-- Back navigation -->
         <div class="mb-6">
-            <a href="{{ route('usuario.partituras') }}" class="inline-flex items-center text-blue-600 hover:text-blue-800 transition duration-150 ease-in-out">
+            <a href="{{ $backUrl ?? route('usuario.partituras') }}" class="inline-flex items-center text-blue-600 hover:text-blue-800 transition duration-150 ease-in-out">
                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
                 </svg>
@@ -30,7 +30,7 @@
                         </svg>
                         <h2 class="text-xl font-semibold text-gray-800">Partitura PDF</h2>
                     </div>
-                    <a href="{{ $partitura->url_pdf }}" 
+                    <a href="{{ $partitura->url_pdf }}"
                        target="_blank"
                        class="inline-flex items-center px-6 py-3 bg-red-500 text-white font-medium rounded-lg hover:bg-red-600 transition duration-150 ease-in-out shadow-sm">
                         <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -54,7 +54,7 @@
                             </svg>
                             <h3 class="text-xl font-semibold text-gray-800">Video de Referencia</h3>
                         </div>
-                        <a href="{{ $partitura->link_video }}" 
+                        <a href="{{ $partitura->link_video }}"
                            target="_blank"
                            class="inline-flex items-center px-6 py-3 bg-purple-500 text-white font-medium rounded-lg hover:bg-purple-600 transition duration-150 ease-in-out shadow-sm">
                             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">

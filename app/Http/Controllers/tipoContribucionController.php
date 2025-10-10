@@ -10,9 +10,16 @@ class tipoContribucionController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $tipo_contribuciones = tipo_contribucion::paginate(10);
+        $query = tipo_contribucion::query();
+
+        if ($request->has('search') && $request->search != '') {
+            $search = $request->search;
+            $query->where('nombre_contribucion', 'LIKE', "%{$search}%");
+        }
+
+        $tipo_contribuciones = $query->paginate(10)->appends(['search' => $request->search]);
         return view("admin.tipo_contribucion.index", ["tiposContribucion" => $tipo_contribuciones]);
     }
 

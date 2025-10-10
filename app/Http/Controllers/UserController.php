@@ -12,9 +12,19 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $Users = User::with('instrumentos')->paginate(10);
+        $query = User::with('instrumentos');
+
+        if ($request->has('search') && $request->search != '') {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('name', 'LIKE', "%{$search}%")
+                  ->orWhere('email', 'LIKE', "%{$search}%");
+            });
+        }
+
+        $Users = $query->paginate(10)->appends(['search' => $request->search]);
         return view('admin.usuarios.index', compact('Users'));
     }
 

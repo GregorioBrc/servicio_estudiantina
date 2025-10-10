@@ -24,6 +24,40 @@
                 </div>
             </div>
 
+            <!-- Search Form -->
+            <div class="mb-8">
+                <form method="GET" action="{{ route('admin.tipo_contribuciones.index') }}" class="flex flex-col md:flex-row gap-4">
+                    <div class="flex-grow">
+                        <input
+                            type="text"
+                            name="search"
+                            placeholder="Buscar por nombre..."
+                            value="{{ request('search') }}"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition duration-200"
+                        >
+                    </div>
+                    <div class="flex gap-2">
+                        <button
+                            type="submit"
+                            class="bg-yellow-600 hover:bg-yellow-700 text-white px-6 py-2 rounded-lg shadow transition duration-200 flex items-center gap-2"
+                        >
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                            </svg>
+                            Buscar
+                        </button>
+                        @if(request('search'))
+                        <a
+                            href="{{ route('admin.tipo_contribuciones.index') }}"
+                            class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg shadow transition duration-200 flex items-center gap-2"
+                        >
+                            Limpiar
+                        </a>
+                        @endif
+                    </div>
+                </form>
+            </div>
+
             <!-- Success/Error Messages -->
             @include('components.alert-messages')
 

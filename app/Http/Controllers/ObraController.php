@@ -15,17 +15,22 @@ class ObraController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $obras = obra::with(['autores', 'partituras.instrumento'])->paginate(10);
+        $query = obra::with(['autores', 'partituras.instrumento']);
+
+        if ($request->has('search') && $request->search != '') {
+            $search = $request->search;
+            $query->where('titulo', 'LIKE', "%{$search}%");
+        }
+
+        $obras = $query->paginate(10)->appends(['search' => $request->search]);
 
         $obras->each(function ($o) {
             $o->autores->each(function ($autor) {
                 $autor->pivot->load('tipoContribucion');
             });
         });
-
-        //return $obras;
 
         return view('admin.obras.index', compact('obras'));
     }
