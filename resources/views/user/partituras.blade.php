@@ -28,7 +28,7 @@
             <!-- Link to partituras por autor -->
             <div class="flex justify-end mb-4">
                 <a href="{{ route('usuario.partituras.autor') }}" class="text-sm text-blue-600 hover:text-blue-800 transition duration-200">
-                    Ver por autores ->
+                    Ver por autores -&gt;
                 </a>
             </div>
 

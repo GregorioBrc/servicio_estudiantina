@@ -28,7 +28,7 @@
             <!-- Link to partituras -->
             <div class="flex justify-start mb-4">
                 <a href="{{ route('usuario.partituras') }}" class="text-sm text-blue-600 hover:text-blue-800 transition duration-200">
-                    <- Ver partituras
+                    &lt;- Ver partituras
                 </a>
             </div>
 
