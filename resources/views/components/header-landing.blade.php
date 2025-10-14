@@ -3,10 +3,10 @@
     <div class="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between px-4">
         <!-- Imagen y frase a la izquierda, ambos enlazados a la raíz -->
         @auth
-            <div class="flex items-center mb-4 sm:mb-0 hover:opacity-90 transition">
+            <a href="{{ route('home') }}" class="flex items-center mb-4 sm:mb-0 hover:opacity-90 transition">
                 <img src="/images/logo_unet_fondo.jpg" alt="Logo Estudiantina" class="h-12 w-12 sm:h-16 sm:w-16 mr-3 sm:mr-4 shadow-lg object-cover">
                 <span class="text-xl sm:text-2xl font-bold">Estudiantina</span>
-            </div>
+            </a>
         @else
             <a href="{{ route('home') }}" class="flex items-center mb-4 sm:mb-0 hover:opacity-90 transition">
                 <img src="/images/logo_unet_fondo.jpg" alt="Logo Estudiantina" class="h-12 w-12 sm:h-16 sm:w-16 mr-3 sm:mr-4 shadow-lg object-cover">
@@ -21,7 +21,7 @@
                 </a>
             @else
             @if (!request()->routeIs('login'))
-                <a href="{{ route('login') }}" 
+                <a href="{{ route('login') }}"
                 class="bg-white text-blue-700 px-3 sm:px-4 py-2 rounded shadow hover:bg-blue-100 font-semibold transition text-center">
                     Login
                 </a>

@@ -139,7 +139,7 @@ class PartituraController extends Controller
             return view('user.partituras', compact('User', 'totalPartituras', 'instrumentosUsuario'));
         }
 
-    public function misPartiturasPorAutor()
+    public function misPartiturasPorAutor(Request $request)
         {
             $User = User::find(Auth::id())->load(['instrumentos.partituras.obra']);
 
@@ -201,7 +201,10 @@ class PartituraController extends Controller
             // Obtener instrumentos del usuario para el filtro
             $instrumentosUsuario = $User->instrumentos;
 
-            return view('user.partituras_por_autor', compact('autoresConPartituras', 'totalPartituras', 'instrumentosUsuario'));
+            // Obtener el parámetro 'autor' de la solicitud
+            $autorBuscado = $request->query('autor');
+
+            return view('user.partituras_por_autor', compact('autoresConPartituras', 'totalPartituras', 'instrumentosUsuario', 'autorBuscado'));
         }
 
     public function usuario_ShowPartitura($id, Request $request)
