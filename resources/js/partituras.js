@@ -122,6 +122,17 @@ document.addEventListener("DOMContentLoaded", function () {
                         let hasMatchingObras = false;
                         let matchingCount = 0;
 
+                        // Obtener el nombre del autor desde el encabezado
+                        const autorNombreElement =
+                            autorSection.querySelector("h3.font-semibold");
+                        const autorNombre = autorNombreElement
+                            ? autorNombreElement.textContent.toLowerCase()
+                            : "";
+
+                        // Verificar si el nombre del autor coincide con la búsqueda
+                        const autorMatchesSearch =
+                            autorNombre.includes(searchTerm);
+
                         // Buscar en obras del autor
                         autorSection
                             .querySelectorAll("[data-obra-titulo]")
@@ -130,7 +141,8 @@ document.addEventListener("DOMContentLoaded", function () {
                                     .getAttribute("data-obra-titulo")
                                     .toLowerCase();
                                 const matchesSearch =
-                                    obraTitulo.includes(searchTerm);
+                                    obraTitulo.includes(searchTerm) ||
+                                    autorMatchesSearch;
 
                                 // Mostrar/ocultar obra individual
                                 obraElement.style.display =
@@ -146,7 +158,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
                         // Mostrar/ocultar sección completa del autor
                         autorSection.style.display =
-                            hasMatchingObras || !searchTerm ? "block" : "none";
+                            hasMatchingObras ||
+                            !searchTerm ||
+                            autorMatchesSearch
+                                ? "block"
+                                : "none";
 
                         // Actualizar el contador de obras disponibles
                         const countElement = autorSection.querySelector(

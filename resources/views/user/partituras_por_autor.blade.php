@@ -56,8 +56,8 @@
                 <div class="flex flex-col md:flex-row gap-4">
                     <div class="flex-1">
                         <label for="search-input" class="block text-sm font-medium text-gray-700 mb-2">
-                            Buscar por título de obra
-                        </label>
+                                                    Buscar por título de obra o nombre de autor
+                                                </label>
                         <div class="relative">
                             <input type="text" id="search-input" placeholder="Buscar partituras..."
                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
