@@ -25,6 +25,13 @@
                 </div>
             </div>
 
+            <!-- Link to partituras por autor -->
+            <div class="flex justify-end mb-4">
+                <a href="{{ route('usuario.partituras.autor') }}" class="text-sm text-blue-600 hover:text-blue-800 transition duration-200">
+                    Ver por autores ->
+                </a>
+            </div>
+
             <!-- Stats summary -->
             <div class="grid grid-cols-1 md:grid-cols-1 gap-4 mb-8">
                 <div
