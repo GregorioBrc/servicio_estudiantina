@@ -125,7 +125,9 @@
                                         @if ($partitura->obra->autores)
                                         @foreach ($partitura->obra->autores as $autor)
                                         <p class="text-sm text-gray-500">
-                                            {{ $autor->nombre }}
+                                            <a href="{{ route('usuario.partituras.autor', ['autor' => $autor->nombre]) }}" class="hover:text-blue-600 transition duration-200">
+                                                {{ $autor->nombre }}
+                                            </a>
                                             @if($autor->tipo_contribucion_nombre)
                                             ({{ $autor->tipo_contribucion_nombre }})
                                             @else

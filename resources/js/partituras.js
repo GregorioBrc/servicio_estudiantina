@@ -185,6 +185,11 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         }
 
+        // Ejecutar el filtro al cargar la página si hay un valor en el input
+        if (searchInput.value) {
+            filterPartituras();
+        }
+
         searchInput.addEventListener("input", filterPartituras);
 
         // Limpiar búsqueda
