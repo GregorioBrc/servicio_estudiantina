@@ -72,7 +72,7 @@ class PartituraController extends Controller
     {
         $partitura->delete();
 
-        return redirect()->route('partituras.index')
+        return redirect()->route('admin.partituras.index')
             ->with('success', 'Partitura eliminada exitosamente');
     }
 

@@ -24,8 +24,8 @@ return new class extends Migration
         });
 
         Schema::create("inventario", function (Blueprint $table) {
-            $table->foreignId("partitura_id")->constrained("partituras", "id");
-            $table->foreignId("estante_id")->constrained("estantes", "id");
+            $table->foreignId("partitura_id")->constrained("partituras", "id")->cascadeOnDelete();
+            $table->foreignId("estante_id")->constrained("estantes", "id")->cascadeOnDelete();
             $table->integer("Cantidad");
             $table->primary(["partitura_id", "estante_id"]);
         });
@@ -34,9 +34,9 @@ return new class extends Migration
             $table->id();
             $table->string("descripcion");
             $table->integer("cantidad");
-            $table->foreignId("usuario_inventario_id")->constrained("usuarios_inventario", "id");
-            $table->foreignId("partitura_id")->constrained("partituras", "id");
-            $table->foreignId("estante_id")->constrained("estantes", "id");
+            $table->foreignId("usuario_inventario_id")->constrained("usuarios_inventario", "id")->cascadeOnDelete();
+            $table->foreignId("partitura_id")->constrained("partituras", "id")->cascadeOnDelete();
+            $table->foreignId("estante_id")->constrained("estantes", "id")->cascadeOnDelete();
             $table->index(["usuario_inventario_id"]);
             $table->index(["partitura_id"]);
             $table->index(["estante_id"]);
