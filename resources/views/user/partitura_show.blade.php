@@ -1,5 +1,5 @@
 <x-app-layout title="{{ $partitura->obra->titulo }}">
-    <div class="max-w-4xl mx-auto mt-8 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-4xl mx-auto mt-8 px-4 sm:px-6 lg:px-8 mb-16">
         <!-- Back navigation -->
         <div class="mb-6">
             <a href="{{ $backUrl ?? route('usuario.partituras') }}" class="inline-flex items-center text-blue-600 hover:text-blue-800 transition duration-150 ease-in-out">
@@ -30,19 +30,22 @@
                         </svg>
                         <h2 class="text-xl font-semibold text-gray-800">Partitura PDF</h2>
                     </div>
-                    <a href="{{ $partitura->url_pdf }}"
-                       target="_blank"
-                       class="inline-flex items-center px-6 py-3 bg-red-500 text-white font-medium rounded-lg hover:bg-red-600 transition duration-150 ease-in-out shadow-sm">
-                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                        </svg>
-                        Ver/Descargar Partitura
-                    </a>
-                    @if($partitura->url_pdf)
-                        <p class="mt-2 text-sm text-gray-600 break-all">
-                            Enlace: {{ $partitura->url_pdf }}
-                        </p>
-                    @endif
+                    <div class="bg-gray-50 rounded-lg p-4 flex flex-col md:flex-row justify-between items-center gap-6">
+                        <div class="flex-grow text-center md:text-left">
+                            <p class="text-gray-600 mb-4">Escanea el código QR para abrir el documento directamente.</p>
+                            <a href="{{ $partitura->url_pdf }}"
+                            target="_blank"
+                            class="inline-flex items-center px-6 py-3 bg-red-500 text-white font-medium rounded-lg hover:bg-red-600 transition duration-150 ease-in-out shadow-sm">
+                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                </svg>
+                                Ver/Descargar Partitura
+                            </a>
+                        </div>
+                        <div class="p-4 bg-white border border-gray-200 rounded-lg shadow-inner flex-shrink-0">
+                            {!! $qrCodePDF !!}
+                        </div>
+                    </div>
                 </section>
 
                 <!-- Video section (conditional) -->
@@ -54,18 +57,23 @@
                             </svg>
                             <h3 class="text-xl font-semibold text-gray-800">Video de Referencia</h3>
                         </div>
-                        <a href="{{ $partitura->link_video }}"
-                           target="_blank"
-                           class="inline-flex items-center px-6 py-3 bg-purple-500 text-white font-medium rounded-lg hover:bg-purple-600 transition duration-150 ease-in-out shadow-sm">
-                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path>
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                            </svg>
-                            Ver Video
-                        </a>
-                        <p class="mt-2 text-sm text-gray-600 break-all">
-                            Enlace: {{ $partitura->link_video }}
-                        </p>
+                        <div class="bg-gray-50 rounded-lg p-4 flex flex-col md:flex-row justify-between items-center gap-6">
+                            <div class="flex-grow text-center md:text-left">
+                                <p class="text-gray-600 mb-4">Escanea el código QR para ver el video directamente en YouTube u otra plataforma.</p>
+                                <a href="{{ $partitura->link_video }}"
+                                target="_blank"
+                                class="inline-flex items-center px-6 py-3 bg-purple-500 text-white font-medium rounded-lg hover:bg-purple-600 transition duration-150 ease-in-out shadow-sm">
+                                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                    Ver Video
+                                </a>
+                            </div>
+                            <div class="p-4 bg-white border border-gray-200 rounded-lg shadow-inner flex-shrink-0">
+                                {!! $qrCodeYT !!}
+                            </div>
+                        </div>
                     </section>
                 @endif
 

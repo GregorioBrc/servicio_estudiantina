@@ -1,7 +1,6 @@
 <x-app-layout title="Detalles de la Partitura">
     <div class="min-h-screen bg-gradient-to-br from-slate-50 to-gray-100 py-12">
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <!-- Header -->
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 mb-16">
             <div class="flex flex-col sm:flex-row items-center justify-between mb-12 gap-4">
                 <div class="text-center sm:text-left">
                     <h1 class="text-4xl font-bold text-gray-900 mb-2">Detalles de la Partitura</h1>
@@ -32,7 +31,6 @@
                 </div>
             </div>
 
-            <!-- Partitura Info Cards -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
                 <div
                     class="bg-white shadow-lg rounded-xl p-6 hover:shadow-xl transition-shadow duration-300 border-l-4 border-green-500">
@@ -96,57 +94,70 @@
                 </div>
             </div>
 
-            <!-- PDF Link Section -->
             @if ($partitura->url_pdf)
                 <div class="bg-white shadow-lg rounded-xl p-6 mb-8 border-t-4 border-red-500">
                     <div class="flex items-center mb-4">
-                        <div class="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center mr-3">
-                            <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div class="w-40 h-15 bg-red-100 rounded-full flex items-center justify-center mr-3">
+                            <svg class="w-10 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
                                 </path>
                             </svg>
+                            <h3 class="text-lg font-semibold text-gray-900 ml-2">Documento PDF</h3>
                         </div>
-                        <h3 class="text-lg font-semibold text-gray-900">Documento PDF</h3>
                     </div>
-                    <a href="{{ $partitura->url_pdf }}" target="_blank"
-                        class="inline-flex items-center px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg transition duration-200">
-                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
-                        </svg>
-                        Ver PDF
-                    </a>
+                    <div class="bg-gray-50 rounded-lg p-4 flex flex-col md:flex-row justify-between items-center gap-6">
+                        <div class="flex-grow text-center md:text-left">
+                            <p class="text-gray-600 mb-4">Escanea el código QR para abrir el documento directamente.</p>
+                            <a href="{{ $partitura->url_pdf }}" target="_blank"
+                                class="inline-flex items-center px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg transition duration-200">
+                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                                </svg>
+                                Ver PDF
+                            </a>
+                        </div>
+                        <div class="p-4 bg-white border border-gray-200 rounded-lg shadow-inner flex-shrink-0">
+                            {!! $qrCodePDF !!}
+                        </div>
+                    </div>
                 </div>
             @endif
 
-            <!-- Video Link Section -->
             @if ($partitura->link_video)
                 <div class="bg-white shadow-lg rounded-xl p-6 mb-8 border-t-4 border-teal-500">
                     <div class="flex items-center mb-4">
-                        <div class="w-10 h-10 bg-teal-100 rounded-full flex items-center justify-center mr-3">
-                            <svg class="w-5 h-5 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div class="w-40 h-15 bg-teal-100 rounded-full flex items-center justify-center mr-3">
+                            <svg class="w-10 h-5 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z">
                                 </path>
                             </svg>
+                            <h3 class="text-lg font-semibold text-gray-900 ml-2">Enlace de Video</h3>
                         </div>
-                        <h3 class="text-lg font-semibold text-gray-900">Enlace de Video</h3>
                     </div>
-                    <a href="{{ $partitura->link_video }}" target="_blank"
-                        class="inline-flex items-center px-4 py-2 bg-teal-500 hover:bg-teal-600 text-white rounded-lg transition duration-200">
-                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
-                        </svg>
-                        Ver Video
-                    </a>
+                    <div class="bg-gray-50 rounded-lg p-4 flex flex-col md:flex-row justify-between items-center gap-6">
+                        <div class="flex-grow text-center md:text-left">
+                            <p class="text-gray-600 mb-4">Escanea el código QR para ver el video directamente en YouTube u otra plataforma.</p>
+                            <a href="{{ $partitura->link_video }}" target="_blank"
+                                class="inline-flex items-center px-4 py-2 bg-teal-500 hover:bg-teal-600 text-white rounded-lg transition duration-200">
+                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                                </svg>
+                                Ver Video
+                            </a>
+                        </div>
+                        <div class="p-4 bg-white border border-gray-200 rounded-lg shadow-inner flex-shrink-0">
+                            {!! $qrCodeYT !!}
+                        </div>
+                    </div>
                 </div>
             @endif
 
 
 
-            <!-- Additional Info -->
             {{-- <div class="bg-white shadow-lg rounded-xl p-6 border-t-4 border-gray-500">
                 <div class="flex items-center mb-6">
                     <div class="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center mr-4">
