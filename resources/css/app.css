@@ -295,3 +295,204 @@
 .dark .focus\:ring-orange-500:focus {
     --tw-ring-color: rgb(249 115 22 / var(--tw-ring-opacity));
 }
+
+/* Dark mode styles for inputs and form elements */
+.dark input[type="text"],
+.dark input[type="email"],
+.dark input[type="password"],
+.dark input[type="search"],
+.dark input[type="number"],
+.dark textarea,
+.dark select {
+    background-color: rgb(55 65 81);
+    color: rgb(243 244 246);
+    border-color: rgb(75 85 99);
+}
+
+.dark input[type="text"]:focus,
+.dark input[type="email"]:focus,
+.dark input[type="password"]:focus,
+.dark input[type="search"]:focus,
+.dark input[type="number"]:focus,
+.dark textarea:focus,
+.dark select:focus {
+    background-color: rgb(55 65 81);
+    color: rgb(243 244 246);
+    border-color: rgb(59 130 246);
+}
+
+.dark input::placeholder,
+.dark textarea::placeholder {
+    color: rgb(156 163 175);
+}
+
+.dark input:focus::placeholder,
+.dark textarea:focus::placeholder {
+    color: rgb(209 213 219);
+}
+
+/* Dark mode styles for specific text elements that need better contrast */
+.dark .text-gray-800 {
+    color: rgb(243 244 246);
+}
+
+.dark .text-gray-900 {
+    color: rgb(243 244 246);
+}
+
+.dark .text-gray-700 {
+    color: rgb(209 213 219);
+}
+
+.dark .text-gray-600 {
+    color: rgb(156 163 175);
+}
+
+.dark .text-gray-500 {
+    color: rgb(107 114 128);
+}
+
+.dark .text-gray-400 {
+    color: rgb(156 163 175);
+}
+
+/* Ensure links are visible in dark mode */
+.dark .text-blue-600 {
+    color: rgb(59 130 246);
+}
+
+.dark .text-blue-600:hover {
+    color: rgb(147 197 253);
+}
+
+.dark .text-green-600 {
+    color: rgb(34 197 94);
+}
+
+.dark .text-green-600:hover {
+    color: rgb(74 222 128);
+}
+
+.dark .text-purple-600 {
+    color: rgb(147 51 234);
+}
+
+.dark .text-purple-600:hover {
+    color: rgb(196 181 253);
+}
+
+.dark .text-indigo-600 {
+    color: rgb(79 70 229);
+}
+
+.dark .text-indigo-600:hover {
+    color: rgb(165 180 252);
+}
+
+/* Dark mode for buttons and interactive elements */
+.dark .bg-blue-600 {
+    background-color: rgb(37 99 235);
+}
+
+.dark .bg-blue-600:hover {
+    background-color: rgb(59 130 246);
+}
+
+.dark .bg-green-600 {
+    background-color: rgb(22 163 74);
+}
+
+.dark .bg-green-600:hover {
+    background-color: rgb(34 197 94);
+}
+
+.dark .bg-purple-600 {
+    background-color: rgb(124 58 237);
+}
+
+.dark .bg-purple-600:hover {
+    background-color: rgb(147 51 234);
+}
+
+.dark .bg-red-600 {
+    background-color: rgb(220 38 38);
+}
+
+.dark .bg-red-600:hover {
+    background-color: rgb(239 68 68);
+}
+
+/* Dark mode for borders and dividers */
+.dark .border-gray-300 {
+    border-color: rgb(75 85 99);
+}
+
+.dark .border-gray-200 {
+    border-color: rgb(55 65 81);
+}
+
+.dark .border-gray-100 {
+    border-color: rgb(75 85 99);
+}
+
+/* Dark mode for background gradients */
+.dark .bg-gradient-to-r {
+    background-image: linear-gradient(to right, var(--tw-gradient-stops));
+}
+
+.dark .from-blue-50 {
+    --tw-gradient-from: rgb(31 41 55);
+    --tw-gradient-stops: rgb(31 41 55), var(--tw-gradient-to);
+}
+
+.dark .to-indigo-100 {
+    --tw-gradient-to: rgb(55 65 81);
+}
+
+/* Dark mode for card backgrounds */
+.dark .bg-white {
+    background-color: rgb(31 41 55);
+}
+
+.dark .bg-gray-50 {
+    background-color: rgb(55 65 81);
+}
+
+.dark .bg-gray-100 {
+    background-color: rgb(75 85 99);
+}
+
+/* Dark mode for hover states */
+.dark .hover\:bg-gray-50:hover {
+    background-color: rgb(75 85 99);
+}
+
+.dark .hover\:bg-gray-100:hover {
+    background-color: rgb(55 65 81);
+}
+
+.dark .hover\:bg-blue-50:hover {
+    background-color: rgb(30 58 138);
+}
+
+/* Dark mode for focus states */
+.dark .focus\:ring-blue-500:focus {
+    --tw-ring-color: rgb(59 130 246);
+}
+
+.dark .focus\:border-transparent:focus {
+    border-color: transparent;
+}
+
+/* Dark mode for shadow effects */
+.dark .shadow-lg {
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
+}
+
+.dark .shadow-sm {
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+}
+
+.dark .shadow-inner {
+    box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+}
