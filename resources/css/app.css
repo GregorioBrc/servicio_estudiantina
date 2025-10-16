@@ -11,16 +11,19 @@
 }
 
 /* Dark mode styles */
+/* Dark mode base styles - body background stays gray, but components keep their colors darker */
 .dark {
     --tw-bg-opacity: 1;
     background-color: rgb(17 24 39 / var(--tw-bg-opacity));
     color: rgb(243 244 246 / var(--tw-text-opacity));
 }
 
+/* White backgrounds become dark gray */
 .dark .bg-white {
     background-color: rgb(31 41 55);
 }
 
+/* Gray backgrounds become darker gray */
 .dark .bg-gray-50 {
     background-color: rgb(55 65 81);
 }
@@ -29,6 +32,7 @@
     background-color: rgb(75 85 99);
 }
 
+/* Gradients for backgrounds - darker versions */
 .dark .bg-gradient-to-br {
     background-image: linear-gradient(to bottom right, rgb(31 41 55), rgb(17 24 39));
 }
@@ -66,128 +70,180 @@
     color: rgb(209 213 219);
 }
 
+/* Dark mode for text colors - better contrast and visibility */
 .dark .text-blue-700 {
-    color: rgb(147 197 253);
+    color: rgb(147 197 253); /* Lighter blue for better contrast */
 }
 
 .dark .text-blue-600 {
-    color: rgb(37 99 235);
+    color: rgb(96 165 250); /* Lighter blue-400 for better visibility */
 }
 
 .dark .text-green-700 {
-    color: rgb(34 197 94);
+    color: rgb(74 222 128); /* Lighter green-400 for better contrast */
 }
 
 .dark .text-green-600 {
-    color: rgb(22 163 74);
+    color: rgb(34 197 94); /* Keep original green-500 */
 }
 
 .dark .text-purple-700 {
-    color: rgb(147 51 234);
+    color: rgb(196 181 253); /* Lighter purple-400 for better contrast */
 }
 
 .dark .text-purple-600 {
-    color: rgb(124 58 237);
+    color: rgb(147 51 234); /* Keep original purple */
 }
 
 .dark .text-indigo-700 {
-    color: rgb(99 102 241);
+    color: rgb(165 180 252); /* Lighter indigo-400 for better contrast */
 }
 
 .dark .text-indigo-600 {
-    color: rgb(79 70 229);
+    color: rgb(99 102 241); /* Keep original indigo */
 }
 
 .dark .text-teal-600 {
-    color: rgb(13 148 136);
+    color: rgb(45 212 191); /* Lighter teal-400 for better contrast */
 }
 
 .dark .text-red-600 {
-    color: rgb(220 38 38);
+    color: rgb(248 113 113); /* Lighter red-400 for better visibility */
 }
 
 .dark .text-yellow-600 {
-    color: rgb(202 138 4);
+    color: rgb(251 191 36); /* Lighter yellow-500 for better contrast */
 }
 
 .dark .text-orange-600 {
-    color: rgb(234 88 12);
+    color: rgb(251 146 60); /* Lighter orange-500 for better contrast */
 }
 
+/* Dark mode for text on colored backgrounds - ensure white text for better contrast */
+.dark .bg-blue-600 .text-white,
+.dark .bg-green-600 .text-white,
+.dark .bg-purple-600 .text-white,
+.dark .bg-indigo-600 .text-white,
+.dark .bg-teal-600 .text-white,
+.dark .bg-red-600 .text-white,
+.dark .bg-yellow-600 .text-white,
+.dark .bg-orange-600 .text-white {
+    color: rgb(255 255 255); /* Pure white for maximum contrast */
+}
+
+.dark .bg-gradient-to-r .text-white {
+    color: rgb(255 255 255); /* Pure white for gradient backgrounds */
+}
+
+/* Dark mode for colored components - preserve original colors but darker and more vibrant */
 .dark .bg-blue-700 {
-    background-color: rgb(29 78 216);
+    background-color: rgb(30 64 175); /* Darker blue */
 }
 
 .dark .bg-green-100 {
-    background-color: rgb(20 83 45);
+    background-color: rgb(34 197 94); /* Green-500 for better contrast */
 }
 
 .dark .bg-green-500 {
-    background-color: rgb(34 197 94);
+    background-color: rgb(22 163 74); /* Darker green */
 }
 
 .dark .bg-purple-100 {
-    background-color: rgb(88 28 135);
+    background-color: rgb(124 58 237); /* Purple-600 for better contrast */
 }
 
 .dark .bg-purple-500 {
-    background-color: rgb(147 51 234);
+    background-color: rgb(147 51 234); /* Keep original purple */
 }
 
 .dark .bg-indigo-100 {
-    background-color: rgb(49 46 129);
+    background-color: rgb(79 70 229); /* Indigo-600 for better contrast */
 }
 
 .dark .bg-indigo-500 {
-    background-color: rgb(99 102 241);
+    background-color: rgb(99 102 241); /* Keep original indigo */
 }
 
 .dark .bg-teal-100 {
-    background-color: rgb(15 118 110);
+    background-color: rgb(13 148 136); /* Teal-600 for better contrast */
 }
 
 .dark .bg-teal-500 {
-    background-color: rgb(20 184 166);
+    background-color: rgb(15 118 110); /* Darker teal */
 }
 
 .dark .bg-red-100 {
-    background-color: rgb(127 29 29);
+    background-color: rgb(220 38 38); /* Red-600 for better contrast */
 }
 
 .dark .bg-red-500 {
-    background-color: rgb(239 68 68);
+    background-color: rgb(239 68 68); /* Keep original red */
 }
 
 .dark .bg-yellow-500 {
-    background-color: rgb(234 179 8);
+    background-color: rgb(234 179 8); /* Keep original yellow */
 }
 
 .dark .bg-orange-600 {
-    background-color: rgb(234 88 12);
+    background-color: rgb(234 88 12); /* Keep original orange */
 }
 
+/* Dark mode for gradient backgrounds - preserve gradient colors but darker */
+.dark .bg-gradient-to-r.from-blue-600 {
+    background-image: linear-gradient(to right, rgb(37 99 235), rgb(30 64 175));
+}
+
+.dark .bg-gradient-to-r.from-green-500 {
+    background-image: linear-gradient(to right, rgb(34 197 94), rgb(22 163 74));
+}
+
+.dark .bg-gradient-to-r.from-indigo-500 {
+    background-image: linear-gradient(to right, rgb(99 102 241), rgb(79 70 229));
+}
+
+.dark .bg-gradient-to-r.from-purple-500 {
+    background-image: linear-gradient(to right, rgb(147 51 234), rgb(124 58 237));
+}
+
+.dark .bg-gradient-to-r.from-yellow-500 {
+    background-image: linear-gradient(to right, rgb(234 179 8), rgb(202 138 4));
+}
+
+.dark .bg-gradient-to-r.from-teal-500 {
+    background-image: linear-gradient(to right, rgb(20 184 166), rgb(13 148 136));
+}
+
+.dark .bg-gradient-to-r.from-red-500 {
+    background-image: linear-gradient(to right, rgb(239 68 68), rgb(220 38 38));
+}
+
+.dark .bg-gradient-to-r.from-orange-600 {
+    background-image: linear-gradient(to right, rgb(234 88 12), rgb(194 65 12));
+}
+
+/* Dark mode for hover states - preserve hover effects with better contrast */
 .dark .hover\:bg-blue-100:hover {
-    background-color: rgb(30 58 138);
+    background-color: rgb(59 130 246); /* Blue-500 for better hover effect */
 }
 
 .dark .hover\:bg-blue-600:hover {
-    background-color: rgb(37 99 235);
+    background-color: rgb(59 130 246); /* Lighter blue-500 on hover */
 }
 
 .dark .hover\:bg-green-600:hover {
-    background-color: rgb(22 163 74);
+    background-color: rgb(34 197 94); /* Keep original green-500 */
 }
 
 .dark .hover\:bg-yellow-600:hover {
-    background-color: rgb(161 98 7);
+    background-color: rgb(234 179 8); /* Keep original yellow-500 */
 }
 
 .dark .hover\:bg-orange-700:hover {
-    background-color: rgb(194 65 12);
+    background-color: rgb(249 115 22); /* Lighter orange-500 */
 }
 
 .dark .hover\:bg-purple-200:hover {
-    background-color: rgb(124 58 237);
+    background-color: rgb(168 85 247); /* Lighter purple-500 */
 }
 
 .dark .hover\:bg-gray-50:hover {
@@ -199,31 +255,64 @@
 }
 
 .dark .hover\:text-blue-600:hover {
-    color: rgb(37 99 235);
+    color: rgb(147 197 253); /* Lighter blue-300 on hover */
 }
 
 .dark .hover\:text-green-700:hover {
-    color: rgb(34 197 94);
+    color: rgb(74 222 128); /* Lighter green-400 on hover */
 }
 
 .dark .hover\:text-purple-700:hover {
-    color: rgb(147 51 234);
+    color: rgb(196 181 253); /* Lighter purple-400 on hover */
 }
 
 .dark .hover\:text-indigo-700:hover {
-    color: rgb(99 102 241);
+    color: rgb(165 180 252); /* Lighter indigo-400 on hover */
 }
 
 .dark .hover\:text-yellow-800:hover {
-    color: rgb(154 52 18);
+    color: rgb(251 191 36); /* Lighter yellow-500 */
 }
 
 .dark .hover\:text-blue-800:hover {
-    color: rgb(30 64 175);
+    color: rgb(96 165 250); /* Lighter blue-400 */
 }
 
 .dark .hover\:text-green-800:hover {
-    color: rgb(22 101 52);
+    color: rgb(74 222 128); /* Lighter green-400 */
+}
+
+/* Dark mode for gradient hover effects */
+.dark .bg-gradient-to-r.from-blue-600:hover {
+    background-image: linear-gradient(to right, rgb(59 130 246), rgb(37 99 235));
+}
+
+.dark .bg-gradient-to-r.from-green-500:hover {
+    background-image: linear-gradient(to right, rgb(34 197 94), rgb(22 163 74));
+}
+
+.dark .bg-gradient-to-r.from-indigo-500:hover {
+    background-image: linear-gradient(to right, rgb(99 102 241), rgb(79 70 229));
+}
+
+.dark .bg-gradient-to-r.from-purple-500:hover {
+    background-image: linear-gradient(to right, rgb(147 51 234), rgb(124 58 237));
+}
+
+.dark .bg-gradient-to-r.from-yellow-500:hover {
+    background-image: linear-gradient(to right, rgb(234 179 8), rgb(202 138 4));
+}
+
+.dark .bg-gradient-to-r.from-teal-500:hover {
+    background-image: linear-gradient(to right, rgb(20 184 166), rgb(13 148 136));
+}
+
+.dark .bg-gradient-to-r.from-red-500:hover {
+    background-image: linear-gradient(to right, rgb(239 68 68), rgb(220 38 38));
+}
+
+.dark .bg-gradient-to-r.from-orange-600:hover {
+    background-image: linear-gradient(to right, rgb(234 88 12), rgb(194 65 12));
 }
 
 .dark .border-gray-300 {
@@ -389,37 +478,54 @@
     color: rgb(165 180 252);
 }
 
-/* Dark mode for buttons and interactive elements */
+/* Dark mode for buttons and interactive elements - preserve brand colors */
 .dark .bg-blue-600 {
-    background-color: rgb(37 99 235);
+    background-color: rgb(37 99 235); /* Keep original blue */
 }
 
 .dark .bg-blue-600:hover {
-    background-color: rgb(59 130 246);
+    background-color: rgb(59 130 246); /* Lighter blue-500 on hover */
 }
 
 .dark .bg-green-600 {
-    background-color: rgb(22 163 74);
+    background-color: rgb(22 163 74); /* Darker green */
 }
 
 .dark .bg-green-600:hover {
-    background-color: rgb(34 197 94);
+    background-color: rgb(34 197 94); /* Lighter green-500 on hover */
 }
 
 .dark .bg-purple-600 {
-    background-color: rgb(124 58 237);
+    background-color: rgb(124 58 237); /* Keep original purple */
 }
 
 .dark .bg-purple-600:hover {
-    background-color: rgb(147 51 234);
+    background-color: rgb(147 51 234); /* Lighter purple on hover */
 }
 
 .dark .bg-red-600 {
-    background-color: rgb(220 38 38);
+    background-color: rgb(220 38 38); /* Keep original red */
 }
 
 .dark .bg-red-600:hover {
-    background-color: rgb(239 68 68);
+    background-color: rgb(239 68 68); /* Lighter red on hover */
+}
+
+/* Dark mode for gradient buttons - preserve gradient effects */
+.dark .bg-gradient-to-r.from-blue-600:hover {
+    background-image: linear-gradient(to right, rgb(59 130 246), rgb(37 99 235));
+}
+
+.dark .bg-gradient-to-r.from-green-500:hover {
+    background-image: linear-gradient(to right, rgb(34 197 94), rgb(22 163 74));
+}
+
+.dark .bg-gradient-to-r.from-indigo-500:hover {
+    background-image: linear-gradient(to right, rgb(99 102 241), rgb(79 70 229));
+}
+
+.dark .bg-gradient-to-r.from-purple-500:hover {
+    background-image: linear-gradient(to right, rgb(147 51 234), rgb(124 58 237));
 }
 
 /* Dark mode for borders and dividers */
@@ -435,7 +541,44 @@
     border-color: rgb(75 85 99);
 }
 
-/* Dark mode for background gradients */
+/* Dark mode for SVG icons and strokes - ensure visibility */
+.dark svg {
+    stroke: currentColor; /* Inherit text color for better contrast */
+}
+
+.dark .text-blue-600 svg {
+    stroke: rgb(96 165 250); /* Lighter blue for SVG icons */
+}
+
+.dark .text-green-600 svg {
+    stroke: rgb(34 197 94); /* Green-500 for SVG icons */
+}
+
+.dark .text-purple-600 svg {
+    stroke: rgb(147 51 234); /* Purple-500 for SVG icons */
+}
+
+.dark .text-indigo-600 svg {
+    stroke: rgb(99 102 241); /* Indigo-500 for SVG icons */
+}
+
+.dark .text-teal-600 svg {
+    stroke: rgb(45 212 191); /* Teal-400 for SVG icons */
+}
+
+.dark .text-red-600 svg {
+    stroke: rgb(248 113 113); /* Red-400 for SVG icons */
+}
+
+.dark .text-yellow-600 svg {
+    stroke: rgb(251 191 36); /* Yellow-500 for SVG icons */
+}
+
+.dark .text-orange-600 svg {
+    stroke: rgb(251 146 60); /* Orange-500 for SVG icons */
+}
+
+/* Dark mode for background gradients - preserve original gradient colors but darker */
 .dark .bg-gradient-to-r {
     background-image: linear-gradient(to right, var(--tw-gradient-stops));
 }
@@ -449,7 +592,7 @@
     --tw-gradient-to: rgb(55 65 81);
 }
 
-/* Dark mode for card backgrounds */
+/* Dark mode for card backgrounds - only neutral cards become gray */
 .dark .bg-white {
     background-color: rgb(31 41 55);
 }
@@ -484,15 +627,15 @@
     border-color: transparent;
 }
 
-/* Dark mode for shadow effects */
+/* Dark mode for shadow effects - darker shadows */
 .dark .shadow-lg {
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -2px rgba(0, 0, 0, 0.3);
 }
 
 .dark .shadow-sm {
-    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.4);
 }
 
 .dark .shadow-inner {
-    box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+    box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.6);
 }
