@@ -16,6 +16,10 @@
         <!-- Login o saludo a la derecha -->
         <div class="flex flex-col sm:flex-row items-center gap-2 sm:gap-4">
             @auth
+                <!-- Dark Mode Toggle -->
+                <button id="dark-mode-toggle" class="bg-white text-blue-700 px-3 sm:px-4 py-2 rounded shadow hover:bg-blue-100 font-semibold transition text-center">
+                    <span id="dark-mode-icon">🌙</span>
+                </button>
                 <a href="{{ route('logout') }}" class="bg-white text-blue-700 px-3 sm:px-4 py-2 rounded shadow hover:bg-blue-100 font-semibold transition text-center">
                     Logout
                 </a>

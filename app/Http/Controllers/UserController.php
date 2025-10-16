@@ -9,6 +9,7 @@ use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Http\JsonResponse;
 
 class UserController extends Controller
 {
@@ -152,5 +153,17 @@ class UserController extends Controller
         ]);
 
         return redirect()->back()->with('success', 'Contraseña actualizada correctamente.');
+    }
+
+    public function toggleDarkMode(Request $request): JsonResponse
+    {
+        $request->validate([
+            'dark_mode' => 'required|boolean',
+        ]);
+
+        $user = Auth::user();
+        $user->update(['dark_mode' => $request->dark_mode]);
+
+        return response()->json(['success' => true]);
     }
 }
