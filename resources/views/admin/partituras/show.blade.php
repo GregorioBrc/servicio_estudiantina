@@ -118,7 +118,7 @@
                                 Ver PDF
                             </a>
                         </div>
-                        <div class="p-4 bg-white border border-gray-200 rounded-lg shadow-inner flex-shrink-0">
+                        <div class="div_Qr p-4 bg-white border border-gray-200 rounded-lg shadow-inner flex-shrink-0">
                             {!! $qrCodePDF !!}
                         </div>
                     </div>
@@ -149,7 +149,7 @@
                                 Ver Video
                             </a>
                         </div>
-                        <div class="p-4 bg-white border border-gray-200 rounded-lg shadow-inner flex-shrink-0">
+                        <div class="div_Qr p-4 bg-white border border-gray-200 rounded-lg shadow-inner flex-shrink-0">
                             {!! $qrCodeYT !!}
                         </div>
                     </div>
