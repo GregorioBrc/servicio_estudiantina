@@ -295,3 +295,65 @@
 .dark .focus\:ring-orange-500:focus {
     --tw-ring-color: rgb(249 115 22 / var(--tw-ring-opacity));
 }
+
+/* Custom responsive header styles */
+@media (max-width: 640px) {
+    header {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+}
+
+/* Smooth transitions for mobile menu */
+#mobile-menu {
+    transition: all 0.3s ease-in-out;
+    transform-origin: top;
+}
+
+#mobile-menu:not(.hidden) {
+    animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Ensure logo text doesn't wrap on very small screens */
+@media (max-width: 390px) {
+    header span.text-lg {
+        font-size: 1.1rem;
+    }
+}
+
+/* Better touch targets for mobile buttons */
+@media (max-width: 768px) {
+    #mobile-menu a, #mobile-menu button {
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+/* Header hover effects */
+header a:hover {
+    transform: translateY(-1px);
+}
+
+/* Mobile menu button hover effect */
+#mobile-menu-toggle:hover {
+    transform: scale(1.1);
+}
+
+/* Ensure consistent spacing in mobile menu */
+#mobile-menu > div {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+}

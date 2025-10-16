@@ -1,22 +1,35 @@
 document.addEventListener('DOMContentLoaded', function() {
     const toggleButton = document.getElementById('dark-mode-toggle');
+    const toggleButtonMobile = document.getElementById('dark-mode-toggle-mobile');
     const icon = document.getElementById('dark-mode-icon');
+    const iconMobile = document.getElementById('dark-mode-icon-mobile');
     const body = document.body;
-
-    // Verificar si el botón existe antes de continuar
-    if (!toggleButton || !icon) {
-        return;
-    }
 
     // Set initial state
     const isDark = body.classList.contains('dark');
-    if (isDark) {
-        icon.textContent = '☀️';
-    } else {
-        icon.textContent = '🌙';
+
+    function updateIcons(isDarkMode) {
+        const sunIcon = '☀️';
+        const moonIcon = '🌙';
+
+        if (icon) icon.textContent = isDarkMode ? sunIcon : moonIcon;
+        if (iconMobile) iconMobile.textContent = isDarkMode ? sunIcon : moonIcon;
     }
 
-    toggleButton.addEventListener('click', function() {
+    // Set initial icons
+    updateIcons(isDark);
+
+    // Handle desktop toggle
+    if (toggleButton) {
+        toggleButton.addEventListener('click', toggleDarkMode);
+    }
+
+    // Handle mobile toggle
+    if (toggleButtonMobile) {
+        toggleButtonMobile.addEventListener('click', toggleDarkMode);
+    }
+
+    function toggleDarkMode() {
         const currentDark = body.classList.contains('dark');
         const newDark = !currentDark;
 
@@ -24,12 +37,13 @@ document.addEventListener('DOMContentLoaded', function() {
         if (newDark) {
             body.classList.add('dark', 'bg-gray-900', 'text-white');
             body.classList.remove('bg-white', 'text-gray-900');
-            icon.textContent = '☀️';
         } else {
             body.classList.remove('dark', 'bg-gray-900', 'text-white');
             body.classList.add('bg-white', 'text-gray-900');
-            icon.textContent = '🌙';
         }
+
+        // Update both icons
+        updateIcons(newDark);
 
         // Update server
         fetch('/user/toggle-dark-mode', {
@@ -45,12 +59,11 @@ document.addEventListener('DOMContentLoaded', function() {
             if (newDark) {
                 body.classList.remove('dark', 'bg-gray-900', 'text-white');
                 body.classList.add('bg-white', 'text-gray-900');
-                icon.textContent = '🌙';
             } else {
                 body.classList.add('dark', 'bg-gray-900', 'text-white');
                 body.classList.remove('bg-white', 'text-gray-900');
-                icon.textContent = '☀️';
             }
+            updateIcons(!newDark);
         });
-    });
+    }
 });
