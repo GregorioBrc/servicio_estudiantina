@@ -1059,6 +1059,7 @@
 /* Dark mode for text on gradient backgrounds */
 .dark .bg-gradient-to-r.text-white svg {
     stroke: rgb(255 255 255) !important; /* White icons on gradient buttons */
+}
 /* Custom responsive header styles */
 @media (max-width: 640px) {
     header {
