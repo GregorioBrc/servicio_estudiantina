@@ -33,7 +33,7 @@
                 icon.textContent = '☀️';
             } else {
                 body.classList.remove('dark', 'bg-gray-900', 'text-white');
-                body.classList.add('bg-white', 'text-gray-900');
+                body.classList.add('bg-white', 'text-white-900');
                 icon.textContent = '🌙';
             }
 

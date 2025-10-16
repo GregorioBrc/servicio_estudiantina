@@ -33,7 +33,7 @@
                             name="search"
                             placeholder="Buscar por nombre o correo..."
                             value="{{ request('search') }}"
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 placeholder-gray-500"
                         >
                     </div>
                     <div class="flex gap-2">

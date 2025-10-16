@@ -39,7 +39,7 @@
                             name="search"
                             placeholder="Buscar por título de obra..."
                             value="{{ request('search') }}"
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition duration-200"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition duration-200 placeholder-gray-500"
                         >
                     </div>
                     <div class="flex gap-2">
