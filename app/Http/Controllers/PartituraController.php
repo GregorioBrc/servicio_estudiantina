@@ -9,6 +9,7 @@ use App\Models\tipo_contribucion;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class PartituraController extends Controller
 {
@@ -80,7 +81,11 @@ class PartituraController extends Controller
     {
         $partitura->load(["instrumento", "obra"]);
         $partitura->user_cant = $usuariosConInstrumento = $partitura->instrumento->usuarios()->count();
-        return view('admin.partituras.show', compact('partitura'));
+
+        $qrCodePDF = QrCode::size(150)->generate($partitura->url_pdf);
+        $qrCodeYT = QrCode::size(150)->generate($partitura->link_video);
+
+        return view('admin.partituras.show', compact('partitura', 'qrCodePDF', 'qrCodeYT'));
     }
 
     public function edit(partitura $partitura)
@@ -211,6 +216,9 @@ class PartituraController extends Controller
     {
         $partitura = partitura::find($id)->load("obra");
 
+        $qrCodePDF = QrCode::size(150)->generate($partitura->url_pdf);
+        $qrCodeYT = QrCode::size(150)->generate($partitura->link_video);
+
         // Determinar la URL de retorno según la página anterior
         $backUrl = route('usuario.partituras');
         if ($request->has('from') && $request->from === 'autor') {
@@ -219,7 +227,9 @@ class PartituraController extends Controller
 
         return view('user.partitura_show', [
             'partitura' => $partitura,
-            'backUrl' => $backUrl
+            'backUrl' => $backUrl,
+            'qrCodePDF' => $qrCodePDF,
+            'qrCodeYT' => $qrCodeYT
         ]);
     }
 }

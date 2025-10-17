@@ -101,6 +101,9 @@ Route::get('/usuario/perfil/{id}', [UserController::class, 'perfil'])->where('id
 //Cambiar contraseña usuario
 Route::post('/usuario/cambiar-contraseña', [UserController::class, 'CambiarPassword'])->name('usuario.cambiar-password')->middleware('user');
 
+// Toggle dark mode
+Route::post('/user/toggle-dark-mode', [UserController::class, 'toggleDarkMode'])->name('user.toggle-dark-mode')->middleware('auth');
+
 
 
 ///////////////////////////////

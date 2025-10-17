@@ -38,7 +38,7 @@
                             name="search"
                             placeholder="Buscar por nombre..."
                             value="{{ request('search') }}"
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 transition duration-200"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 transition duration-200 placeholder-gray-500"
                         >
                     </div>
                     <div class="flex gap-2">
@@ -91,7 +91,7 @@
                                     Acciones</th>
                             </tr>
                         </thead>
-                        <tbody class="bg-white divide-y divide-gray-200">
+                        <tbody class="bg-white divide-y divide-gray-100">
                             @foreach ($instrumentos as $index => $instrumento)
                                 <tr class="hover:bg-gray-50 transition duration-200">
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $index + 1 }}
@@ -118,7 +118,7 @@
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <span
-                                            class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                                            class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-500">
                                             {{ $instrumento->tipo }}
                                         </span>
                                     </td>
