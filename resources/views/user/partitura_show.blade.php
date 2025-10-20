@@ -42,11 +42,7 @@
                                 Ver/Descargar Partitura
                             </a>
                         </div>
-<<<<<<< HEAD
                         <div class="div_Qr p-4 bg-white border border-gray-200 rounded-lg shadow-inner flex-shrink-0">
-=======
-                        <div class="p-4 bg-white border border-gray-200 rounded-lg shadow-inner flex-shrink-0">
->>>>>>> a81fa4d156bc7ae22cce0f9bc158baaa43143635
                             {!! $qrCodePDF !!}
                         </div>
                     </div>
@@ -74,11 +70,7 @@
                                     Ver Video
                                 </a>
                             </div>
-<<<<<<< HEAD
                             <div class="div_Qr p-4 bg-white border border-gray-200 rounded-lg shadow-inner flex-shrink-0">
-=======
-                            <div class="p-4 bg-white border border-gray-200 rounded-lg shadow-inner flex-shrink-0">
->>>>>>> a81fa4d156bc7ae22cce0f9bc158baaa43143635
                                 {!! $qrCodeYT !!}
                             </div>
                         </div>
