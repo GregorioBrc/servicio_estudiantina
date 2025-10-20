@@ -4,18 +4,9 @@
         <!-- Logo y título -->
         <div class="flex items-center flex-shrink-0">
             @auth
-<<<<<<< HEAD
                 <a href="{{ route('home') }}" class="flex items-center hover:opacity-90 transition duration-200">
                     <img src="/images/logo_unet_fondo.jpg" alt="Logo Estudiantina" class="h-10 w-10 sm:h-12 sm:w-12 md:h-14 md:w-14 lg:h-16 lg:w-16 mr-2 sm:mr-3 md:mr-4 shadow-lg object-cover rounded-full">
                     <span class="text-lg sm:text-xl md:text-2xl font-bold whitespace-nowrap">Estudiantina</span>
-=======
-                <!-- Dark Mode Toggle -->
-                <button id="dark-mode-toggle" class="bg-white text-blue-700 px-3 sm:px-4 py-2 rounded shadow hover:bg-blue-100 font-semibold transition text-center">
-                    <span id="dark-mode-icon">🌙</span>
-                </button>
-                <a href="{{ route('logout') }}" class="bg-white text-blue-700 px-3 sm:px-4 py-2 rounded shadow hover:bg-blue-100 font-semibold transition text-center">
-                    Logout
->>>>>>> a81fa4d156bc7ae22cce0f9bc158baaa43143635
                 </a>
             @else
                 <a href="{{ route('home') }}" class="flex items-center hover:opacity-90 transition duration-200">
