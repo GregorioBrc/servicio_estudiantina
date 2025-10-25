@@ -3,7 +3,7 @@
     <div class="min-h-screen flex flex-col justify-center items-center bg-gray-50 px-2">
         <div class="bg-white rounded-lg shadow-lg p-6 sm:p-8 w-full max-w-sm">
             <div class="flex justify-center mb-6">
-                <img src="/images/logo_unet_fondo.jpg" alt="Logo Estudiantina" class="h-20 w-20 rounded-full shadow-lg object-cover">
+                <img src="/images/Logo_Unet.svg" alt="Logo Estudiantina" class="h-20 w-20 object-cover">
             </div>
             <h2 class="text-2xl font-bold text-center mb-6 text-blue-700">Iniciar Sesión</h2>
             <form action="{{ route('login.store') }}" method="POST" class="space-y-4">
