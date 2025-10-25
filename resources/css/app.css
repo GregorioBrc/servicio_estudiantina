@@ -1121,3 +1121,43 @@ header a:hover {
     padding-top: 0.5rem;
     padding-bottom: 0.5rem;
 }
+
+/* Estilos para la marca de agua del logo UNET */
+.watermark-container {
+    filter: grayscale(100%) brightness(0.8);
+}
+
+.dark .watermark-container {
+    filter: grayscale(100%) brightness(1.2) invert(1);
+}
+
+.watermark-svg {
+    transition: opacity 0.3s ease;
+}
+
+/* Ajustes responsivos para la marca de agua */
+@media (max-width: 640px) {
+    .watermark-container {
+        bottom: 1rem;
+        right: 1rem;
+    }
+
+    .watermark-container .watermark-svg {
+        width: 4rem;
+        height: 4rem;
+    }
+}
+
+@media (min-width: 768px) {
+    .watermark-container .watermark-svg {
+        width: 6rem;
+        height: 6rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    .watermark-container .watermark-svg {
+        width: 8rem;
+        height: 8rem;
+    }
+}
