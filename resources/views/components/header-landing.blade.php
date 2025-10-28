@@ -5,12 +5,12 @@
         <div class="flex items-center flex-shrink-0">
             @auth
                 <a href="{{ route('home') }}" class="flex items-center hover:opacity-90 transition duration-200">
-                    <img src="/images/Logo_Unet_Text.svg" alt="Logo Estudiantina" class="h-10 w-10 sm:h-12 sm:w-12 md:h-14 md:w-14 lg:h-16 lg:w-16 mr-2 sm:mr-3 md:mr-4 shadow-lg object-cover bg-amber-50">
+                    <img src="/images/Logo_Unet_Text.svg" alt="Logo Estudiantina" class="h-14 w-14 sm:h-16 sm:w-16 md:h-20 md:w-20 lg:h-24 lg:w-24 mr-2 sm:mr-3 md:mr-4 object-cover bg-amber-50">
                     <span class="text-lg sm:text-xl md:text-2xl font-bold whitespace-nowrap">Estudiantina</span>
                 </a>
             @else
                 <a href="{{ route('home') }}" class="flex items-center hover:opacity-90 transition duration-200">
-                    <img src="/images/Logo_Unet_Text.svg" alt="Logo Estudiantina" class="h-10 w-10 sm:h-12 sm:w-12 md:h-14 md:w-14 lg:h-16 lg:w-16 mr-2 sm:mr-3 md:mr-4 shadow-lg object-cover bg-amber-50">
+                    <img src="/images/Logo_Unet_Text.svg" alt="Logo Estudiantina" class="h-14 w-14 sm:h-16 sm:w-16 md:h-20 md:w-20 lg:h-24 lg:w-24 mr-2 sm:mr-3 md:mr-4 object-cover bg-amber-50">
                     <span class="text-lg sm:text-xl md:text-2xl font-bold whitespace-nowrap">Estudiantina</span>
                 </a>
             @endauth
