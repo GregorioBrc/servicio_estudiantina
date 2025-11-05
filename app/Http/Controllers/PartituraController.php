@@ -232,4 +232,57 @@ class PartituraController extends Controller
             'qrCodeYT' => $qrCodeYT
         ]);
     }
+
+    public function apiPartiturasDisponibles()
+    {
+        try {
+            // Usamos los nombres de relación con mayúscula, como en tus modelos: Obra, Instrumento
+            $partituras = \App\Models\partitura::with(['Obra.autores', 'Instrumento'])->get();
+
+            $datosParaCliente = $partituras->map(function($partitura) {
+                $autor = 'Autor desconocido';
+                // Verificamos que las relaciones se hayan cargado correctamente
+                if ($partitura->Obra && $partitura->Obra->autores->isNotEmpty()) {
+                    $autor = $partitura->Obra->autores->first()->nombre;
+                }
+
+                $instrumentoNombre = 'Instrumento desconocido';
+                if ($partitura->Instrumento) {
+                    $instrumentoNombre = $partitura->Instrumento->nombre . ' ' . $partitura->Instrumento->tipo;
+                }
+
+                return [
+                    'id' => $partitura->id,
+                    'titulo' => $partitura->Obra ? $partitura->Obra->titulo : 'Título desconocido',
+                    'autor' => $autor,
+                    'instrumentos' => [$instrumentoNombre],
+                    'cantidad_disponible' => 5 // Mantenemos el valor simulado
+                ];
+            });
+
+            return response()->json([
+                'success' => true,
+                'partituras' => $datosParaCliente
+            ]);
+
+        } catch (\Exception $e) {
+            // Devolvemos un error más detallado para facilitar la depuración
+            return response()->json([
+                'success' => false,
+                'message' => 'Error en el servidor: ' . $e->getMessage() . ' en la línea ' . $e->getLine(),
+            ], 500);
+        }
+    }
+
+    public function apiGetPartitura($id)
+    {
+        $partitura = \App\Models\partitura::find($id);
+        if ($partitura && $partitura->Obra) {
+            return response()->json([
+                'titulo_obra' => $partitura->Obra->titulo,
+                'instrumento' => $partitura->Instrumento ? $partitura->Instrumento->nombre : 'N/A'
+            ]);
+        }
+        return response()->json(['titulo_obra' => 'Partitura Desconocida', 'instrumento' => 'N/A'], 404);
+    }
 }

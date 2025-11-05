@@ -8,73 +8,173 @@ use Illuminate\Http\Request;
 class inventarioController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Muestra una lista de todos los recursos del inventario.
      */
     public function index()
     {
-        //
+        // Obtiene todos los items del inventario, paginados de 10 en 10.
+        $inventarios = inventario::get();
+
+        // Retornar json.
+        return $inventarios;
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        return view('inventario.create');
-    }
 
     /**
-     * Store a newly created resource in storage.
+     * Almacena un nuevo recurso recién creado.
      */
     public function store(Request $request)
     {
+        // Valida los datos de entrada.
         $validated = $request->validate([
-            'partitura_id' => 'required|integer',
-            'estante_id' => 'required|integer',
+            'partitura_id' => 'required|integer|exists:partituras,id', // Es buena práctica verificar que el id exista en la tabla partituras.
+            'estante_id' => 'required|integer|exists:estantes,id',   // Y también en la tabla estantes.
             'cantidad' => 'required|integer|min:1',
+            // Añade aquí otras validaciones si tu tabla 'inventario' tiene más campos.
         ]);
 
-        $Item = inventario::where('partitura_id', $validated['partitura_id'])->where('estante_id', $validated['estante_id']);
+        // Comprueba si ya existe un ítem con la misma partitura y estante.
+        $itemExists = inventario::where('partitura_id', $validated['partitura_id'])
+                                 ->where('estante_id', $validated['estante_id'])
+                                 ->exists(); // Usar exists() es más eficiente que first() o get().
 
-        if (isset($Item)) {
-            return redirect()->back()->with('error', 'Item already exists.');
+        if ($itemExists) {
+            // Si el ítem ya existe, redirige hacia atrás con un mensaje de error.
+            return redirect()->back()->with('error', 'Este ítem ya existe en el inventario.');
         }
 
+        // Crea el nuevo registro en el inventario.
         inventario::create($validated);
 
+        // Redirige al listado principal con un mensaje de éxito.
         return redirect()->route('inventario.index')
-            ->with('success', 'Inventario created successfully.');
+            ->with('success', 'Ítem de inventario creado exitosamente.');
     }
 
     /**
-     * Display the specified resource.
+     * Muestra un recurso específico.
      */
     public function show(inventario $inventario)
     {
-        //
+        // Gracias al Route Model Binding de Laravel, ya tenemos el objeto $inventario.
+        // Se lo pasamos a la vista 'show'.
+        return view('inventario.show', compact('inventario'));
     }
 
     /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(inventario $inventario)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
+     * Actualiza un recurso específico en la base de datos.
      */
     public function update(Request $request, inventario $inventario)
     {
-        //
+        // Valida los datos de entrada para la actualización.
+        $validated = $request->validate([
+            'partitura_id' => 'required|integer|exists:partituras,id',
+            'estante_id' => 'required|integer|exists:estantes,id',
+            'cantidad' => 'required|integer|min:0', // Permitimos 0 por si se acaba el stock.
+             // Añade aquí otras validaciones.
+        ]);
+
+        // Actualiza el objeto $inventario con los datos validados.
+        $inventario->update($validated);
+
+        // Redirige al listado principal con un mensaje de éxito.
+        return redirect()->route('inventario.index')
+            ->with('success', 'Ítem de inventario actualizado exitosamente.');
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Elimina un recurso específico de la base de datos.
      */
     public function destroy(inventario $inventario)
     {
-        //
+        // Elimina el registro de la base de datos.
+        $inventario->delete();
+
+        // Redirige al listado principal con un mensaje de éxito.
+        return redirect()->route('inventario.index')
+            ->with('success', 'Ítem de inventario eliminado exitosamente.');
     }
+
+
+    public function apigetPartiturasData(Request $request){
+
+        $Res = new \stdClass();
+
+        $query = inventario::with(['partitura.obra.contribuciones.autor', 'partitura.obra.contribuciones.tipoContribucion', 'estante'])
+            ->select('inventarios.*')
+            ->whereHas('partitura.obra')
+            ->where('cantidad', '>', 0);
+
+        // Búsqueda global
+        if ($request->has('search') && $request->search['value']) {
+            $search = $request->search['value'];
+            $query->where(function($q) use ($search) {
+                // Search in obra data
+                $q->whereHas('partitura.obra', function($q) use ($search) {
+                    $q->where('titulo', 'like', "%{$search}%")
+                      ->orWhere('anio', 'like', "%{$search}%");
+                })
+                  ->orWhereHas('partitura.obra.contribuciones.autor', function($q) use ($search) {
+                      $q->where('nombre', 'like', "%{$search}%")
+                        ->orWhere('apellido', 'like', "%{$search}%");
+                  })
+                  ->orWhereHas('partitura.obra.contribuciones.tipoContribucion', function($q) use ($search) {
+                      $q->where('nombre_contribucion', 'like', "%{$search}%");
+                  })
+                  ->orWhere('instrumento', 'like', "%{$search}%")
+                  ->orWhereHas('estante', function($q) use ($search) {
+                      $q->where('gaveta', 'like', "%{$search}%");
+                  });
+            });
+        }
+
+        // Ordenamiento
+        if ($request->has('order')) {
+            $columns = ['titulo', 'autor', 'tipo_contribucion', 'anio', 'instrumento', 'cantidad', 'gaveta'];
+            $column = $columns[$request->order[0]['column']] ?? 'titulo';
+            $direction = $request->order[0]['dir'] ?? 'asc';
+            
+            if ($column === 'autor') {
+                $query->join('partituras', 'inventarios.partitura_id', '=', 'partituras.id')
+                      ->join('obras', 'partituras.obra_id', '=', 'obras.id')
+                      ->join('contribuciones', 'obras.id', '=', 'contribuciones.obra_id')
+                      ->join('autores', 'contribuciones.autor_id', '=', 'autores.id')
+                      ->orderBy('autores.nombre', $direction)
+                      ->select('inventarios.*');
+            } elseif ($column === 'tipo_contribucion') {
+                $query->join('partituras', 'inventarios.partitura_id', '=', 'partituras.id')
+                      ->join('obras', 'partituras.obra_id', '=', 'obras.id')
+                      ->join('contribuciones', 'obras.id', '=', 'contribuciones.obra_id')
+                      ->join('tipo_contribuciones', 'contribuciones.tipo_contribucion_id', '=', 'tipo_contribuciones.id')
+                      ->orderBy('tipo_contribuciones.nombre_contribucion', $direction)
+                      ->select('inventarios.*');
+            } elseif ($column === 'titulo' || $column === 'anio') {
+                $query->join('partituras', 'inventarios.partitura_id', '=', 'partituras.id')
+                      ->join('obras', 'partituras.obra_id', '=', 'obras.id')
+                      ->orderBy("obras.$column", $direction)
+                      ->select('inventarios.*');
+            } elseif ($column === 'gaveta') {
+                $query->join('estantes', 'inventarios.estante_id', '=', 'estantes.id')
+                      ->orderBy('estantes.gaveta', $direction)
+                      ->select('inventarios.*');
+            } else {
+                $query->orderBy($column, $direction);
+            }
+        }
+
+        $totalRecords = inventario::where('cantidad', '>', 0)->count();
+        $filteredRecords = $query->count();
+
+        // Paginación
+        $inventarios = $query->skip($request->start ?? 0)
+            ->take($request->length ?? 10)
+            ->get();
+
+        $Res->inventarios = $inventarios;
+        $Res->totalRecords = $totalRecords;
+        $Res->filteredRecords = $filteredRecords;
+        return response()->json($Res);
+    }
+
+
 }

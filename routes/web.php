@@ -60,29 +60,26 @@ Route::resource('admin/tipo_contribuciones', TipoContribucionController::class)
 /////////////// API Inventario ////////////////
 ///////////////////////////////////////////////
 
-Route::resource('admin/usuario_inventarios', UsuarioInventarioController::class)
-    ->except("create", "edit")
-    ->parameters(['usuario_inventarios' => 'usuario_inventario'])
-    ->names('admin.usuario_inventarios')
-    ->middleware('admin');
+Route::prefix('api/v1')->group(function () {
+    // Endpoint para que el Cliente obtenga las partituras disponibles
+    Route::get('/partituras-disponibles', [PartituraController::class, 'apiPartiturasDisponibles'])->name('api.partituras.disponibles');
 
-Route::resource('admin/estantes', EstanteController::class)
-    ->except("create", "edit", "show")
-    ->parameters(['estantes' => 'estante'])
-    ->names('admin.estantes')
-    ->middleware('admin');
+    // Endpoint para que el Cliente envíe una nueva solicitud de préstamo
+    // Usaremos PrestamoController ya que es su responsabilidad
+    Route::post('/solicitar-prestamo', [PrestamoController::class, 'apiSolicitarPrestamo'])->name('api.solicitar.prestamo');
 
-Route::resource('admin/prestamos', PrestamoController::class)
-    ->except("create", "edit")
-    ->parameters(['prestamos' => 'prestamo'])
-    ->names('admin.prestamos')
-    ->middleware('admin');
+     Route::get('/mis-prestamos', [PrestamoController::class, 'apiMisPrestamos'])->name('api.mis.prestamos');
+    // Endpoint para recibir los datos de un nuevo usuario
+    
+    Route::post('/registrar-usuario', [UserController::class, 'apiRegistrarUsuario'])->name('api.registrar.usuario');
 
-Route::resource('admin/inventarios', InventarioController::class)
-    ->except("create", "edit")
-    ->parameters(['inventarios' => 'inventario'])
-    ->names('admin.inventarios')
-    ->middleware('admin');
+    Route::post('/procesar-prestamo/{id}', [PrestamoController::class, 'apiProcesarPrestamo'])->name('api.procesar.prestamo');
+
+    Route::get('/partiturasdata', [inventarioController::class, 'apigetPartiturasData'])->name('api.listar.partituras');
+
+
+    });
+
 
 //////////////////////////////////////////////////////
 ////////////////// VISTAS DEL USUARIO ////////////////

@@ -166,4 +166,35 @@ class UserController extends Controller
 
         return response()->json(['success' => true]);
     }
+
+    public function apiRegistrarUsuario(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8',
+        ]);
+
+        $user = \App\Models\User::create([
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'password' => \Illuminate\Support\Facades\Hash::make($validated['password']),
+            'es_escritor' => false // Por defecto, los usuarios creados desde el cliente no son administradores
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Usuario registrado exitosamente en el servidor.',
+            'user_id' => $user->id
+        ], 201); // Código 201: Creado
+    }
+
+    public function apiGetUsuario($id)
+    {
+        $user = \App\Models\User::find($id);
+        if ($user) {
+            return response()->json(['nombre' => $user->name]);
+        }
+        return response()->json(['nombre' => 'Usuario Desconocido'], 404);
+    }
 }
