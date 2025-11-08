@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\prestamo;
+use App\Models\inventario;
+use App\Models\estante;
 use Illuminate\Http\Request;
 
 class PrestamoController extends Controller
@@ -61,9 +63,43 @@ class PrestamoController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, prestamo $prestamo)
+    public function update(Request $request, $id)
     {
-        //
+                $validated = $request->validate([
+                    'cantidad' => 'required|integer|min:1',
+                    'gaveta'   => 'required|string|max:255'
+                ]);
+
+            // Find the inventory record
+            $inventario = inventario::findOrFail($id);
+
+            // Find or create the estante with the new gaveta
+            $estante = estante::firstOrCreate(
+                ['gaveta' => trim($validated['gaveta'])],
+                ['gaveta' => trim($validated['gaveta'])]
+            );
+
+            // Update the inventory
+            $inventario->cantidad = $validated['cantidad'];
+            $inventario->estante_id = $estante->id;
+            
+            // Adjust available quantity if total quantity changed
+            $quantityDifference = $validated['cantidad'] - $inventario->getOriginal('cantidad');
+            if ($quantityDifference > 0) {
+                // If total increased, increase available by the same amount
+                $inventario->cantidad_disponible += $quantityDifference;
+            } elseif ($quantityDifference < 0) {
+                // If total decreased, ensure available doesn't exceed total
+                $inventario->cantidad_disponible = min($inventario->cantidad_disponible, $validated['cantidad']);
+            }
+            
+            $inventario->save();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Inventario actualizado exitosamente'
+            ]);
+
     }
 
     /**
@@ -220,5 +256,7 @@ class PrestamoController extends Controller
             'prestamos' => []
         ]);
     }
+
+
     
 }

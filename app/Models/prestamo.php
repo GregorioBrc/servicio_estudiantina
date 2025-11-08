@@ -36,6 +36,11 @@ class prestamo extends Model
         return $this->BelongsTo(estante::class, "estante_id");
     }
 
+     public function inventario()
+    {
+        return $this->belongsTo(inventario::class);
+    }
+
     public function returnKeyName()
     {
         return 'id';

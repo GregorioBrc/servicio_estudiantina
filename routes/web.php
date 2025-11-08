@@ -14,6 +14,7 @@ use App\Http\Controllers\PartituraController;
 use App\Http\Controllers\PrestamoController;
 use App\Http\Controllers\TipoContribucionController;
 use App\Http\Controllers\UsuarioInventarioController;
+use App\Http\Middleware\VerifyCsrfToken;
 
 // Página principal
 Route::get('/', [HomeController::class, 'index'])->name('home')->middleware('guest');
@@ -56,29 +57,6 @@ Route::resource('admin/tipo_contribuciones', TipoContribucionController::class)
     ->names('admin.tipo_contribuciones')
     ->middleware('admin');
 
-///////////////////////////////////////////////
-/////////////// API Inventario ////////////////
-///////////////////////////////////////////////
-
-Route::prefix('api/v1')->group(function () {
-    // Endpoint para que el Cliente obtenga las partituras disponibles
-    Route::get('/partituras-disponibles', [PartituraController::class, 'apiPartiturasDisponibles'])->name('api.partituras.disponibles');
-
-    // Endpoint para que el Cliente envíe una nueva solicitud de préstamo
-    // Usaremos PrestamoController ya que es su responsabilidad
-    Route::post('/solicitar-prestamo', [PrestamoController::class, 'apiSolicitarPrestamo'])->name('api.solicitar.prestamo');
-
-     Route::get('/mis-prestamos', [PrestamoController::class, 'apiMisPrestamos'])->name('api.mis.prestamos');
-    // Endpoint para recibir los datos de un nuevo usuario
-    
-    Route::post('/registrar-usuario', [UserController::class, 'apiRegistrarUsuario'])->name('api.registrar.usuario');
-
-    Route::post('/procesar-prestamo/{id}', [PrestamoController::class, 'apiProcesarPrestamo'])->name('api.procesar.prestamo');
-
-    Route::get('/partiturasdata', [inventarioController::class, 'apigetPartiturasData'])->name('api.listar.partituras');
-
-
-    });
 
 
 //////////////////////////////////////////////////////

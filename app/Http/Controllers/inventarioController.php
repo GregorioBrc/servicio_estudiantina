@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\inventario;
+use App\Models\prestamo;
 use Illuminate\Http\Request;
+
 
 class inventarioController extends Controller
 {
@@ -166,8 +168,7 @@ class inventarioController extends Controller
         $filteredRecords = $query->count();
 
         // Paginación
-        $inventarios = $query->skip($request->start ?? 0)
-            ->take($request->length ?? 10)
+        $inventarios = $query
             ->get();
 
         $Res->inventarios = $inventarios;
@@ -176,5 +177,74 @@ class inventarioController extends Controller
         return response()->json($Res);
     }
 
+    
+     public function apigetPrestamosData(Request $request){
+
+        $Res = new \stdClass();
+        $Res->Cosa1 = $request;
+
+        $query = prestamo::with(['inventario.partitura.obra', 'Usuario_Inventario'])
+            ->select('prestamos.*')
+            ->orderBy('fecha_prestamo', 'desc');
+
+        // Búsqueda global
+        if ($request->has('search') && $request->search['value']) {
+            $search = $request->search['value'];
+            $query->where(function($q) use ($search) {
+                $q->where('id', 'like', "%{$search}%")
+                  ->orWhereHas('inventario.partitura.obra', function($q) use ($search) {
+                      $q->where('titulo', 'like', "%{$search}%");
+                  })
+                  ->orWhereHas('user', function($q) use ($search) {
+                      $q->where('name', 'like', "%{$search}%")
+                        ->orWhere('email', 'like', "%{$search}%");
+                  })
+                  ->orWhere('descripcion', 'like', "%{$search}%");
+            });
+        }
+
+        // Ordenamiento
+        if ($request->has('order')) {
+            $columns = ['id', 'obra_titulo', 'instrumento', 'cantidad', 'usuario_nombre', 'usuario_email', 'fecha_prestamo', 'descripcion'];
+            $column = $columns[$request->order[0]['column']] ?? 'id';
+            $direction = $request->order[0]['dir'] ?? 'asc';
+            
+            if ($column === 'obra_titulo') {
+                $query->join('inventarios', 'prestamos.inventario_id', '=', 'inventarios.id')
+                      ->join('partituras', 'inventarios.partitura_id', '=', 'partituras.id')
+                      ->join('obras', 'partituras.obra_id', '=', 'obras.id')
+                      ->orderBy('obras.titulo', $direction)
+                      ->select('prestamos.*');
+            } elseif ($column === 'instrumento') {
+                $query->join('inventarios', 'prestamos.inventario_id', '=', 'inventarios.id')
+                      ->orderBy('inventarios.instrumento', $direction)
+                      ->select('prestamos.*');
+            } elseif ($column === 'usuario_nombre' || $column === 'usuario_email') {
+                $query->join('users', 'prestamos.user_id', '=', 'users.id')
+                      ->orderBy($column === 'usuario_nombre' ? 'users.name' : 'users.email', $direction)
+                      ->select('prestamos.*');
+            } else {
+                $query->orderBy($column, $direction);
+            }
+        }
+
+        $totalRecords = Prestamo::count();
+        $filteredRecords = $query->count();
+
+        // Paginación
+        $prestamos = $query
+            ->get();
+
+
+        $Res->prestamos = $prestamos;
+        $Res->totalRecords = $totalRecords;
+        $Res->filteredRecords = $filteredRecords;
+        return response()->json($Res);
+
+    }
+
+    
+
 
 }
+
