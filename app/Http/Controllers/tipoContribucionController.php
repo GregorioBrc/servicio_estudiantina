@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\tipo_contribucion;
 use Illuminate\Http\Request;
 
-class tipoContribucionController extends Controller
+class TipoContribucionController extends Controller
 {
     /**
      * Display a listing of the resource.
