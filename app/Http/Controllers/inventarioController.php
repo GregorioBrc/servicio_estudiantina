@@ -184,68 +184,90 @@ class inventarioController extends Controller
      public function apigetPrestamosData(Request $request){
 
         $Res = new \stdClass();
-        $Res->Cosa1 = $request;
 
-        $query = prestamo::with(['inventario.partitura.obra', 'Usuario_Inventario'])
-            ->select('prestamos.*')
-            ->orderBy('fecha_prestamo', 'desc');
+        // --- 1. Eager Loading con los NOMBRES CORRECTOS de tus relaciones ---
+        // Usamos 'Partitura' y 'Usuario_Inventario' tal como los definiste en el modelo.
+        $query = Prestamo::with([
+            'Partitura.obra',          // Para obtener el título de la obra
+            'Partitura.instrumento',   // Para obtener el nombre del instrumento
+            'Usuario_Inventario',      // Para obtener los datos del usuario
+            'Estante'                  // Para obtener la gaveta
+        ]);
 
-        // Búsqueda global
-        if ($request->has('search') && $request->search['value']) {
+        // --- 2. Búsqueda global usando las RUTAS CORRECTAS ---
+        if ($request->has('search') && !empty($request->search['value'])) {
             $search = $request->search['value'];
             $query->where(function($q) use ($search) {
-                $q->where('id', 'like', "%{$search}%")
-                  ->orWhereHas('inventario.partitura.obra', function($q) use ($search) {
-                      $q->where('titulo', 'like', "%{$search}%");
-                  })
-                  ->orWhereHas('user', function($q) use ($search) {
-                      $q->where('name', 'like', "%{$search}%")
-                        ->orWhere('email', 'like', "%{$search}%");
-                  })
-                  ->orWhere('descripcion', 'like', "%{$search}%");
+                $q->where('descripcion', 'like', "%{$search}%")
+                ->orWhere('estado', 'like', "%{$search}%") // Buscamos por el nuevo campo estado
+                ->orWhereHas('Partitura.obra', function($q_obra) use ($search) {
+                    $q_obra->where('titulo', 'like', "%{$search}%");
+                })
+                ->orWhereHas('Partitura.instrumento', function($q_instrumento) use ($search) {
+                    $q_instrumento->where('nombre', 'like', "%{$search}%");
+                })
+                ->orWhereHas('Usuario_Inventario', function($q_usuario) use ($search) {
+                    // Tu JSON muestra 'nombre' y 'correo'
+                    $q_usuario->where('nombre', 'like', "%{$search}%")
+                                ->orWhere('correo', 'like', "%{$search}%");
+                });
             });
         }
 
-        // Ordenamiento
+        // --- 3. Ordenamiento usando los JOINS y nombres de columna CORRECTOS ---
         if ($request->has('order')) {
-            $columns = ['id', 'obra_titulo', 'instrumento', 'cantidad', 'usuario_nombre', 'usuario_email', 'fecha_prestamo', 'descripcion'];
-            $column = $columns[$request->order[0]['column']] ?? 'id';
-            $direction = $request->order[0]['dir'] ?? 'asc';
+            $columns = [
+                // Mapeamos el índice de la columna de DataTables a la columna real en la BD
+                // Usamos los nombres de columna de tu schema original
+                1 => 'obras.titulo',
+                2 => 'instrumentos.nombre',
+                3 => 'prestamos.cantidad',
+                4 => 'usuarios_inventario.nombre',
+                5 => 'usuarios_inventario.correo',
+                6 => 'prestamos.created_at',       // Reemplazamos fecha_prestamo
+                7 => 'prestamos.fecha_devolucion', // Nuevo campo
+                8 => 'prestamos.estado'            // Nuevo campo
+            ];
             
-            if ($column === 'obra_titulo') {
-                $query->join('inventarios', 'prestamos.inventario_id', '=', 'inventarios.id')
-                      ->join('partituras', 'inventarios.partitura_id', '=', 'partituras.id')
-                      ->join('obras', 'partituras.obra_id', '=', 'obras.id')
-                      ->orderBy('obras.titulo', $direction)
-                      ->select('prestamos.*');
-            } elseif ($column === 'instrumento') {
-                $query->join('inventarios', 'prestamos.inventario_id', '=', 'inventarios.id')
-                      ->orderBy('inventarios.instrumento', $direction)
-                      ->select('prestamos.*');
-            } elseif ($column === 'usuario_nombre' || $column === 'usuario_email') {
-                $query->join('users', 'prestamos.user_id', '=', 'users.id')
-                      ->orderBy($column === 'usuario_nombre' ? 'users.name' : 'users.email', $direction)
-                      ->select('prestamos.*');
-            } else {
-                $query->orderBy($column, $direction);
+            $columnIndex = $request->order[0]['column'];
+            $column = $columns[$columnIndex] ?? 'prestamos.created_at'; // Orden por defecto
+            $direction = $request->order[0]['dir'] ?? 'desc';
+            
+            $query->reorder(); // Limpia cualquier ordenamiento previo
+
+            // Añadimos los joins necesarios solo para la columna que se está ordenando
+            if (str_contains($column, 'usuarios_inventario')) {
+                $query->join('usuarios_inventario', 'prestamos.usuario_inventario_id', '=', 'usuarios_inventario.id');
             }
+            if (str_contains($column, 'obras') || str_contains($column, 'instrumentos')) {
+                $query->join('partituras', 'prestamos.partitura_id', '=', 'partituras.id');
+                if (str_contains($column, 'obras')) {
+                    $query->join('obras', 'partituras.obra_id', '=', 'obras.id');
+                }
+                if (str_contains($column, 'instrumentos')) {
+                    $query->join('instrumentos', 'partituras.instrumento_id', '=', 'instrumentos.id');
+                }
+            }
+            
+            // Aplicamos el ordenamiento y seleccionamos solo las columnas de prestamos
+            // para evitar conflictos y asegurar que el 'with()' funcione bien.
+            $query->orderBy($column, $direction)->select('prestamos.*');
+
+        } else {
+            // Orden por defecto si no se especifica uno
+            $query->orderBy('prestamos.created_at', 'desc');
         }
 
         $totalRecords = Prestamo::count();
-        $filteredRecords = $query->count();
-
-        // Paginación
-        $prestamos = $query
-            ->get();
-
+        $prestamos = $query->get();
+        $filteredRecords = $prestamos->count();
 
         $Res->prestamos = $prestamos;
         $Res->totalRecords = $totalRecords;
         $Res->filteredRecords = $filteredRecords;
+        
         return response()->json($Res);
-
     }
-
     
 
 

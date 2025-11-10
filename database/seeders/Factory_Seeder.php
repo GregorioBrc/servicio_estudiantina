@@ -85,11 +85,26 @@ class Factory_Seeder extends Seeder
         for ($i = 0; $i < 20; $i++) {
             $partituraEnInventario = \App\Models\inventario::inRandomOrder()->first();
             if ($partituraEnInventario) {
-                \App\Models\prestamo::factory()->create([
-                    'usuario_inventario_id' => $usuariosInventario->random()->id,
-                    'partitura_id' => $partituraEnInventario->partitura_id,
-                    'estante_id' => $partituraEnInventario->estante_id,
-                ]);
+               $fechaPrestamo = fake()->dateTimeBetween('-1 year', 'now');
+               $estado = 'activo';
+               $fechaDevolucion = null;
+
+            // Aleatoriamente, marcamos la mitad de los préstamos como devueltos
+            if (rand(0, 1) == 1) {
+                $estado = 'inactivo';
+                // La fecha de devolución es unos días/semanas después del préstamo
+                $fechaDevolucion = fake()->dateTimeBetween($fechaPrestamo, 'now');
+            }
+
+            \App\Models\prestamo::factory()->create([
+                'usuario_inventario_id' => $usuariosInventario->random()->id,
+                'partitura_id'          => $partituraEnInventario->partitura_id,
+                'estante_id'            => $partituraEnInventario->estante_id,
+                'created_at'            => $fechaPrestamo,
+                'updated_at'            => $fechaPrestamo,
+                'estado'                => $estado, // <-- AÑADIDO
+                'fecha_devolucion'      => $fechaDevolucion, // <-- AÑADIDO
+            ]);
             }
         }
 
