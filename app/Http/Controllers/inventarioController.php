@@ -102,7 +102,7 @@ class inventarioController extends Controller
 
         $Res = new \stdClass();
 
-        $query = inventario::with(['partitura.obra.contribuciones.autor', 'partitura.obra.contribuciones.tipoContribucion', 'estante'])
+        $query = inventario::with(['partitura.obra.contribuciones.autor', 'partitura.obra.contribuciones.tipoContribucion', 'estante', 'partitura.instrumento'])
             ->select('inventario.*')
             ->whereHas('partitura.obra')
             ->where('cantidad', '>', 0);
@@ -123,7 +123,10 @@ class inventarioController extends Controller
                   ->orWhereHas('partitura.obra.contribuciones.tipoContribucion', function($q) use ($search) {
                       $q->where('nombre_contribucion', 'like', "%{$search}%");
                   })
-                  ->orWhere('instrumento', 'like', "%{$search}%")
+                  ->orWhereHas('partitura.instrumento', function($q_instrumento) use ($search) {
+                    // Asume que la columna en la tabla 'instrumentos' se llama 'nombre'
+                    $q_instrumento->where('nombre', 'like', "%{$search}%");
+                    })
                   ->orWhereHas('estante', function($q) use ($search) {
                       $q->where('gaveta', 'like', "%{$search}%");
                   });
