@@ -18,7 +18,7 @@ class inventario extends Model
      * @var string
      */
     // RECOMENDACIÓN 2: El nombre de la tabla en tus migraciones es "inventarios" (plural).
-    protected $table = "inventarios";
+    protected $table = "inventario";
 
     /**
      * RECOMENDACIÓN 3: Tus migraciones SÍ incluyen timestamps ($table->timestamps()).
@@ -32,46 +32,28 @@ class inventario extends Model
      *
      * @var array<int, string>
      */
-    // RECOMENDACIÓN 4: El array $fillable estaba incompleto y tenía un error de mayúsculas.
-    // Se han añadido todos los campos de la tabla que deben poder llenarse desde el controlador.
+  
+
     protected $fillable = [
-        "partitura_id",
-        "estante_id",
-        "instrumento", // Campo añadido en una migración posterior
-        "cantidad",    // Corregido de "Cantidad" a "cantidad"
-        "cantidad_disponible",
-        "estado",
-        "notas"
+        'partitura_id',
+        'estante_id',
+        'Cantidad', // OJO: La 'C' es mayúscula, igual que en tu migración.
     ];
 
     /**
-     * Define la relación inversa de uno a muchos con el modelo Estante.
-     * Un ítem de inventario PERTENECE A un Estante.
-     */
-    // RECOMENDACIÓN 5: Corregido el nombre de la función y el método de la relación.
-    public function estante(): BelongsTo
-    {
-        // El nombre del método es en camelCase: "belongsTo".
-        // El nombre del modelo relacionado es en PascalCase: "Estante".
-        return $this->belongsTo(Estante::class, "estante_id");
-    }
-
-    /**
-     * Define la relación inversa de uno a muchos con el modelo Partitura.
-     * Un ítem de inventario PERTENECE A una Partitura.
+     * Define la relación inversa: una entrada de inventario pertenece a UNA Partitura.
      */
     public function partitura(): BelongsTo
     {
-        return $this->belongsTo(Partitura::class, "partitura_id");
+        return $this->belongsTo(partitura::class, 'partitura_id');
     }
 
     /**
-     * RECOMENDACIÓN 6: Añadir la relación con los préstamos.
-     * Define la relación de uno a muchos con el modelo Prestamo.
-     * Un ítem de inventario PUEDE TENER MUCHOS Préstamos.
+     * Define la relación inversa: una entrada de inventario pertenece a UN Estante.
      */
-    public function prestamos(): HasMany
+    public function estante(): BelongsTo
     {
-        return $this->hasMany(Prestamo::class, 'inventario_id');
+        return $this->belongsTo(estante::class, 'estante_id');
     }
+ 
 }

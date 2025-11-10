@@ -103,7 +103,7 @@ class inventarioController extends Controller
         $Res = new \stdClass();
 
         $query = inventario::with(['partitura.obra.contribuciones.autor', 'partitura.obra.contribuciones.tipoContribucion', 'estante'])
-            ->select('inventarios.*')
+            ->select('inventario.*')
             ->whereHas('partitura.obra')
             ->where('cantidad', '>', 0);
 
