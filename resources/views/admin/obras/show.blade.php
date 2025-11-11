@@ -34,7 +34,7 @@
                     </div>
                     <div>
                         <h2 class="text-2xl font-bold text-gray-900">{{ $obra->titulo }}</h2>
-                        <p class="text-gray-600">{{ $obra->anio }} • {{ $obra->autores->count() }} autor(es) • {{ $obra->partituras->count() }} partitura(s)</p>
+                        <p class="text-gray-600">{{ $obra->autores->count() }} autor(es) • {{ $obra->partituras->count() }} partitura(s)</p>
                     </div>
                 </div>
             </div>

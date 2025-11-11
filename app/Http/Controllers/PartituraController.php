@@ -82,8 +82,17 @@ class PartituraController extends Controller
         $partitura->load(["instrumento", "obra"]);
         $partitura->user_cant = $usuariosConInstrumento = $partitura->instrumento->usuarios()->count();
 
-        $qrCodePDF = QrCode::size(150)->generate($partitura->url_pdf);
-        $qrCodeYT = QrCode::size(150)->generate($partitura->link_video);
+        if($partitura->url_pdf){
+            $qrCodePDF = QrCode::size(150)->generate($partitura->url_pdf);
+        } else {
+            $qrCodePDF = null;
+        }
+        
+        if($partitura->link_video){
+            $qrCodeYT = QrCode::size(150)->generate($partitura->link_video);
+        } else {
+            $qrCodeYT = null;
+        }
 
         return view('admin.partituras.show', compact('partitura', 'qrCodePDF', 'qrCodeYT'));
     }

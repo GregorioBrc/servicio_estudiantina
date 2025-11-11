@@ -73,7 +73,6 @@
                         <thead class="bg-gray-50">
                             <tr>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Título</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Año</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Autores</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Partituras</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
@@ -96,7 +95,6 @@
                                             </div>
                                         </div>
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $obra->anio }}</td>
                                     <td class="px-6 py-4 text-sm text-gray-500">
                                         @foreach($obra->autores as $autor)
                                             <div class="mb-1">
@@ -144,7 +142,6 @@
                                                         {{ $obra->titulo }}
                                                     </a>
                                                 </div>
-                                                <div class="text-sm text-gray-500">{{ $obra->anio }}</div>
                                             </div>
                                         </div>
                                     </div>
