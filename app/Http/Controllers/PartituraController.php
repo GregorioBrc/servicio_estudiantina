@@ -225,8 +225,17 @@ class PartituraController extends Controller
     {
         $partitura = partitura::find($id)->load("obra");
 
-        $qrCodePDF = QrCode::size(150)->generate($partitura->url_pdf);
-        $qrCodeYT = QrCode::size(150)->generate($partitura->link_video);
+        if($partitura->url_pdf){
+            $qrCodePDF = QrCode::size(150)->generate($partitura->url_pdf);
+        } else {
+            $qrCodePDF = null;
+        }
+        
+        if($partitura->link_video){
+            $qrCodeYT = QrCode::size(150)->generate($partitura->link_video);
+        } else {
+            $qrCodeYT = null;
+        }
 
         // Determinar la URL de retorno según la página anterior
         $backUrl = route('usuario.partituras');
