@@ -42,8 +42,6 @@ Route::prefix('v1')->group(function () {
 
     Route::get('/prestamosdata', [inventarioController::class, 'apigetPrestamosData'])->name('api.listar.prestamos');
 
-
-
-    Route::put('/prestamosupdate/{id}', [PrestamoController::class, 'update'])->name('api.update.prestamos');
+    Route::put('/inventario/{partitura_id}/{estante_id_original}', [inventarioController::class, 'update'])->name('api.update.inventario');
 
     });

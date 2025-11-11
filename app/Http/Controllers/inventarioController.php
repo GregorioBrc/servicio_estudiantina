@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\inventario;
 use App\Models\prestamo;
 use Illuminate\Http\Request;
+use App\Models\estante;
+use Illuminate\Support\Facades\DB;
 
 
 class inventarioController extends Controller
@@ -64,24 +66,87 @@ class inventarioController extends Controller
     }
 
     /**
-     * Actualiza un recurso específico en la base de datos.
+     * Actualiza inventario.
      */
-    public function update(Request $request, inventario $inventario)
+    public function update(Request $request, int $partitura_id, int $estante_id_original)
     {
-        // Valida los datos de entrada para la actualización.
         $validated = $request->validate([
-            'partitura_id' => 'required|integer|exists:partituras,id',
-            'estante_id' => 'required|integer|exists:estantes,id',
-            'cantidad' => 'required|integer|min:0', // Permitimos 0 por si se acaba el stock.
-             // Añade aquí otras validaciones.
+            'cantidad' => 'required|integer|min:0', // Cantidad a asignar
+            'gaveta'   => 'required|string|max:255' // Nombre del estante de DESTINO
         ]);
 
-        // Actualiza el objeto $inventario con los datos validados.
-        $inventario->update($validated);
+        try {
+            // Usamos una transacción para que la operación de "mover" sea segura.
+            // O todo se completa, o nada cambia.
+            DB::transaction(function () use ($validated, $partitura_id, $estante_id_original) {
+                
+                // 1. VERIFICAR QUE EL REGISTRO ORIGINAL EXISTE
+                $inventarioOriginal = DB::table('inventario')
+                    ->where('partitura_id', $partitura_id)
+                    ->where('estante_id', $estante_id_original)
+                    ->first();
 
-        // Redirige al listado principal con un mensaje de éxito.
-        return redirect()->route('inventario.index')
-            ->with('success', 'Ítem de inventario actualizado exitosamente.');
+                if (!$inventarioOriginal) {
+                    abort(404, 'El registro de inventario que intentas modificar no existe.');
+                }
+
+                // 2. OBTENER EL ESTANTE DE DESTINO
+                // Si el estante con el nombre 'gaveta' no existe, lo crea.
+                // Si ya existe, simplemente lo obtiene.
+                $estanteDestino = estante::firstOrCreate(
+                    ['gaveta' => trim($validated['gaveta'])]
+                );
+
+                // 3. DECIDIR LA ACCIÓN BASADO EN SI EL ESTANTE CAMBIÓ O NO
+                
+                if ($estanteDestino->id == $estante_id_original) {
+                    // --- CASO A: EL ESTANTE NO CAMBIA ---
+                    // El nombre de la gaveta corresponde al mismo estante original.
+                    // Simplemente actualizamos la cantidad.
+                    
+                    DB::table('inventario')
+                        ->where('partitura_id', $partitura_id)
+                        ->where('estante_id', $estante_id_original)
+                        ->update(['Cantidad' => $validated['cantidad']]);
+
+                } else {
+                    // --- CASO B: EL ESTANTE CAMBIA (SE MUEVE LA PARTITURA) ---
+                    // El nombre de la gaveta es diferente al original.
+
+                    // Paso 1: Eliminar el registro del estante antiguo.
+                    DB::table('inventario')
+                        ->where('partitura_id', $partitura_id)
+                        ->where('estante_id', $estante_id_original)
+                        ->delete();
+
+                    // Paso 2: Crear o actualizar el registro en el nuevo estante.
+                    // `updateOrInsert` es perfecto para esto:
+                    // - Busca si ya hay un registro para esa partitura en el nuevo estante.
+                    // - Si lo hay, actualiza su cantidad (útil si mueves partituras a un estante donde ya había de las mismas).
+                    // - Si no lo hay, crea el nuevo registro.
+                    DB::table('inventario')->updateOrInsert(
+                        [
+                            'partitura_id' => $partitura_id,
+                            'estante_id'   => $estanteDestino->id
+                        ],
+                        [
+                            'Cantidad'     => $validated['cantidad']
+                        ]
+                    );
+                }
+            });
+
+        } catch (\Throwable $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al actualizar el inventario: ' . $e->getMessage()
+            ], $e instanceof \Illuminate\Database\Eloquent\ModelNotFoundException || $e->getCode() == 404 ? 404 : 500);
+        }
+        
+        return response()->json([
+            'success' => true,
+            'message' => 'Inventario actualizado exitosamente'
+        ]);
     }
 
     /**
