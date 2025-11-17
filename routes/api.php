@@ -23,14 +23,14 @@ use App\Http\Middleware\VerifyCsrfToken;
 
 Route::prefix('v1')->group(function () {
     // Endpoint para que el Cliente obtenga las partituras disponibles
-
+    Route::post('/usuario-inventario/get-or-create', [UsuarioInventarioController::class, 'apiGetOrCreateByEmail']);
     // Endpoint para que el Cliente envíe una nueva solicitud de préstamo
     // Usaremos PrestamoController ya que es su responsabilidad
     Route::post('/solicitar-prestamo', [PrestamoController::class, 'apiSolicitarPrestamo'])->name('api.solicitar.prestamo');
 
     // Endpoint para recibir los datos de un nuevo usuario
     
-    Route::post('/registrar-usuario', [UserController::class, 'apiRegistrarUsuario'])->name('api.registrar.usuario');
+    Route::post('/registrar-usuario', [UsuarioInventarioController::class, 'apiRegistrarUsuario'])->name('api.registrar.usuario');
 
     Route::post('/procesar-prestamo/{id}', [PrestamoController::class, 'apiProcesarPrestamo'])->name('api.procesar.prestamo');
 

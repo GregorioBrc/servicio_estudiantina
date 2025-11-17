@@ -24,7 +24,7 @@ class usuario_inventario extends Model
         return $this->hasMany(prestamo::class, "usuario_inventario_id");
     }
 
-    public function getRouteKeyName()
+    public function returnKeyName()
     {
         return 'nombre';
     }

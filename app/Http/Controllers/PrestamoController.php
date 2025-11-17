@@ -78,19 +78,33 @@ class PrestamoController extends Controller
 
     public function apiSolicitarPrestamo(Request $request)
     {
+        
+        if (! $request->expectsJson()) {
+            $request->headers->set('Accept', 'application/json');
+        }
+
         $validated = $request->validate([
+            'email'                 => 'required_without:usuario_inventario_id|email',
+            'usuario_inventario_id' => 'required_without:email|integer|exists:usuarios_inventario,id',
+
             'partitura_id' => 'required|exists:partituras,id',
-            'user_id' => 'required|exists:users,id', // El cliente deberá enviar el ID del usuario
             'cantidad' => 'required|integer|min:1',
             'instrumento' => 'required|string', // Lo usamos para la descripción
         ]);
 
+        // Resolver el usuario_inventario_id
+        $usuarioInventarioId = $validated['usuario_inventario_id'] ?? null;
+
+        if (!$usuarioInventarioId && !empty($validated['email'])) {
+            $usuarioInventarioId = \App\Models\usuario_inventario::where('correo', $validated['email'])->value('id');
+
+        }
         // La tabla 'prestamos' en el servidor es diferente a la del cliente.
         // Adaptamos los datos para que coincidan.
         $prestamo = \App\Models\prestamo::create([
             'descripcion' => "Solicitud para {$validated['instrumento']}",
             'cantidad' => $validated['cantidad'],
-            'usuario_inventario_id' => $validated['user_id'], // Asumiendo que esta es la relación correcta
+            'usuario_inventario_id' => $usuarioInventarioId,
             'partitura_id' => $validated['partitura_id'],
             'estante_id' => 1 // ID de estante simulado, necesitas tu lógica para determinarlo
         ]);
