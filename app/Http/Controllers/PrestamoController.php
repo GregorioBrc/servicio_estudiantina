@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\prestamo;
 use App\Models\inventario;
 use App\Models\estante;
+use App\Models\usuario_inventario;
+use App\Models\partitura;
 use Illuminate\Http\Request;
 
 class PrestamoController extends Controller
@@ -93,21 +95,47 @@ class PrestamoController extends Controller
         ]);
 
         // Resolver el usuario_inventario_id
-        $usuarioInventarioId = $validated['usuario_inventario_id'] ?? null;
-
-        if (!$usuarioInventarioId && !empty($validated['email'])) {
-            $usuarioInventarioId = \App\Models\usuario_inventario::where('correo', $validated['email'])->value('id');
-
+        $usuario = null;
+        if (!empty($validated['usuario_inventario_id'])) {
+            $usuario = usuario_inventario::find($validated['usuario_inventario_id']);
         }
+        if (!$usuario && !empty($validated['email'])) {
+            $usuario = usuario_inventario::where('correo', $validated['email'])->first();
+        }
+        if (!$usuario) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Usuario inventario no encontrado'
+            ], 404);
+        }
+    
+    if (empty($estanteId)) {
+    $estanteId = \DB::table('inventario')
+        ->where('partitura_id', (int) $validated['partitura_id'])
+        ->value('estante_id');
+}
+
+    $estanteId = $estanteId ?: 1;
+
+    $obraTitulo = $request->input('obra_titulo') ?? $request->input('titulo');
+    if (!$obraTitulo) {
+        $p = partitura::with('obra')->find($validated['partitura_id']);
+        $obraTitulo = optional($p?->obra)->titulo;
+    }
         // La tabla 'prestamos' en el servidor es diferente a la del cliente.
         // Adaptamos los datos para que coincidan.
-        $prestamo = \App\Models\prestamo::create([
-            'descripcion' => "Solicitud para {$validated['instrumento']}",
-            'cantidad' => $validated['cantidad'],
-            'usuario_inventario_id' => $usuarioInventarioId,
-            'partitura_id' => $validated['partitura_id'],
-            'estante_id' => 1 // ID de estante simulado, necesitas tu lógica para determinarlo
-        ]);
+    $prestamo = \App\Models\prestamo::create([
+        'descripcion'           => "Solicitud para {$validated['instrumento']}",
+        'cantidad'              => (int) $validated['cantidad'],
+        'usuario_inventario_id' => $usuario->id,
+        'partitura_id'          => (int) $validated['partitura_id'],
+        'estante_id'            => $estanteId,
+
+        'obra_titulo'           => $obraTitulo,
+        'fecha_prestamo'        => $request->input('fecha_prestamo', now()),
+        'fecha_devolucion'      => $request->input('fecha_devolucion'),
+        'estado'                => $request->input('estado', 'Pendiente'),
+]);
 
         return response()->json([
             'success' => true,
