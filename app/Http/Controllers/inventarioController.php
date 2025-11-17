@@ -289,13 +289,13 @@ class inventarioController extends Controller
                 3 => 'prestamos.cantidad',
                 4 => 'usuarios_inventario.nombre',
                 5 => 'usuarios_inventario.correo',
-                6 => 'prestamos.created_at',       // Reemplazamos fecha_prestamo
+                6 => 'prestamos.fecha_prestamo',       // Reemplazamos fecha_prestamo
                 7 => 'prestamos.fecha_devolucion', // Nuevo campo
                 8 => 'prestamos.estado'            // Nuevo campo
             ];
             
             $columnIndex = $request->order[0]['column'];
-            $column = $columns[$columnIndex] ?? 'prestamos.created_at'; // Orden por defecto
+            $column = $columns[$columnIndex] ?? 'prestamos.fecha_prestamo'; // Orden por defecto
             $direction = $request->order[0]['dir'] ?? 'desc';
             
             $query->reorder(); // Limpia cualquier ordenamiento previo
@@ -320,7 +320,7 @@ class inventarioController extends Controller
 
         } else {
             // Orden por defecto si no se especifica uno
-            $query->orderBy('prestamos.created_at', 'desc');
+            $query->orderBy('prestamos.fecha_prestamo', 'desc');
         }
 
         $totalRecords = Prestamo::count();

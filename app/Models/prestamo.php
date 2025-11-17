@@ -14,12 +14,21 @@ class prestamo extends Model
     public $timestamps = false;
 
     public $fillable = [
-        "descripcion",
-        "cantidad",
-        "usuario_inventario_id",
-        "partitura_id",
-        "estante_id"
+        'descripcion',
+        'cantidad',
+        'usuario_inventario_id',
+        'partitura_id',
+        'estante_id',
+        'obra_titulo',
+        'fecha_prestamo',
+        'fecha_devolucion',
+        'estado',
     ];
+
+    protected $casts = [
+    'fecha_prestamo'   => 'datetime',
+    'fecha_devolucion' => 'datetime',
+];
 
     public function Usuario_Inventario(): BelongsTo
     {
